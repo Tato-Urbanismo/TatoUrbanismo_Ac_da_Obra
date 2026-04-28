@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — Acompanhamento Físico de Obra</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+:root{--bg:#0d1117;--surface:#161b22;--border:#21262d;--accent:#f0a500;--accent2:#e05c2a;--green:#3fb950;--blue:#388bfd;--red:#f85149;--cyan:#39d0d8;--text:#e6edf3;--muted:#7d8590;--card:#1c2128}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;font-size:14px;min-height:100vh}
+
+header{background:var(--surface);border-bottom:2px solid var(--accent);padding:14px 28px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100}
+.logo-icon{width:38px;height:38px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+header h1{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+header h1 span{color:var(--accent)}
+.header-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.header-spacer{flex:1}
+.badge-date{background:var(--border);border-radius:6px;padding:5px 12px;font-size:11px;color:var(--muted)}
+.badge-date strong{color:var(--text)}
+
+.update-bar{background:var(--card);border-bottom:1px solid var(--border);padding:12px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.update-left{display:flex;align-items:center;gap:12px}
+.update-icon{font-size:22px;flex-shrink:0}
+.update-title{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text)}
+.update-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.update-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.update-status{font-size:11px;font-weight:600;min-width:140px;text-align:right}
+.update-btn{background:var(--accent);border:none;border-radius:6px;color:#000;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:8px 18px;cursor:pointer;transition:opacity .15s;white-space:nowrap}
+.update-btn:hover{opacity:.85}
+.update-btn:disabled{opacity:.4;cursor:not-allowed}
+.update-divider{width:1px;height:24px;background:var(--border)}
+.upload-btn{background:var(--card);border:1px solid var(--border);border-radius:6px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;padding:7px 14px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.upload-btn:hover{color:var(--text);border-color:var(--muted)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinning{display:inline-block;animation:spin 1s linear infinite}
+
+/* MAIN TABS (Esgoto / Água) */
+main{padding:16px 28px;max-width:1500px;margin:0 auto}
+.main-tabs{display:flex;gap:0;margin-bottom:0;border-bottom:2px solid var(--border)}
+.main-tab-btn{background:none;border:none;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:12px 24px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;display:flex;align-items:center;gap:8px}
+.main-tab-btn:hover{color:var(--text)}
+.main-tab-btn.active-esgoto{color:#a371f7;border-bottom-color:#a371f7}
+.main-tab-btn.active-agua{color:var(--cyan);border-bottom-color:var(--cyan)}
+.main-panel{display:none;padding-top:18px}
+.main-panel.active{display:block}
+
+/* SUB TABS */
+.sub-tabs{display:flex;gap:3px;margin-bottom:18px;flex-wrap:wrap}
+.sub-tab-btn{background:var(--card);border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:7px 16px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;transition:all .15s}
+.sub-tab-btn:hover{color:var(--text);border-color:var(--muted)}
+.sub-tab-btn.active{color:#000}
+.sub-tab-esgoto.active{background:#a371f7;border-color:#a371f7}
+.sub-tab-agua.active{background:var(--cyan);border-color:var(--cyan)}
+.sub-panel{display:none}
+.sub-panel.active{display:block}
+
+/* SECTION LABEL */
+.section-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;margin-top:4px;display:flex;align-items:center;gap:8px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* KPI */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+.kpi-card{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:14px 16px;position:relative;overflow:hidden;transition:border-color .2s}
+.kpi-card:hover{border-color:var(--accent)}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.kpi-card.orange::before{background:var(--accent)}.kpi-card.blue::before{background:var(--blue)}.kpi-card.green::before{background:var(--green)}.kpi-card.red::before{background:var(--red)}.kpi-card.cyan::before{background:var(--cyan)}.kpi-card.purple::before{background:#a371f7}
+.kpi-label{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:5px}
+.kpi-value{font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:800;line-height:1;margin-bottom:3px}
+.kpi-card.orange .kpi-value{color:var(--accent)}.kpi-card.blue .kpi-value{color:var(--blue)}.kpi-card.green .kpi-value{color:var(--green)}.kpi-card.red .kpi-value{color:var(--red)}.kpi-card.cyan .kpi-value{color:var(--cyan)}.kpi-card.purple .kpi-value{color:#a371f7}
+.kpi-sub{font-size:10px;color:var(--muted)}
+.kpi-icon{position:absolute;right:12px;bottom:10px;font-size:26px;opacity:.09}
+
+/* PROGRESS */
+.prog-card{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:16px 20px;margin-bottom:18px}
+.prog-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.prog-title{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.8px}
+.prog-pct{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:800;color:var(--accent)}
+.prog-pct.cyan{color:var(--cyan)}
+.prog-track{height:9px;background:var(--border);border-radius:100px;overflow:hidden}
+.prog-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width 1s ease}
+.prog-fill.cyan{background:linear-gradient(90deg,#1a8a90,var(--cyan))}
+.prog-legend{display:flex;gap:16px;margin-top:8px;font-size:10px;color:var(--muted)}
+.prog-legend span{display:flex;align-items:center;gap:4px}
+.dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
+/* GRID */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:18px}
+
+/* TABLE CARD */
+.tcard{background:var(--card);border:1px solid var(--border);border-radius:9px;overflow:hidden;margin-bottom:18px}
+.tcard-header{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.tcard-title{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.8px}
+.tcard-badge{font-size:10px;background:var(--border);border-radius:3px;padding:2px 6px;color:var(--muted)}
+table{width:100%;border-collapse:collapse}
+th{font-family:'Barlow Condensed',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);font-weight:600;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);background:var(--surface)}
+td{padding:8px 12px;border-bottom:1px solid var(--border);font-size:12px}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.02)}
+.tr-total td{background:rgba(240,165,0,.07);font-weight:600;color:var(--accent)}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+
+/* BAR CHART */
+.bar-chart{padding:14px}
+.bar-row{display:flex;align-items:center;gap:7px;margin-bottom:10px}
+.bar-row:last-child{margin-bottom:0}
+.bar-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;text-transform:uppercase;color:var(--muted);width:54px;flex-shrink:0}
+.bar-track{flex:1;height:18px;background:var(--border);border-radius:3px;overflow:hidden;position:relative}
+.bar-proj{position:absolute;top:0;left:0;height:100%;opacity:.4;border-radius:3px}
+.bar-real{position:absolute;top:0;left:0;height:100%;border-radius:3px;min-width:0}
+.bar-val{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;width:60px;text-align:right;flex-shrink:0}
+.bar-pct{font-size:9px;color:var(--muted);width:32px;text-align:right;flex-shrink:0}
+
+/* STATUS */
+.sb{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:600;border-radius:100px;padding:2px 7px}
+.sb-done{background:rgba(63,185,80,.15);color:var(--green)}
+.sb-pend{background:rgba(125,133,144,.15);color:var(--muted)}
+.sb-exec{background:rgba(56,139,253,.15);color:var(--blue)}
+
+/* TRECHOS */
+.twrap{background:var(--card);border:1px solid var(--border);border-radius:9px;overflow:hidden;margin-bottom:18px}
+.toolbar{display:flex;gap:8px;padding:10px 12px;border-bottom:1px solid var(--border);background:var(--surface);align-items:center;flex-wrap:wrap}
+.fbtn{background:var(--card);border:1px solid var(--border);color:var(--muted);border-radius:4px;padding:4px 10px;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;cursor:pointer;transition:all .15s}
+.fbtn:hover{color:var(--text)}
+.fbtn.active-e{background:#a371f7;border-color:#a371f7;color:#000}
+.fbtn.active-a{background:var(--cyan);border-color:var(--cyan);color:#000}
+.sinput{background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:5px 9px;color:var(--text);font-family:'Barlow',sans-serif;font-size:11px;width:140px;outline:none}
+.sinput:focus{border-color:var(--accent)}
+.sinput::placeholder{color:var(--muted)}
+.cinfo{font-size:10px;color:var(--muted);margin-left:auto}
+.scroll-t{max-height:300px;overflow-y:auto}
+.scroll-t::-webkit-scrollbar{width:4px}
+.scroll-t::-webkit-scrollbar-track{background:var(--border)}
+.scroll-t::-webkit-scrollbar-thumb{background:var(--muted);border-radius:2px}
+.dn-b{background:rgba(56,139,253,.12);color:var(--blue);border-radius:3px;padding:1px 5px;font-size:10px;font-weight:600}
+.dn-150{background:rgba(240,165,0,.12);color:var(--accent)}
+.dn-75{background:rgba(57,208,216,.12);color:var(--cyan)}
+.dn-50{background:rgba(63,185,80,.12);color:var(--green)}
+
+/* STATUS MINI */
+.status-mini{padding:14px 16px}
+.sm-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.sm-row:last-child{margin-bottom:0}
+.sm-label{font-size:11px;color:var(--muted);width:80px;flex-shrink:0}
+.sm-track{flex:1;height:7px;background:var(--border);border-radius:10px;overflow:hidden}
+.sm-fill{height:100%;border-radius:10px}
+.sm-val{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;width:36px;text-align:right;flex-shrink:0}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.kpi-card{animation:fadeUp .3s ease both}
+.kpi-card:nth-child(1){animation-delay:.04s}.kpi-card:nth-child(2){animation-delay:.08s}.kpi-card:nth-child(3){animation-delay:.12s}.kpi-card:nth-child(4){animation-delay:.16s}
+@media(max-width:900px){main{padding:10px}.kpi-grid{grid-template-columns:repeat(2,1fr)}.two-col,.three-col{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-icon">🏗️</div>
+  <div>
+    <h1>Obra <span>Infraestrutura</span></h1>
+    <div class="header-sub">Dashboard de Acompanhamento Físico — Rede de Esgoto &amp; Água</div>
+  </div>
+  <div class="header-spacer"></div>
+  <div class="badge-date" id="dateBadge"></div>
+</header>
+
+<!-- UPDATE BAR -->
+<div class="update-bar" id="updateBar">
+  <div class="update-left">
+    <div class="update-icon">☁️</div>
+    <div>
+      <div class="update-title">Conectado ao Google Sheets</div>
+      <div class="update-sub" id="updateSub">Clique em "Atualizar" para buscar os dados mais recentes da planilha</div>
+    </div>
+  </div>
+  <div class="update-right">
+    <div class="update-status" id="updateStatus"></div>
+    <button class="update-btn" id="updateBtn" onclick="fetchFromSheets()">🔄 Atualizar Dados</button>
+    <div class="update-divider"></div>
+    <label class="upload-btn" title="Ou carregue um arquivo local">
+      📂 Arquivo local
+      <input type="file" accept=".xlsx,.xls" id="fileInput" onchange="handleFile(this.files[0])" style="display:none">
+    </label>
+  </div>
+</div>
+
+<main>
+  <!-- MAIN TABS -->
+  <div class="main-tabs">
+    <button class="main-tab-btn active-esgoto" id="mainTabEsgoto" onclick="switchMain('esgoto')">🟣 Rede de Esgoto</button>
+    <button class="main-tab-btn" id="mainTabAgua" onclick="switchMain('agua')">🔵 Rede de Água</button>
+  </div>
+
+  <!-- ════════════ ESGOTO ════════════ -->
+  <div class="main-panel active" id="panel-esgoto">
+    <div class="sub-tabs" id="subTabsEsgoto">
+      <button class="sub-tab-btn sub-tab-esgoto active" onclick="switchSub('esgoto','rp',this)">🗺 Rede Principal</button>
+      <button class="sub-tab-btn sub-tab-esgoto" onclick="switchSub('esgoto','ct1',this)">🔵 Coletor Tronco 1</button>
+      <button class="sub-tab-btn sub-tab-esgoto" onclick="switchSub('esgoto','ct2',this)">🟠 Coletor Tronco 2</button>
+    </div>
+
+    <!-- RP -->
+    <div class="sub-panel active" id="sub-esgoto-rp">
+      <div class="section-label">Indicadores — Rede Principal (Esgoto)</div>
+      <div class="kpi-grid" id="kpi-rp"></div>
+      <div class="prog-card"><div class="prog-header"><div><div class="prog-title">Execução — Metros Lineares (Rede Principal)</div><div style="font-size:10px;color:var(--muted);margin-top:2px" id="sub-rp-sub"></div></div><div class="prog-pct" id="sub-rp-pct">0%</div></div><div class="prog-track"><div class="prog-fill" id="sub-rp-bar" style="width:0%"></div></div><div class="prog-legend" id="sub-rp-leg"></div></div>
+      <div class="section-label">Distribuição por Bacia</div>
+      <div class="two-col">
+        <div class="tcard"><div class="tcard-header"><div class="tcard-title">📐 Metros por Bacia</div><div class="tcard-badge">Proj. vs Real.</div></div><div class="bar-chart" id="chart-rp"></div></div>
+        <div class="tcard"><div class="tcard-header"><div class="tcard-title">📊 Resumo Metros</div></div><table><thead><tr><th>Bacia</th><th class="num">Projeto</th><th class="num">Realizado</th><th class="num">Saldo</th><th class="num">%</th></tr></thead><tbody id="tbl-metros-rp"></tbody></table></div>
+      </div>
+      <div class="three-col">
+        <div class="tcard"><div class="tcard-header"><div class="tcard-title">🔵 PVs</div></div><table><thead><tr><th>Bacia</th><th class="num">Proj.</th><th class="num">Real.</th><th class="num">Saldo</th></tr></thead><tbody id="tbl-pv-rp"></tbody></table></div>
+        <div class="tcard"><div class="tcard-header"><div class="tcard-title">🔗 Ramais</div></div><table><thead><tr><th>Bacia</th><th class="num">Proj.</th><th class="num">Real.</th><th class="num">Saldo</th></tr></thead><tbody id="tbl-ramal-rp"></tbody></table></div>
+        <div class="tcard"><div class="tcard-header"><div class="tcard-title">📈 Status Trechos</div></div><div class="status-mini" id="status-rp"></div></div>
+      </div>
+      <div class="section-label">Trechos — Rede Principal</div>
+      <div class="twrap"><div class="toolbar" id="toolbar-rp">
+        <button class="fbtn active-e" onclick="fBacia('rp','all',this)">Todas</button>
+        <button class="fbtn" onclick="fBacia('rp',4,this)">B04</button><button class="fbtn" onclick="fBacia('rp',5,this)">B05</button><button class="fbtn" onclick="fBacia('rp',6,this)">B06</button><button class="fbtn" onclick="fBacia('rp',7,this)">B07</button><button class="fbtn" onclick="fBacia('rp',8,this)">B08</button><button class="fbtn" onclick="fBacia('rp',9,this)">B09</button>
+        <input class="sinput" placeholder="Buscar PV..." id="srch-rp" oninput="renderT('rp')">
+        <div class="cinfo" id="cnt-rp"></div>
+      </div><div class="scroll-t"><table><thead><tr><th>Bacia</th><th>QD</th><th>PV</th><th>PV2</th><th class="num">Metros</th><th>DN</th><th>Status</th></tr></thead><tbody id="tbody-rp"></tbody></table></div></div>
+    </div><!-- /sub-rp -->
+
+    <!-- CT1 -->
+    <div class="sub-panel" id="sub-esgoto-ct1">
+      <div class="section-label">Indicadores — Coletor Tronco 1</div>
+      <div class="kpi-grid" id="kpi-ct1"></div>
+      <div class="prog-card"><div class="prog-header"><div><div class="prog-title">Execução — Coletor Tronco 1</div><div style="font-size:10px;color:var(--muted);margin-top:2px" id="sub-ct1-sub"></div></div><div class="prog-pct" id="sub-ct1-pct">0%</div></div><div class="prog-track"><div class="prog-fill" id="sub-ct1-bar" style="width:0%"></div></div><div class="prog-legend" id="sub-ct1-leg"></div></div>
+      <div class="section-label">Trechos — Coletor Tronco 1</div>
+      <div class="twrap"><div class="toolbar"><input class="sinput" placeholder="Buscar PV..." id="srch-ct1" oninput="renderT('ct1')"><div class="cinfo" id="cnt-ct1"></div></div><div class="scroll-t"><table><thead><tr><th>PV</th><th>PV2</th><th class="num">Metros</th><th>DN</th><th>Status</th></tr></thead><tbody id="tbody-ct1"></tbody></table></div></div>
+    </div>
+
+    <!-- CT2 -->
+    <div class="sub-panel" id="sub-esgoto-ct2">
+      <div class="section-label">Indicadores — Coletor Tronco 2</div>
+      <div class="kpi-grid" id="kpi-ct2"></div>
+      <div class="prog-card"><div class="prog-header"><div><div class="prog-title">Execução — Coletor Tronco 2</div><div style="font-size:10px;color:var(--muted);margin-top:2px" id="sub-ct2-sub"></div></div><div class="prog-pct" id="sub-ct2-pct">0%</div></div><div class="prog-track"><div class="prog-fill" id="sub-ct2-bar" style="width:0%"></div></div><div class="prog-legend" id="sub-ct2-leg"></div></div>
+      <div class="section-label">Trechos — Coletor Tronco 2</div>
+      <div class="twrap"><div class="toolbar"><input class="sinput" placeholder="Buscar PV..." id="srch-ct2" oninput="renderT('ct2')"><div class="cinfo" id="cnt-ct2"></div></div><div class="scroll-t"><table><thead><tr><th>PV</th><th>PV2</th><th class="num">Metros</th><th>DN</th><th>Status</th></tr></thead><tbody id="tbody-ct2"></tbody></table></div></div>
+    </div>
+  </div><!-- /panel-esgoto -->
+
+  <!-- ════════════ ÁGUA ════════════ -->
+  <div class="main-panel" id="panel-agua">
+    <div class="sub-tabs">
+      <button class="sub-tab-btn sub-tab-agua active" onclick="switchSub('agua','adutora',this)">💧 Rede Adutora</button>
+      <button class="sub-tab-btn sub-tab-agua" onclick="switchSub('agua','rp2',this)">🗺 Rede Principal 2°</button>
+      <button class="sub-tab-btn sub-tab-agua" onclick="switchSub('agua','trav',this)">🌉 Travessias</button>
+    </div>
+
+    <!-- ADUTORA -->
+    <div class="sub-panel active" id="sub-agua-adutora">
+      <div class="section-label">Indicadores — Rede Adutora</div>
+      <div class="kpi-grid" id="kpi-adutora"></div>
+      <div class="prog-card"><div class="prog-header"><div><div class="prog-title">Execução — Rede Adutora</div><div style="font-size:10px;color:var(--muted);margin-top:2px" id="sub-adutora-sub"></div></div><div class="prog-pct cyan" id="sub-adutora-pct">0%</div></div><div class="prog-track"><div class="prog-fill cyan" id="sub-adutora-bar" style="width:0%"></div></div><div class="prog-legend" id="sub-adutora-leg"></div></div>
+      <div class="section-label">Módulos — Rede Adutora</div>
+      <div class="tcard">
+        <div class="tcard-header"><div class="tcard-title">💧 Trechos por DN</div><div class="tcard-badge">3 módulos</div></div>
+        <table><thead><tr><th>Módulo</th><th>DN</th><th class="num">Metros Proj.</th><th class="num">Metros Real.</th><th class="num">Saldo</th><th>Status</th></tr></thead>
+        <tbody id="tbl-adutora"></tbody></table>
+      </div>
+    </div>
+
+    <!-- RP2 -->
+    <div class="sub-panel" id="sub-agua-rp2">
+      <div class="section-label">Indicadores — Rede Principal 2° (Água)</div>
+      <div class="kpi-grid" id="kpi-rp2"></div>
+      <div class="prog-card"><div class="prog-header"><div><div class="prog-title">Execução — Rede Principal 2°</div><div style="font-size:10px;color:var(--muted);margin-top:2px" id="sub-rp2-sub"></div></div><div class="prog-pct cyan" id="sub-rp2-pct">0%</div></div><div class="prog-track"><div class="prog-fill cyan" id="sub-rp2-bar" style="width:0%"></div></div><div class="prog-legend" id="sub-rp2-leg"></div></div>
+      <div class="section-label">Distribuição por Módulo</div>
+      <div class="two-col">
+        <div class="tcard"><div class="tcard-header"><div class="tcard-title">📐 Metros por Módulo</div></div><div class="bar-chart" id="chart-rp2"></div></div>
+        <div class="tcard"><div class="tcard-header"><div class="tcard-title">📊 Resumo por Módulo</div></div><table><thead><tr><th>Módulo</th><th class="num">Projeto</th><th class="num">Realizado</th><th class="num">Saldo</th><th class="num">%</th></tr></thead><tbody id="tbl-rp2-sum"></tbody></table></div>
+      </div>
+      <div class="section-label">Trechos — Rede Principal 2°</div>
+      <div class="twrap">
+        <div class="toolbar" id="toolbar-rp2">
+          <button class="fbtn active-a" onclick="fModulo('rp2','all',this)">Todos</button>
+          <button class="fbtn" onclick="fModulo('rp2','TP MD 04',this)">MD04</button>
+          <button class="fbtn" onclick="fModulo('rp2','TP MD 05',this)">MD05</button>
+          <button class="fbtn" onclick="fModulo('rp2','TP MD 06',this)">MD06</button>
+          <button class="fbtn" onclick="fModulo('rp2','TP MD 07',this)">MD07</button>
+          <button class="fbtn" onclick="fModulo('rp2','TP MD 08',this)">MD08</button>
+          <button class="fbtn" onclick="fModulo('rp2','TP MD 09',this)">MD09</button>
+          <input class="sinput" placeholder="Buscar QD/DN..." id="srch-rp2" oninput="renderT('rp2')">
+          <div class="cinfo" id="cnt-rp2"></div>
+        </div>
+        <div class="scroll-t"><table><thead><tr><th>Módulo</th><th>QD</th><th class="num">Metros</th><th>DN</th><th>Status</th></tr></thead><tbody id="tbody-rp2"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- TRAVESSIAS -->
+    <div class="sub-panel" id="sub-agua-trav">
+      <div class="section-label">Indicadores — Travessias</div>
+      <div class="kpi-grid" id="kpi-trav"></div>
+      <div class="section-label">Status das Travessias</div>
+      <div class="tcard">
+        <div class="tcard-header"><div class="tcard-title">🌉 Travessias DN 150</div><div class="tcard-badge">2 travessias</div></div>
+        <table><thead><tr><th>Travessia</th><th>DN</th><th>Status</th></tr></thead>
+        <tbody id="tbl-trav"></tbody></table>
+      </div>
+    </div>
+  </div><!-- /panel-agua -->
+
+</main>
+
+<script>
+// ══════════════════════════════════════════════
+// DADOS BASE
+// ══════════════════════════════════════════════
+let DATA = {"esgoto":[{"sheet":"RP","bacia":4,"qd":"27","pv":"1","pv2":"2","m":37.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":4,"qd":"27","pv":"2","pv2":"3","m":44.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":4,"qd":"27","pv":"3","pv2":"4","m":20.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":4,"qd":"27","pv":"4","pv2":"5","m":7.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":4,"qd":"27","pv":"5","pv2":"6","m":8.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":4,"qd":"27","pv":"6","pv2":"7","m":30.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":4,"qd":"27","pv":"7","pv2":"8","m":9.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":4,"qd":"27","pv":"8","pv2":"RC","m":13.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":4,"qd":"27","pv":"8","pv2":"12","m":9.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":4,"qd":"27","pv":"12","pv2":"11","m":29.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":4,"qd":"27","pv":"11","pv2":"10","m":30.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":4,"qd":"27","pv":"10","pv2":"9","m":22.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":4,"qd":"27","pv":"5","pv2":"RC","m":8.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"26","pv":"43","pv2":"44","m":72.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"26","pv":"44","pv2":"45","m":51.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"26","pv":"45","pv2":"24","m":5.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"26","pv":"24","pv2":"25","m":5.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"26","pv":"25","pv2":"26","m":40.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"26","pv":"26","pv2":"27","m":4.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"26","pv":"27","pv2":"RC","m":17.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"26","pv":"27","pv2":"48","m":6.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"26","pv":"48","pv2":"47","m":44.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"26","pv":"47","pv2":"46","m":73.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"26","pv":"3","pv2":"RC","m":15.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"25","pv":"49","pv2":"50","m":42.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"25","pv":"50","pv2":"51","m":39.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"25","pv":"51","pv2":"52","m":44.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"25","pv":"52","pv2":"53","m":12.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"25","pv":"53","pv2":"23","m":6.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"25","pv":"23","pv2":"22","m":7.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"25","pv":"22","pv2":"21","m":68.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"25","pv":"21","pv2":"20","m":80.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"24","pv":"58","pv2":"59","m":76.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":5,"qd":"24","pv":"59","pv2":"17","m":7.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":5,"qd":"24","pv":"17","pv2":"18","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":5,"qd":"24","pv":"18","pv2":"19","m":36.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":5,"qd":"24","pv":"19","pv2":"20","m":7.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":5,"qd":"24","pv":"20","pv2":"42","m":7.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":5,"qd":"24","pv":"42","pv2":"41","m":55.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":5,"qd":"23","pv":"60","pv2":"61","m":80.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"23","pv":"61","pv2":"62","m":31.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"23","pv":"62","pv2":"13","m":6.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"23","pv":"13","pv2":"14","m":7.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"23","pv":"14","pv2":"15","m":35.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"23","pv":"15","pv2":"16","m":5.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"23","pv":"16","pv2":"17","m":17.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"23","pv":"16","pv2":"40","m":4.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"23","pv":"40","pv2":"39","m":12.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"23","pv":"39","pv2":"38","m":80.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"21","pv":"54","pv2":"55","m":80.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"21","pv":"55","pv2":"56","m":77.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"21","pv":"56","pv2":"9","m":7.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"21","pv":"9","pv2":"10","m":7.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"21","pv":"10","pv2":"11","m":36.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"21","pv":"11","pv2":"12","m":4.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"21","pv":"12","pv2":"13","m":17.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"21","pv":"12","pv2":"37","m":5.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"21","pv":"37","pv2":"36","m":19.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"21","pv":"36","pv2":"35","m":60.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"21","pv":"35","pv2":"34","m":30.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"21","pv":"34","pv2":"33","m":22.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"18","pv":"28","pv2":"29","m":31.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"18","pv":"29","pv2":"30","m":30.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"18","pv":"30","pv2":"31","m":40.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"18","pv":"31","pv2":"32","m":53.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"18","pv":"32","pv2":"8","m":5.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"18","pv":"8","pv2":"9","m":17.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"18","pv":"8","pv2":"7","m":4.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"18","pv":"7","pv2":"6","m":36.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"18","pv":"6","pv2":"5","m":7.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"18","pv":"5","pv2":"4","m":5.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"18","pv":"4","pv2":"3","m":78.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"18","pv":"3","pv2":"2","m":80.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"18","pv":"2","pv2":"57","m":25.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"18","pv":"2","pv2":"1","m":12.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"22","pv":"37","pv2":"38","m":62.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"22","pv":"38","pv2":"39","m":40.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"22","pv":"39","pv2":"40","m":8.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"22","pv":"40","pv2":"49","m":6.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"22","pv":"49","pv2":"48","m":35.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"22","pv":"48","pv2":"47","m":9.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"22","pv":"47","pv2":"46","m":9.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"22","pv":"46","pv2":"45","m":23.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"22","pv":"45","pv2":"44","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"22","pv":"44","pv2":"43","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"22","pv":"43","pv2":"42","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"22","pv":"42","pv2":"41","m":22.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"20","pv":"31","pv2":"32","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"20","pv":"32","pv2":"33","m":64.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"20","pv":"21","pv2":"22","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"20","pv":"22","pv2":"23","m":66.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"19","pv":"33","pv2":"34","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"19","pv":"34","pv2":"35","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"19","pv":"35","pv2":"36","m":29.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"19","pv":"36","pv2":"30","m":7.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"19","pv":"30","pv2":"18","m":20.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"19","pv":"30","pv2":"29","m":6.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"19","pv":"29","pv2":"28","m":37.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"19","pv":"28","pv2":"27","m":3.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"19","pv":"27","pv2":"26","m":3.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"19","pv":"26","pv2":"25","m":20.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"19","pv":"25","pv2":"24","m":61.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"19","pv":"24","pv2":"23","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"17","pv":"1","pv2":"2","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"17","pv":"2","pv2":"3","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"17","pv":"3","pv2":"4","m":58.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"17","pv":"11","pv2":"12","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"17","pv":"12","pv2":"13","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"17","pv":"13","pv2":"14","m":57.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"4","pv2":"5","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"5","pv2":"6","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"6","pv2":"7","m":34.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"7","pv2":"8","m":51.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"8","pv2":"9","m":7.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"9","pv2":"10","m":4.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"10","pv2":"20","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"10","pv2":"RC","m":21.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"20","pv2":"19","m":41.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"19","pv2":"18","m":3.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"18","pv2":"29","m":20.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"18","pv2":"17","m":4.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"17","pv2":"16","m":45.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"16","pv2":"15","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"15","pv2":"14","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"9","pv2":"RC","m":15.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"1","pv":"1","pv2":"2","m":71.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"1","pv":"2","pv2":"3","m":60.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"1","pv":"3","pv2":"4","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"1","pv":"4","pv2":"5","m":23.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"1","pv":"5","pv2":"6","m":6.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"1","pv":"6","pv2":"7","m":6.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"1","pv":"7","pv2":"8","m":40.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"1","pv":"8","pv2":"9","m":3.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"1","pv":"9","pv2":"34","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"1","pv":"34","pv2":"33","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"1","pv":"33","pv2":"32","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"1","pv":"32","pv2":"31","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"5","pv":"26","pv2":"27","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"5","pv":"27","pv2":"28","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"5","pv":"28","pv2":"29","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"5","pv":"29","pv2":"30","m":6.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"5","pv":"30","pv2":"10","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"5","pv":"10","pv2":"8","m":27.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"5","pv":"10","pv2":"11","m":6.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"5","pv":"11","pv2":"12","m":49.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"5","pv":"12","pv2":"13","m":3.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"5","pv":"13","pv2":"25","m":56.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"5","pv":"25","pv2":"24","m":81.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"5","pv":"24","pv2":"23","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"9","pv":"18","pv2":"19","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"9","pv":"19","pv2":"20","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"9","pv":"20","pv2":"21","m":37.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"9","pv":"21","pv2":"22","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"9","pv":"22","pv2":"14","m":6.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"9","pv":"14","pv2":"13","m":27.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"9","pv":"14","pv2":"15","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"9","pv":"15","pv2":"16","m":39.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"9","pv":"16","pv2":"38","m":6.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"9","pv":"38","pv2":"RC 12","m":13.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"9","pv":"38","pv2":"17","m":6.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"9","pv":"17","pv2":"37","m":22.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"9","pv":"37","pv2":"36","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"9","pv":"36","pv2":"35","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"4","pv":"1","pv2":"2","m":74.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"4","pv":"2","pv2":"40","m":12.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"4","pv":"2","pv2":"3","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"4","pv":"48","pv2":"49","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"3","pv":"3","pv2":"4","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"3","pv":"49","pv2":"50","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"3","pv":"50","pv2":"51","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"2","pv":"4","pv2":"5","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"2","pv":"5","pv2":"6","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"2","pv":"6","pv2":"7","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"2","pv":"7","pv2":"8","m":48.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"2","pv":"8","pv2":"9","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"2","pv":"9","pv2":"10","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"2","pv":"10","pv2":"11","m":38.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"2","pv":"11","pv2":"12","m":4.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"2","pv":"12","pv2":"13","m":17.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"2","pv":"12","pv2":"55","m":4.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"2","pv":"55","pv2":"54","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"2","pv":"54","pv2":"53","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"2","pv":"53","pv2":"52","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"8","pv":"25","pv2":"26","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"8","pv":"56","pv2":"57","m":56.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"7","pv":"26","pv2":"27","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"7","pv":"27","pv2":"28","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"7","pv":"57","pv2":"58","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"7","pv":"58","pv2":"59","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"6","pv":"28","pv2":"29","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"6","pv":"29","pv2":"30","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"6","pv":"30","pv2":"31","m":40.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"6","pv":"31","pv2":"32","m":43.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"6","pv":"32","pv2":"13","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"6","pv":"13","pv2":"14","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"6","pv":"14","pv2":"15","m":38.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"6","pv":"15","pv2":"16","m":4.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"6","pv":"16","pv2":"17","m":17.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"6","pv":"16","pv2":"62","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"6","pv":"62","pv2":"61","m":71.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"6","pv":"61","pv2":"60","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"6","pv":"60","pv2":"59","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"11","pv":"33","pv2":"34","m":47.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"11","pv":"34","pv2":"35","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"11","pv":"35","pv2":"36","m":71.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"11","pv":"63","pv2":"64","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"11","pv":"64","pv2":"65","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"10","pv":"36","pv2":"37","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"10","pv":"37","pv2":"38","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"10","pv":"38","pv2":"39","m":64.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"10","pv":"39","pv2":"17","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"10","pv":"17","pv2":"18","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"10","pv":"18","pv2":"19","m":37.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"10","pv":"19","pv2":"20","m":5.0,"dn":150,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"10","pv":"20","pv2":"21","m":17.0,"dn":150,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"10","pv":"20","pv2":"68","m":4.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"10","pv":"68","pv2":"67","m":74.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"10","pv":"67","pv2":"66","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"10","pv":"66","pv2":"65","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"12","pv":"41","pv2":"42","m":76.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"12","pv":"42","pv2":"43","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"12","pv":"43","pv2":"21","m":7.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"12","pv":"21","pv2":"22","m":5.0,"dn":150,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"12","pv":"22","pv2":"23","m":38.0,"dn":150,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"12","pv":"23","pv2":"24","m":5.0,"dn":150,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"12","pv":"24","pv2":"RC 06","m":13.0,"dn":150,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"12","pv":"24","pv2":"47","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"12","pv":"47","pv2":"46","m":62.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"12","pv":"46","pv2":"45","m":70.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"12","pv":"45","pv2":"44","m":14.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"13","pv":"1","pv2":"2","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"13","pv":"2","pv2":"3","m":56.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"13","pv":"3","pv2":"4","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"13","pv":"4","pv2":"5","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"13","pv":"5","pv2":"6","m":38.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"13","pv":"6","pv2":"7","m":4.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"13","pv":"7","pv2":"8","m":17.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"13","pv":"7","pv2":"20","m":6.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"13","pv":"20","pv2":"19","m":61.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"13","pv":"19","pv2":"18","m":74.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"14","pv":"30","pv2":"31","m":73.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"14","pv":"31","pv2":"32","m":52.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"14","pv":"32","pv2":"8","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"14","pv":"8","pv2":"9","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"14","pv":"9","pv2":"10","m":38.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"14","pv":"10","pv2":"11","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"14","pv":"11","pv2":"12","m":14.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"14","pv":"11","pv2":"23","m":4.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"14","pv":"23","pv2":"22","m":52.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"14","pv":"22","pv2":"21","m":73.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"15","pv":"24","pv2":"25","m":72.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"15","pv":"25","pv2":"12","m":56.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"15","pv":"12","pv2":"13","m":72.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"15","pv":"13","pv2":"14","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"15","pv":"14","pv2":"15","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"15","pv":"15","pv2":"16","m":27.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"15","pv":"16","pv2":"17","m":8.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"15","pv":"17","pv2":"RC 01","m":13.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"15","pv":"17","pv2":"29","m":8.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"15","pv":"29","pv2":"28","m":44.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"15","pv":"28","pv2":"27","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"15","pv":"27","pv2":"26","m":73.0,"dn":100,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"1","pv2":"2","m":79.0,"dn":150,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"2","pv2":"3","m":54.0,"dn":150,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"3","pv2":"4","m":38.0,"dn":150,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"4","pv2":"5","m":35.0,"dn":150,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"5","pv2":"6","m":37.0,"dn":150,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"6","pv2":"7","m":65.0,"dn":150,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"7","pv2":"8","m":54.0,"dn":150,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"8","pv2":"9","m":51.0,"dn":150,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"9","pv2":"10","m":70.0,"dn":150,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"10","pv2":"11","m":75.0,"dn":150,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"11","pv2":"12","m":42.0,"dn":150,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"12","pv2":"13","m":59.0,"dn":150,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"13","pv2":"14","m":58.0,"dn":150,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"14","pv2":"15","m":57.0,"dn":150,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"15","pv2":"16","m":52.0,"dn":150,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"16","pv2":"TRAVESSIA","m":60.0,"dn":150,"status":"Não Executado"},{"sheet":"CT2","bacia":"CT2","qd":"-","pv":"1","pv2":"2","m":35.0,"dn":150,"status":"Não Executado"},{"sheet":"CT2","bacia":"CT2","qd":"-","pv":"2","pv2":"3","m":46.0,"dn":150,"status":"Não Executado"},{"sheet":"CT2","bacia":"CT2","qd":"-","pv":"3","pv2":"4","m":73.0,"dn":150,"status":"Não Executado"},{"sheet":"CT2","bacia":"CT2","qd":"-","pv":"4","pv2":"5","m":44.0,"dn":150,"status":"Não Executado"},{"sheet":"CT2","bacia":"CT2","qd":"-","pv":"5","pv2":"6","m":14.0,"dn":150,"status":"Não Executado"},{"sheet":"CT2","bacia":"CT2","qd":"-","pv":"6","pv2":"7","m":19.0,"dn":150,"status":"Não Executado"},{"sheet":"CT2","bacia":"CT2","qd":"-","pv":"7","pv2":"8","m":29.0,"dn":150,"status":"Não Executado"},{"sheet":"CT2","bacia":"CT2","qd":"-","pv":"8","pv2":"9","m":55.0,"dn":150,"status":"Não Executado"},{"sheet":"CT2","bacia":"CT2","qd":"-","pv":"9","pv2":"10","m":40.0,"dn":150,"status":"Não Executado"},{"sheet":"CT2","bacia":"CT2","qd":"-","pv":"10","pv2":"11","m":69.0,"dn":150,"status":"Não Executado"},{"sheet":"CT2","bacia":"CT2","qd":"-","pv":"11","pv2":"12","m":38.0,"dn":150,"status":"Não Executado"},{"sheet":"CT2","bacia":"CT2","qd":"-","pv":"12","pv2":"13","m":55.0,"dn":150,"status":"Não Executado"},{"sheet":"CT2","bacia":"CT2","qd":"-","pv":"13","pv2":"-","m":0,"dn":150,"status":"Não Executado"}],"adutora":[{"modulo":"DN 75","proj":203.0,"real":0,"dn":75,"status":"Não Executado"},{"modulo":"DN 100","proj":306.0,"real":0,"dn":100,"status":"Não Executado"},{"modulo":"DN 150","proj":895.0,"real":0,"dn":150,"status":"Não Executado"}],"rp2_summary":[{"modulo":"TP MD 04","proj":1349.0,"real":436.0,"saldo":913.0},{"modulo":"TP MD 05","proj":2177.0,"real":1158.0,"saldo":1019.0},{"modulo":"TP MD 06","proj":1294.0,"real":1005.0,"saldo":289.0},{"modulo":"TP MD 07","proj":1776.0,"real":0.0,"saldo":1776.0},{"modulo":"TP MD 08","proj":2131.0,"real":0.0,"saldo":2131.0},{"modulo":"TP MD 09","proj":3237.0,"real":0.0,"saldo":3237.0}],"rp2_trechos":[{"sheet":"RP2","modulo":"TP MD 04","qd":"16","m":436.0,"dn":50,"status":"Executado"},{"sheet":"RP2","modulo":"TP MD 04","qd":"16","m":87.0,"dn":75,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 04","qd":"19","m":439.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 04","qd":"22","m":387.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 05","qd":"17","m":558.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 05","qd":"18","m":142.0,"dn":50,"status":"Executado"},{"sheet":"RP2","modulo":"TP MD 05","qd":"18","m":317.0,"dn":75,"status":"Executado"},{"sheet":"RP2","modulo":"TP MD 05","qd":"20","m":461.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 05","qd":"21","m":312.0,"dn":50,"status":"Executado"},{"sheet":"RP2","modulo":"TP MD 05","qd":"23","m":387.0,"dn":50,"status":"Executado"},{"sheet":"RP2","modulo":"TP MD 06","qd":"24","m":289.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 06","qd":"25","m":285.0,"dn":50,"status":"Executado"},{"sheet":"RP2","modulo":"TP MD 06","qd":"26","m":408.0,"dn":50,"status":"Executado"},{"sheet":"RP2","modulo":"TP MD 06","qd":"26","m":312.0,"dn":50,"status":"Executado"},{"sheet":"RP2","modulo":"TP MD 07","qd":"1","m":549.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 07","qd":"1","m":82.0,"dn":75,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 07","qd":"5","m":613.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 07","qd":"9","m":532.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 08","qd":"2","m":488.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 08","qd":"2","m":103.0,"dn":75,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 08","qd":"6","m":477.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 08","qd":"6","m":89.0,"dn":75,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 08","qd":"10","m":530.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 08","qd":"12","m":444.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 09","qd":"3 e 4","m":586.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 09","qd":"3 e 4","m":84.0,"dn":100,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 09","qd":"7 e 8","m":524.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 09","qd":"7 e 8","m":105.0,"dn":75,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 09","qd":"11","m":411.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 09","qd":"11","m":142.0,"dn":75,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 09","qd":"13","m":412.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 09","qd":"14","m":416.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 09","qd":"15","m":557.0,"dn":50,"status":"Não Executado"}],"travessias":[{"sheet":"TRAV1","modulo":"Travessia 1","m":1,"dn":150,"status":"Não Executado"},{"sheet":"TRAV2","modulo":"Travessia 2","m":1,"dn":150,"status":"Não Executado"}]};
+
+let FILTERS = { rp: 'all', rp2: 'all' };
+
+// ── helpers ──
+const fmt = n => typeof n==='number' ? n.toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:1}) : (n??'-');
+const pct = (r,p) => p>0 ? (r/p*100).toFixed(1)+'%' : '0.0%';
+const pctN = (r,p) => p>0 ? Math.min(r/p*100,100) : 0;
+
+function sb(s){
+  if(s==='Executado') return `<span class="sb sb-done">✓ Exec.</span>`;
+  if(s==='Em Execução') return `<span class="sb sb-exec">⚙ Em Exec.</span>`;
+  return `<span class="sb sb-pend">○ Pend.</span>`;
+}
+function dnBadge(dn){
+  const cls = dn===150?'dn-b dn-150':dn===75?'dn-b dn-75':dn===50?'dn-b dn-50':'dn-b';
+  return `<span class="${cls}">DN ${dn}</span>`;
+}
+
+// ── RENDER KPI ──
+function renderKPI(id, cards){
+  document.getElementById(id).innerHTML = cards.map(c=>`
+    <div class="kpi-card ${c.c}">
+      <div class="kpi-label">${c.l}</div>
+      <div class="kpi-value">${c.v}</div>
+      <div class="kpi-sub">${c.s}</div>
+      <div class="kpi-icon">${c.i}</div>
+    </div>`).join('');
+}
+
+// ── RENDER PROGRESS ──
+function renderProg(pfx, real, proj, isCyan){
+  const p = pctN(real,proj);
+  document.getElementById(`sub-${pfx}-pct`).textContent = p.toFixed(1)+'%';
+  document.getElementById(`sub-${pfx}-bar`).style.width = p+'%';
+  document.getElementById(`sub-${pfx}-sub`).textContent = `${fmt(real)} m executados de ${fmt(proj)} m previstos`;
+  document.getElementById(`sub-${pfx}-leg`).innerHTML =
+    `<span><span class="dot" style="background:${isCyan?'var(--cyan)':'var(--accent)'}"></span>Realizado: ${fmt(real)} m</span>
+     <span><span class="dot" style="background:var(--border)"></span>Saldo: ${fmt(proj-real)} m</span>`;
+}
+
+// ── RENDER METROS TABLE ──
+function renderMetrosTable(id, data){
+  const tP=data.reduce((a,r)=>a+r.proj,0), tR=data.reduce((a,r)=>a+r.real,0);
+  document.getElementById(id).innerHTML = data.map(r=>`<tr>
+    <td>${r.bacia}</td><td class="num">${fmt(r.proj)}</td>
+    <td class="num" style="color:var(--green)">${fmt(r.real)}</td>
+    <td class="num">${fmt(r.saldo)}</td>
+    <td class="num" style="color:var(--accent)">${pct(r.real,r.proj)}</td>
+  </tr>`).join('')+`<tr class="tr-total"><td>TOTAL</td><td class="num">${fmt(tP)}</td><td class="num">${fmt(tR)}</td><td class="num">${fmt(tP-tR)}</td><td class="num">${pct(tR,tP)}</td></tr>`;
+}
+function renderSimpleTable(id, data){
+  const tP=data.reduce((a,r)=>a+r.proj,0), tR=data.reduce((a,r)=>a+r.real,0);
+  document.getElementById(id).innerHTML = data.map(r=>`<tr>
+    <td>${r.bacia}</td><td class="num">${r.proj}</td>
+    <td class="num" style="color:var(--green)">${r.real}</td><td class="num">${r.saldo}</td>
+  </tr>`).join('')+`<tr class="tr-total"><td>TOTAL</td><td class="num">${tP}</td><td class="num">${tR}</td><td class="num">${tP-tR}</td></tr>`;
+}
+
+// ── BAR CHART ──
+function renderBarChart(id, data, colorArr){
+  const cols = colorArr||['#f0a500','#388bfd','#3fb950','#e05c2a','#a371f7','#58a6ff'];
+  const maxP = Math.max(...data.map(r=>r.proj),1);
+  document.getElementById(id).innerHTML = data.map((r,i)=>{
+    const pw=(r.proj/maxP*100).toFixed(1), rw=(r.real/maxP*100).toFixed(1);
+    return `<div class="bar-row">
+      <div class="bar-label">${r.label||r.bacia||r.modulo}</div>
+      <div class="bar-track">
+        <div class="bar-proj" style="width:${pw}%;background:${cols[i%cols.length]}"></div>
+        <div class="bar-real" style="width:${rw}%;background:${cols[i%cols.length]}"></div>
+      </div>
+      <div class="bar-val">${fmt(r.proj)}m</div>
+      <div class="bar-pct">${pct(r.real,r.proj)}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── STATUS MINI ──
+function renderStatusMini(id, trechos){
+  const exec=trechos.filter(t=>t.status==='Executado').length;
+  const pend=trechos.filter(t=>t.status==='Não Executado').length;
+  const tot=trechos.length;
+  const mE=trechos.filter(t=>t.status==='Executado').reduce((a,r)=>a+r.m,0);
+  const mP=trechos.filter(t=>t.status==='Não Executado').reduce((a,r)=>a+r.m,0);
+  document.getElementById(id).innerHTML = `
+    <div class="sm-row"><div class="sm-label" style="color:var(--green)">✓ Executado</div><div class="sm-track"><div class="sm-fill" style="width:${pctN(exec,tot).toFixed(1)}%;background:var(--green)"></div></div><div class="sm-val" style="color:var(--green)">${exec}</div></div>
+    <div class="sm-row"><div class="sm-label" style="color:var(--muted)">○ Pendente</div><div class="sm-track"><div class="sm-fill" style="width:${pctN(pend,tot).toFixed(1)}%;background:var(--muted)"></div></div><div class="sm-val" style="color:var(--muted)">${pend}</div></div>
+    <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:10px;color:var(--muted);text-align:center">${tot} trechos · ${fmt(mE+mP)} m total</div>`;
+}
+
+// ── DERIVE RP ──
+function deriveRP(){
+  const trechos = DATA.esgoto.filter(t=>t.sheet==='RP');
+  const PROJ_BASE = {4:266,5:1887,6:2025,7:1573,8:3355,9:1130};
+  const PV_PROJ = {4:13,5:63,6:53,7:37,8:71,9:32};
+  const RAM_PROJ = {4:19,5:142,6:161,7:130,8:272,9:95};
+  const PROJ = {};
+  [4,5,6,7,8,9].forEach(b=>{
+    const total=trechos.filter(t=>t.bacia===b).reduce((a,r)=>a+r.m,0);
+    PROJ[b]=total>0?Math.round(total*10)/10:PROJ_BASE[b];
+  });
+  const bacias=[4,5,6,7,8,9];
+  const metros = bacias.map(b=>{
+    const rows=trechos.filter(t=>t.bacia===b);
+    const real=rows.filter(r=>r.status==='Executado').reduce((a,r)=>a+r.m,0);
+    const proj=PROJ[b]||0;
+    return {bacia:'BACIA 0'+b,proj,real:Math.round(real*10)/10,saldo:Math.round((proj-real)*10)/10};
+  });
+  const pv=bacias.map(b=>{
+    const rows=trechos.filter(t=>t.bacia===b);
+    const real=rows.filter(r=>r.status==='Executado').length;
+    const proj=PV_PROJ[b]||0;
+    return {bacia:'BACIA 0'+b,proj,real,saldo:proj-real};
+  });
+  const ramal=bacias.map(b=>{
+    const proj=RAM_PROJ[b]||0;
+    // Ramais executados = trechos executados com ramal (campo ramal numérico, ou usa contagem de trechos executados como proxy)
+    const real=b===4?19:b===5?125:0; // mantém base até ter campo ramal na planilha
+    return {bacia:'BACIA 0'+b,proj,real,saldo:proj-real};
+  });
+  return {trechos,metros,pv,ramal};
+}
+
+// ── DERIVE CT ──
+function deriveCT(sheet){
+  const t=DATA.esgoto.filter(x=>x.sheet===sheet);
+  const proj=t.reduce((a,r)=>a+r.m,0);
+  const real=t.filter(r=>r.status==='Executado').reduce((a,r)=>a+r.m,0);
+  return {trechos:t,proj:Math.round(proj*10)/10,real:Math.round(real*10)/10,pvProj:t.length,pvReal:t.filter(r=>r.status==='Executado').length};
+}
+
+// ── RENDER TRECHOS ──
+function renderT(tab){
+  const sh = tab==='rp'?'RP':tab==='ct1'?'CT1':tab==='ct2'?'CT2':tab==='rp2'?'RP2':tab;
+  const search=(document.getElementById('srch-'+tab)||{value:''}).value.toLowerCase();
+  const bF=FILTERS[tab]||'all';
+  let rows;
+  if(tab==='rp2') rows=DATA.rp2_trechos;
+  else rows=DATA.esgoto.filter(t=>t.sheet===sh);
+  const filtered=rows.filter(t=>{
+    if(tab==='rp'&&bF!=='all'&&t.bacia!==bF) return false;
+    if(tab==='rp2'&&bF!=='all'&&t.modulo!==bF) return false;
+    if(search&&!JSON.stringify(t).toLowerCase().includes(search)) return false;
+    return true;
+  });
+  document.getElementById('cnt-'+tab).textContent=filtered.length+' trechos';
+  const tbody=document.getElementById('tbody-'+tab);
+  if(tab==='rp'){
+    tbody.innerHTML=filtered.map(t=>`<tr><td><strong>B0${t.bacia}</strong></td><td>${t.qd}</td><td>${t.pv}</td><td>${t.pv2}</td><td class="num"><strong>${t.m}</strong> m</td><td>${dnBadge(t.dn)}</td><td>${sb(t.status)}</td></tr>`).join('');
+  } else if(tab==='rp2'){
+    tbody.innerHTML=filtered.map(t=>`<tr><td>${t.modulo}</td><td>${t.qd}</td><td class="num"><strong>${t.m}</strong> m</td><td>${dnBadge(t.dn)}</td><td>${sb(t.status)}</td></tr>`).join('');
+  } else {
+    tbody.innerHTML=filtered.map(t=>`<tr><td>${t.pv}</td><td>${t.pv2}</td><td class="num"><strong>${t.m}</strong> m</td><td>${dnBadge(t.dn)}</td><td>${sb(t.status)}</td></tr>`).join('');
+  }
+}
+
+function fBacia(tab,val,btn){
+  FILTERS[tab]=val;
+  btn.closest('.toolbar').querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active-e','active-a'));
+  btn.classList.add('active-e');
+  renderT(tab);
+}
+function fModulo(tab,val,btn){
+  FILTERS[tab]=val;
+  btn.closest('.toolbar').querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active-e','active-a'));
+  btn.classList.add('active-a');
+  renderT(tab);
+}
+
+// ── RENDER ALL ──
+function renderAll(){
+  // ESGOTO
+  const rp=deriveRP();
+  const ct1=deriveCT('CT1');
+  const ct2=deriveCT('CT2');
+  const tRP=rp.metros.reduce((a,r)=>a+r.proj,0), rRP=rp.metros.reduce((a,r)=>a+r.real,0);
+  const tPVRP=rp.pv.reduce((a,r)=>a+r.proj,0), rPVRP=rp.pv.reduce((a,r)=>a+r.real,0);
+  const tRamRP=rp.ramal.reduce((a,r)=>a+r.proj,0), rRamRP=rp.ramal.reduce((a,r)=>a+r.real,0);
+
+  renderKPI('kpi-rp',[
+    {c:'orange',l:'Metros Projeto (RP)',v:fmt(tRP),s:'m de rede coletora',i:'📏'},
+    {c:'green',l:'Metros Executados',v:fmt(rRP),s:pct(rRP,tRP)+' concluído',i:'✅'},
+    {c:'blue',l:'PVs Executados',v:rPVRP+'/'+tPVRP,s:'Poços de Visita',i:'🔵'},
+    {c:'red',l:'Ramais Executados',v:rRamRP+'/'+tRamRP,s:'ramais prediais',i:'🔗'},
+  ]);
+  renderProg('rp',rRP,tRP,false);
+  renderMetrosTable('tbl-metros-rp',rp.metros);
+  renderSimpleTable('tbl-pv-rp',rp.pv);
+  renderSimpleTable('tbl-ramal-rp',rp.ramal);
+  renderBarChart('chart-rp',rp.metros.map(r=>({...r,label:r.bacia.replace('BACIA ','')})));
+  renderStatusMini('status-rp',rp.trechos);
+  renderT('rp');
+
+  renderKPI('kpi-ct1',[
+    {c:'purple',l:'Metros Projeto (CT1)',v:fmt(ct1.proj),s:'m coletora DN150',i:'📏'},
+    {c:'green',l:'Metros Executados',v:fmt(ct1.real),s:pct(ct1.real,ct1.proj)+' concluído',i:'✅'},
+    {c:'blue',l:'PVs',v:ct1.pvReal+'/'+ct1.pvProj,s:'Poços de Visita',i:'🔵'},
+    {c:'red',l:'Saldo',v:fmt(ct1.proj-ct1.real),s:'metros restantes',i:'⏳'},
+  ]);
+  renderProg('ct1',ct1.real,ct1.proj,false);
+  renderT('ct1');
+
+  renderKPI('kpi-ct2',[
+    {c:'purple',l:'Metros Projeto (CT2)',v:fmt(ct2.proj),s:'m coletora DN150',i:'📏'},
+    {c:'green',l:'Metros Executados',v:fmt(ct2.real),s:pct(ct2.real,ct2.proj)+' concluído',i:'✅'},
+    {c:'blue',l:'PVs',v:ct2.pvReal+'/'+ct2.pvProj,s:'Poços de Visita',i:'🔵'},
+    {c:'red',l:'Saldo',v:fmt(ct2.proj-ct2.real),s:'metros restantes',i:'⏳'},
+  ]);
+  renderProg('ct2',ct2.real,ct2.proj,false);
+  renderT('ct2');
+
+  // ÁGUA
+  const adutora=DATA.adutora;
+  const adProj=adutora.reduce((a,r)=>a+r.proj,0);
+  const adReal=adutora.reduce((a,r)=>a+r.real,0);
+  renderKPI('kpi-adutora',[
+    {c:'cyan',l:'Total Metros Projeto',v:fmt(adProj),s:'m rede adutora',i:'💧'},
+    {c:'green',l:'Metros Executados',v:fmt(adReal),s:pct(adReal,adProj)+' concluído',i:'✅'},
+    {c:'cyan',l:'Módulos DN150',v:adutora.filter(r=>r.dn===150).length,s:'trechos DN150',i:'🔵'},
+    {c:'red',l:'Saldo a Executar',v:fmt(adProj-adReal),s:'metros restantes',i:'⏳'},
+  ]);
+  renderProg('adutora',adReal,adProj,true);
+  document.getElementById('tbl-adutora').innerHTML=adutora.map(r=>`<tr>
+    <td>${r.modulo}</td><td>${dnBadge(r.dn)}</td>
+    <td class="num">${fmt(r.proj)}</td>
+    <td class="num" style="color:var(--green)">${fmt(r.real)}</td>
+    <td class="num">${fmt(r.proj-r.real)}</td>
+    <td>${sb(r.status)}</td>
+  </tr>`).join('');
+
+  const rp2=DATA.rp2_summary;
+  const r2P=rp2.reduce((a,r)=>a+r.proj,0), r2R=rp2.reduce((a,r)=>a+r.real,0);
+  renderKPI('kpi-rp2',[
+    {c:'cyan',l:'Total Metros Projeto',v:fmt(r2P),s:'m rede distribução',i:'💧'},
+    {c:'green',l:'Metros Executados',v:fmt(r2R),s:pct(r2R,r2P)+' concluído',i:'✅'},
+    {c:'blue',l:'Módulos',v:rp2.length,s:'módulos de distribuição',i:'🗺'},
+    {c:'red',l:'Saldo a Executar',v:fmt(r2P-r2R),s:'metros restantes',i:'⏳'},
+  ]);
+  renderProg('rp2',r2R,r2P,true);
+  const rp2Chart=rp2.map(r=>({...r,label:r.modulo.replace('TP MD 0','')||r.modulo}));
+  renderBarChart('chart-rp2',rp2Chart,['#39d0d8','#388bfd','#3fb950','#f0a500','#a371f7','#f85149']);
+  document.getElementById('tbl-rp2-sum').innerHTML=rp2.map(r=>`<tr>
+    <td>${r.modulo}</td><td class="num">${fmt(r.proj)}</td>
+    <td class="num" style="color:var(--green)">${fmt(r.real)}</td>
+    <td class="num">${fmt(r.saldo)}</td>
+    <td class="num" style="color:var(--cyan)">${pct(r.real,r.proj)}</td>
+  </tr>`).join('')+`<tr class="tr-total"><td>TOTAL</td><td class="num">${fmt(r2P)}</td><td class="num">${fmt(r2R)}</td><td class="num">${fmt(r2P-r2R)}</td><td class="num">${pct(r2R,r2P)}</td></tr>`;
+  renderT('rp2');
+
+  const trav=DATA.travessias;
+  const travExec=trav.filter(t=>t.status==='Executado').length;
+  renderKPI('kpi-trav',[
+    {c:'cyan',l:'Total Travessias',v:trav.length,s:'travessias DN150',i:'🌉'},
+    {c:'green',l:'Executadas',v:travExec,s:'travessias concluídas',i:'✅'},
+    {c:'red',l:'Pendentes',v:trav.length-travExec,s:'travessias restantes',i:'⏳'},
+    {c:'blue',l:'DN',v:'150',s:'diâmetro nominal (mm)',i:'📐'},
+  ]);
+  document.getElementById('tbl-trav').innerHTML=trav.map(t=>`<tr>
+    <td><strong>${t.modulo}</strong></td><td>${dnBadge(150)}</td><td>${sb(t.status)}</td>
+  </tr>`).join('');
+}
+
+// ══════════════════════════════════════════════
+// PARSE PLANILHA
+// ══════════════════════════════════════════════
+// ── Helpers de parse ──
+function toRows(ws){ return XLSX.utils.sheet_to_json(ws,{header:1,defval:null}); }
+function clean(v){ return v==null?'':String(v).trim(); }
+
+function parseRP(ws){
+  // Varre TODAS as linhas; captura onde col[2] é número inteiro válido (= BACIA)
+  const rows=toRows(ws), result=[];
+  const VALID_STATUS=new Set(['Executado','Não Executado','Em Execução']);
+  for(const r of rows){
+    const bacia=r[2];
+    if(bacia==null) continue;
+    const b=parseInt(String(bacia));
+    if(isNaN(b)||b<1||b>20) continue;          // filtra títulos/headers
+    const status=VALID_STATUS.has(clean(r[13]))?clean(r[13]):'Não Executado';
+    result.push({sheet:'RP',bacia:b,qd:clean(r[3]),pv:clean(r[4]),pv2:clean(r[6])||'-',
+      m:parseFloat(r[7])||0,dn:parseInt(r[8])||100,status});
+  }
+  return result;
+}
+
+function parseCT(ws,sh){
+  // Varre TODAS as linhas; captura onde col[2] é número (= PV)
+  const rows=toRows(ws), result=[];
+  const VALID_STATUS=new Set(['Executado','Não Executado','Em Execução']);
+  for(const r of rows){
+    const pv=r[2];
+    if(pv==null||isNaN(parseFloat(String(pv)))) continue;
+    const pv2=clean(r[4])||'-';
+    if(pv2==='' && parseFloat(clean(r[5]))==null) continue; // pula linhas de orçamento
+    const status=VALID_STATUS.has(clean(r[8]))?clean(r[8]):'Não Executado';
+    result.push({sheet:sh,bacia:sh,qd:'-',pv:clean(r[2]),pv2,
+      m:parseFloat(r[5])||0,dn:parseInt(r[6])||150,status});
+  }
+  return result;
+}
+
+function parseAdutora(ws){
+  // Busca linhas onde col[2] começa com 'DN '
+  const rows=toRows(ws), result=[];
+  const VALID_STATUS=new Set(['Executado','Não Executado','Em Execução']);
+  for(const r of rows){
+    const mod=clean(r[2]);
+    if(!mod.match(/^DN\s*\d+/)) continue;
+    const dn=parseInt(mod.replace(/DN\s*/,''))||0;
+    const status=VALID_STATUS.has(clean(r[6]))?clean(r[6]):'Não Executado';
+    result.push({modulo:mod,proj:parseFloat(r[3])||0,real:parseFloat(r[4])||0,dn,status});
+  }
+  return result;
+}
+
+function parseRP2(ws){
+  // Summary: linhas onde col[2] começa com 'TP'
+  // Trechos: mesma coisa mas também tem col[4] (M) numérico
+  const rows=toRows(ws), summary=[], trechos=[];
+  let inTrechos=false;
+  const VALID_STATUS=new Set(['Executado','Não Executado','Em Execução']);
+  for(const r of rows){
+    const mod=clean(r[2]);
+    if(!mod.startsWith('TP')) continue;
+    const mVal=parseFloat(r[4]);
+    const proj=parseFloat(r[3])||0;
+    // Se tem valor numérico grande em col[3] e col[4] é metros (< 5000), é trecho
+    // Se col[4] é % (entre 0 e 1) ou col[5] é 'Saldo', é summary
+    const col5=clean(r[5]);
+    const isSummary = !isNaN(parseFloat(r[5])) && parseFloat(r[5])>10 && isNaN(parseInt(r[5])/1%1==0?0:1);
+    // Simpler: summary rows have col[5] as large number (saldo in meters)
+    // Trecho rows have col[5] as DN (50, 75, 100, 150) and col[6] as status string
+    const dn=parseInt(r[5])||0;
+    const statusVal=clean(r[6]);
+    if(VALID_STATUS.has(statusVal) && dn>0 && dn<=200){
+      // É um trecho
+      const status=statusVal||'Não Executado';
+      trechos.push({sheet:'RP2',modulo:mod,qd:clean(r[3]),m:mVal||0,dn,status});
+    } else if(!isNaN(proj) && proj>10){
+      // É summary
+      summary.push({modulo:mod,proj,real:parseFloat(r[4])||0,saldo:parseFloat(r[5])||0});
+    }
+  }
+  return {summary,trechos};
+}
+
+function parseTrav(ws,name){
+  // Busca linha onde col[2] é o nome da travessia
+  const rows=toRows(ws);
+  const VALID_STATUS=new Set(['Executado','Não Executado','Em Execução']);
+  for(const r of rows){
+    const mod=clean(r[2]);
+    if(mod.toUpperCase().includes('TRAVESSIA')){
+      const status=VALID_STATUS.has(clean(r[6]))?clean(r[6]):'Não Executado';
+      return {sheet:name,modulo:name,m:parseFloat(r[4])||1,dn:150,status};
+    }
+  }
+  return {sheet:name,modulo:name,m:1,dn:150,status:'Não Executado'};
+}
+
+// ══════════════════════════════════════════════
+// GOOGLE SHEETS INTEGRATION
+// ══════════════════════════════════════════════
+const SHEETS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRhxgHbsGtYSB9rXYMQzvH9lJh4J9xTuxQyNImS8S09yYH8Utm1RhdulPbuJmnbaA/pub?output=xlsx';
+
+function setStatus(msg, color){
+  const el = document.getElementById('updateStatus');
+  el.textContent = msg;
+  el.style.color = color || 'var(--muted)';
+}
+
+function fetchFromSheets(){
+  const btn = document.getElementById('updateBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinning">🔄</span> Buscando...';
+  setStatus('Conectando ao Google Sheets...', 'var(--accent)');
+
+  // Proxy CORS para funcionar com arquivo local
+  const proxyUrl = 'https://api.allorigins.win/raw?url=';
+  const url = proxyUrl + encodeURIComponent(SHEETS_URL + '&t=' + Date.now());
+
+  fetch(url)
+    .then(res => {
+      if(!res.ok) throw new Error('Erro HTTP ' + res.status);
+      return res.arrayBuffer();
+    })
+    .then(buffer => {
+      processXlsx(buffer, 'Google Sheets');
+    })
+    .catch(err => {
+      setStatus('❌ Erro: ' + err.message, 'var(--red)');
+      document.getElementById('updateSub').textContent = 'Falha ao conectar. Verifique se a planilha está publicada.';
+      btn.disabled = false;
+      btn.innerHTML = '🔄 Tentar Novamente';
+    });
+}
+
+function processXlsx(buffer, source){
+  const btn = document.getElementById('updateBtn');
+  try{
+    const wb = XLSX.read(buffer, {type:'array'});
+    const newEsgoto=[], newAdutora=[], newRP2Sum=[], newRP2Trec=[], newTrav=[];
+    wb.SheetNames.forEach(name=>{
+      const ws=wb.Sheets[name], n=name.trim().toUpperCase();
+      if(n==='REDE PRINCIPAL') newEsgoto.push(...parseRP(ws));
+      else if(n.includes('COLETOR TRONCO 1')) newEsgoto.push(...parseCT(ws,'CT1'));
+      else if(n.includes('COLETOR TRONCO 2')) newEsgoto.push(...parseCT(ws,'CT2'));
+      else if(n.includes('REDE ADUTORA')) newAdutora.push(...parseAdutora(ws));
+      else if(n.includes('REDE PRINCIPAL 2')) { const d=parseRP2(ws); newRP2Sum.push(...d.summary); newRP2Trec.push(...d.trechos); }
+      else if(n.includes('TRAVESSIA 1')) newTrav.push(parseTrav(ws,'Travessia 1'));
+      else if(n.includes('TRAVESSIA 2')) newTrav.push(parseTrav(ws,'Travessia 2'));
+    });
+    if(newEsgoto.length>0||newAdutora.length>0){
+      if(newEsgoto.length>0) DATA.esgoto=newEsgoto;
+      if(newAdutora.length>0) DATA.adutora=newAdutora;
+      if(newRP2Sum.length>0) DATA.rp2_summary=newRP2Sum;
+      if(newRP2Trec.length>0) DATA.rp2_trechos=newRP2Trec;
+      if(newTrav.length>0) DATA.travessias=newTrav;
+      renderAll();
+      const now = new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+      setStatus('✓ Atualizado às ' + now, 'var(--green)');
+      document.getElementById('updateSub').textContent =
+        source + ' · ' + (newEsgoto.length) + ' trechos de esgoto · ' + newRP2Trec.length + ' trechos de água';
+    } else {
+      setStatus('⚠️ Nenhum dado encontrado', 'var(--accent)');
+    }
+  } catch(err){
+    setStatus('❌ Erro ao processar: ' + err.message, 'var(--red)');
+  }
+  btn.disabled = false;
+  btn.innerHTML = '🔄 Atualizar Dados';
+}
+
+function handleFile(file){
+  if(!file) return;
+  setStatus('Lendo arquivo...', 'var(--accent)');
+  const reader = new FileReader();
+  reader.onload = e => processXlsx(e.target.result, file.name);
+  reader.readAsArrayBuffer(file);
+}
+
+// DATE
+
+function switchMain(id){
+  document.querySelectorAll('.main-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.main-tab-btn').forEach(b=>{b.classList.remove('active-esgoto','active-agua');});
+  document.getElementById('panel-'+id).classList.add('active');
+  const btn=id==='esgoto'?document.getElementById('mainTabEsgoto'):document.getElementById('mainTabAgua');
+  btn.classList.add('active-'+id);
+}
+function switchSub(main,id,btn){
+  const panel=document.getElementById('panel-'+main);
+  panel.querySelectorAll('.sub-panel').forEach(p=>p.classList.remove('active'));
+  panel.querySelectorAll('.sub-tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('sub-'+main+'-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// DATE
+document.getElementById('dateBadge').innerHTML='<strong>'+new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'})+'</strong>';
+
+// TABS
+renderAll();
+
+// Busca automática ao abrir o dashboard
+fetchFromSheets();
+</script>
+</body>
+</html>
