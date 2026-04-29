@@ -79,7 +79,7 @@ main{padding:20px 28px;max-width:1440px;margin:0 auto}
 
 table{width:100%;border-collapse:collapse}
 th{font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);padding:7px 12px;text-align:left;border-bottom:1px solid var(--border);background:var(--paper);font-weight:500}
-td{padding:6px 12px;border-bottom:1px solid var(--border);font-size:12px}
+td{padding:6px 12px;border-bottom:1px solid var(--border);font-size:12px;vertical-align:middle}
 tr:last-child td{border-bottom:none}
 .tr-tot td{background:rgba(74,156,90,.06);font-weight:600;color:var(--green2)}
 .num{text-align:right;font-family:'JetBrains Mono',monospace}
@@ -117,7 +117,7 @@ tr:last-child td{border-bottom:none}
 .scroll-t::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 
 /* STATUS EDITÁVEL */
-.st-sel{font-family:'JetBrains Mono',monospace;font-size:10px;border:1px solid var(--border);border-radius:3px;padding:3px 6px;cursor:pointer;outline:none;background:#fff;font-weight:500;transition:all .2s}
+.st-sel{font-family:'JetBrains Mono',monospace;font-size:10px;border:1px solid var(--border);border-radius:3px;padding:3px 6px;cursor:pointer;outline:none;background:#fff;font-weight:500;transition:all .2s;width:160px;text-align:center}
 .st-sel.ok{background:rgba(74,156,90,.12);color:var(--green2);border-color:rgba(74,156,90,.3)}
 .st-sel.nd{background:rgba(122,116,104,.1);color:var(--muted);border-color:var(--border)}
 .st-sel.ex{background:rgba(26,74,138,.1);color:var(--blue);border-color:rgba(26,74,138,.3)}
@@ -286,15 +286,22 @@ tr.just-updated td{background:rgba(74,156,90,.2)}
   <div class="sub-panel" id="sp-agua-trav">
     <div class="slabel">Indicadores — Dispositivos e VRPs</div>
     <div class="kpi-grid" id="kpi-tv"></div>
+
     <div class="slabel">Travessias — clique no status para editar</div>
-    <div class="card"><div class="card-head"><div class="card-title">Travessias DN 150</div></div>
-    <table><thead><tr><th>Travessia</th><th>DN</th><th>Status ✎</th></tr></thead><tbody id="td-tv"></tbody></table></div>
-    <div class="slabel">Dispositivos e VRPs — clique no status para editar</div>
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)" id="disp-badge"></span>
+    <div class="trwrap">
+      <div class="tbar">
+        <span style="font-family:Inter,sans-serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px">Travessias DN 150</span>
+        <div class="tcount" id="trav-count"></div>
+      </div>
+      <table>
+        <thead><tr><th>Travessia</th><th>DN</th><th style="width:200px">Status ✎</th></tr></thead>
+        <tbody id="td-tv"></tbody>
+      </table>
     </div>
+
+    <div class="slabel">Dispositivos e VRPs — clique no status para editar</div>
     <div id="disp-container"></div>
-    <table style="display:none"><tbody id="td-disp"></tbody></table>
+
   </div>
 </div>
 </main>
@@ -310,10 +317,12 @@ function loadData(){
   try{
     const saved = localStorage.getItem('tato_obra_v1');
     if(saved){
-      const parsed = JSON.parse(saved);
+      let parsed;
+      try{ parsed = JSON.parse(saved); }
+      catch(e){ localStorage.removeItem('tato_obra_v1'); return BASE; }
       // Merge: mantém estrutura base, aplica status salvos
       const statusMap = parsed.statusMap || {};
-      ['rp','ct1','ct2','rp2','trav','adutora'].forEach(key=>{
+      ['rp','ct1','ct2','rp2','trav','adutora','dispositivos'].forEach(key=>{
         (BASE[key]||[]).forEach(t=>{
           if(statusMap[t.id]) t.status = statusMap[t.id];
         });
@@ -335,7 +344,7 @@ function salvar(){
   saveTimer = setTimeout(()=>{
     try{
       const statusMap = {};
-      ['rp','ct1','ct2','rp2','trav','adutora'].forEach(key=>{
+      ['rp','ct1','ct2','rp2','trav','adutora','dispositivos'].forEach(key=>{
         (D[key]||[]).forEach(t=>{ statusMap[t.id] = t.status; });
       });
       localStorage.setItem('tato_obra_v1', JSON.stringify({statusMap, savedAt: new Date().toISOString()}));
@@ -539,30 +548,50 @@ function renderAll(){
   const tvE=tv.filter(r=>r.status==='Executado').length;
   const disp=D.dispositivos||[];
   const dispE=disp.filter(r=>r.status==='Executado').length;
+
   kpi('kpi-tv',[
-    {c:'kc-blue',l:'Travessias',v:tv.length,s:tvE+' executadas'},
-    {c:'kc-g2',l:'Dispositivos',v:disp.length,s:dispE+' executados'},
+    {c:'kc-blue',l:'Total Travessias',v:tv.length,s:tvE+' executadas'},
+    {c:'kc-g2',l:'Total Dispositivos',v:disp.length,s:dispE+' executados'},
     {c:'kc-green',l:'Exec. Travessias',v:tvE+'/'+tv.length,s:'concluídas'},
     {c:'kc-gold',l:'Exec. Dispositivos',v:dispE+'/'+disp.length,s:'concluídos'}
   ]);
-  document.getElementById('td-tv').innerHTML=tv.map(r=>`<tr data-id="${r.id}"><td><b>${r.modulo}</b></td><td>${dn(150)}</td><td>${stSel(r,'trav')}</td></tr>`).join('');
-  document.getElementById('disp-badge').textContent=dispE+'/'+disp.length+' executados';
-  // Agrupar por módulo
-  const modulos=[...new Set(disp.map(d=>d.modulo))];
-  document.getElementById('td-disp').innerHTML=''; // limpa
-  document.getElementById('disp-container').innerHTML=modulos.map(mod=>{
-    const itens=disp.filter(d=>d.modulo===mod);
-    const execMod=itens.filter(d=>d.status==='Executado').length;
-    return `<div class="card" style="margin-bottom:12px">
-      <div class="card-head">
-        <div class="card-title">${mod}</div>
-        <div class="card-badge">${execMod}/${itens.length} executados</div>
-      </div>
-      <table>
-        <thead><tr><th>Item</th><th class="num">Qtd</th><th>Status ✎</th></tr></thead>
-        <tbody>${itens.map(r=>`<tr data-id="${r.id}"><td>${r.item}</td><td class="num">${r.qty}</td><td>${stSel(r,'dispositivos')}</td></tr>`).join('')}</tbody>
-      </table>
-    </div>`;
+
+  // Travessias
+  document.getElementById('trav-count').textContent = tvE+'/'+tv.length+' executadas';
+  document.getElementById('td-tv').innerHTML = tv.map(function(r){
+    return '<tr data-id="'+r.id+'">'
+      +'<td><strong>'+r.modulo+'</strong></td>'
+      +'<td>'+dn(150)+'</td>'
+      +'<td>'+stSel(r,'trav')+'</td>'
+      +'</tr>';
+  }).join('');
+
+  // Dispositivos por módulo
+  var modulos=[...new Set(disp.map(function(d){return d.modulo;}))];
+  document.getElementById('disp-container').innerHTML = modulos.map(function(mod){
+    var itens = disp.filter(function(d){return d.modulo===mod;});
+    var execMod = itens.filter(function(d){return d.status==='Executado';}).length;
+    var rows = itens.map(function(r){
+      return '<tr data-id="'+r.id+'">'
+        +'<td>'+r.item+'</td>'
+        +'<td class="num">'+r.qty+'</td>'
+        +'<td>'+stSel(r,'dispositivos')+'</td>'
+        +'</tr>';
+    }).join('');
+    return '<div class="trwrap" style="margin-bottom:16px">'
+      +'<div class="tbar">'
+      +'<span style="font-family:Inter,sans-serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px">'+mod+'</span>'
+      +'<div class="tcount">'+execMod+'/'+itens.length+' executados</div>'
+      +'</div>'
+      +'<table>'
+      +'<thead><tr>'
+      +'<th>Item</th>'
+      +'<th class="num" style="width:80px">Qtd</th>'
+      +'<th style="width:200px">Status ✎</th>'
+      +'</tr></thead>'
+      +'<tbody>'+rows+'</tbody>'
+      +'</table>'
+      +'</div>';
   }).join('');
 }
 
