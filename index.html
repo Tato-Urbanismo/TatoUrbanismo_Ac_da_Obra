@@ -501,8 +501,19 @@ function renderAll(){
   kpi('kpi-ct2',[{c:'kc-green',l:'Metros Projeto',v:fmt(ct2P),s:'m coletora DN150'},{c:'kc-g2',l:'Metros Executados',v:fmt(ct2R),s:pct(ct2R,ct2P)+' concluído'},{c:'kc-blue',l:'PVs',v:ct2.filter(r=>r.status==='Executado').length+'/'+ct2.length,s:'Poços de Visita'},{c:'kc-gold',l:'Saldo',v:fmt(ct2P-ct2R),s:'metros restantes'}]);
   prog('ct2',ct2R,ct2P,false); rt('ct2');
 
-  // RP2 — usa D.rp2_summary diretamente (dados da planilha)
-  const r2sum=(D.rp2_summary||[]).map(r=>({...r,bacia:r.modulo}));
+  // RP2 — proj vem do summary (planilha), real recalculado dos trechos editáveis
+  const mp2={};
+  (D.rp2||[]).forEach(t=>{
+    if(!mp2[t.modulo])mp2[t.modulo]={proj:0,real:0};
+    mp2[t.modulo].proj+=t.m;
+    if(t.status==='Executado')mp2[t.modulo].real+=t.m;
+  });
+  // Usa proj do summary original se disponível (mais preciso)
+  const r2sum=(D.rp2_summary||[]).map(r=>{
+    const calc=mp2[r.modulo]||{proj:r.proj,real:0};
+    const real=Math.round(calc.real*10)/10;
+    return {...r,bacia:r.modulo,real,saldo:Math.round((r.proj-real)*10)/10};
+  });
   const r2Pt=r2sum.reduce((a,r)=>a+r.proj,0),r2Rt=r2sum.reduce((a,r)=>a+r.real,0);
   kpi('kpi-rp2',[{c:'kc-blue',l:'Metros Projeto',v:fmt(r2Pt),s:'m rede distribuição'},{c:'kc-g2',l:'Metros Executados',v:fmt(r2Rt),s:pct(r2Rt,r2Pt)+' concluído'},{c:'kc-green',l:'Módulos',v:r2sum.length,s:'módulos'},{c:'kc-gold',l:'Saldo',v:fmt(r2Pt-r2Rt),s:'metros restantes'}]);
   prog('rp2',r2Rt,r2Pt,true);
