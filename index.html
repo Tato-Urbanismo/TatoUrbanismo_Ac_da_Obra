@@ -3,780 +3,551 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard — Acompanhamento Físico de Obra</title>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<title>Acompanhamento Físico da Obra — Tato Urbanismo</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0d1117;--surface:#161b22;--border:#21262d;--accent:#f0a500;--accent2:#e05c2a;--green:#3fb950;--blue:#388bfd;--red:#f85149;--cyan:#39d0d8;--text:#e6edf3;--muted:#7d8590;--card:#1c2128}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;font-size:14px;min-height:100vh}
+:root{
+  --ink:#0d1117;--paper:#f4f1eb;--card:#fff;--border:#e0dbd0;
+  --green:#4a9c5a;--green2:#2d7a40;--blue:#1a4a8a;--gold:#b8860a;
+  --muted:#7a7468;--text:#1a1814;--red:#c0392b;
+}
+body{background:var(--paper);color:var(--text);font-family:'Inter',sans-serif;font-size:14px}
 
-header{background:var(--surface);border-bottom:2px solid var(--accent);padding:14px 28px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100}
-.logo-icon{width:38px;height:38px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-header h1{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
-header h1 span{color:var(--accent)}
-.header-sub{font-size:11px;color:var(--muted);margin-top:2px}
-.header-spacer{flex:1}
-.badge-date{background:var(--border);border-radius:6px;padding:5px 12px;font-size:11px;color:var(--muted)}
-.badge-date strong{color:var(--text)}
+/* HEADER */
+header{background:var(--ink);border-bottom:3px solid var(--green);padding:0 28px;display:flex;align-items:center;gap:0;min-height:80px;position:sticky;top:0;z-index:200}
+.h-logo{padding:10px 24px 10px 0;border-right:1px solid rgba(255,255,255,.1);display:flex;align-items:center}
+.h-title{flex:1;text-align:center;font-size:30px;font-weight:800;color:#fff;letter-spacing:.3px}
+.h-right{display:flex;align-items:center;gap:10px;padding-left:24px;border-left:1px solid rgba(255,255,255,.1)}
+.save-indicator{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--green);min-width:120px;text-align:right;transition:color .3s}
+.save-indicator.saving{color:var(--gold)}
+.h-date{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,.35);padding:5px 10px;border:1px solid rgba(255,255,255,.1);border-radius:3px;white-space:nowrap}
 
-.update-bar{background:var(--card);border-bottom:1px solid var(--border);padding:12px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.update-left{display:flex;align-items:center;gap:12px}
-.update-icon{font-size:22px;flex-shrink:0}
-.update-title{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text)}
-.update-sub{font-size:11px;color:var(--muted);margin-top:2px}
-.update-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
-.update-status{font-size:11px;font-weight:600;min-width:140px;text-align:right}
-.update-btn{background:var(--accent);border:none;border-radius:6px;color:#000;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:8px 18px;cursor:pointer;transition:opacity .15s;white-space:nowrap}
-.update-btn:hover{opacity:.85}
-.update-btn:disabled{opacity:.4;cursor:not-allowed}
-.update-divider{width:1px;height:24px;background:var(--border)}
-.upload-btn{background:var(--card);border:1px solid var(--border);border-radius:6px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;padding:7px 14px;cursor:pointer;transition:all .15s;white-space:nowrap}
-.upload-btn:hover{color:var(--text);border-color:var(--muted)}
-@keyframes spin{to{transform:rotate(360deg)}}
-.spinning{display:inline-block;animation:spin 1s linear infinite}
+/* PAINEL DE ATUALIZAÇÃO RÁPIDA */
+.update-panel{background:var(--card);border-bottom:2px solid var(--green);padding:14px 28px;display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap}
+.up-field{display:flex;flex-direction:column;gap:4px}
+.up-label{font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.up-select,.up-input{background:var(--paper);border:1px solid var(--border);border-radius:4px;padding:7px 10px;font-family:'Inter',sans-serif;font-size:13px;color:var(--text);outline:none;min-width:140px}
+.up-select:focus,.up-input:focus{border-color:var(--green)}
+.up-btn{background:var(--green);border:none;color:#fff;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:9px 20px;border-radius:4px;cursor:pointer;transition:opacity .15s;align-self:flex-end}
+.up-btn:hover{opacity:.85}
+.up-result{align-self:flex-end;font-size:12px;color:var(--green2);font-weight:600;min-width:160px}
 
-/* MAIN TABS (Esgoto / Água) */
-main{padding:16px 28px;max-width:1500px;margin:0 auto}
-.main-tabs{display:flex;gap:0;margin-bottom:0;border-bottom:2px solid var(--border)}
-.main-tab-btn{background:none;border:none;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:12px 24px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;display:flex;align-items:center;gap:8px}
-.main-tab-btn:hover{color:var(--text)}
-.main-tab-btn.active-esgoto{color:#a371f7;border-bottom-color:#a371f7}
-.main-tab-btn.active-agua{color:var(--cyan);border-bottom-color:var(--cyan)}
-.main-panel{display:none;padding-top:18px}
-.main-panel.active{display:block}
+/* NAV */
+.main-nav{background:var(--card);border-bottom:1px solid var(--border);padding:0 28px;display:flex}
+.mnav-btn{background:none;border:none;border-bottom:3px solid transparent;color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;padding:13px 18px;cursor:pointer;margin-bottom:-1px;transition:all .15s}
+.mnav-btn:hover{color:var(--text)}
+.mnav-btn.ae{color:var(--green);border-bottom-color:var(--green)}
+.mnav-btn.aa{color:var(--blue);border-bottom-color:var(--blue)}
 
-/* SUB TABS */
-.sub-tabs{display:flex;gap:3px;margin-bottom:18px;flex-wrap:wrap}
-.sub-tab-btn{background:var(--card);border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:7px 16px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;transition:all .15s}
-.sub-tab-btn:hover{color:var(--text);border-color:var(--muted)}
-.sub-tab-btn.active{color:#000}
-.sub-tab-esgoto.active{background:#a371f7;border-color:#a371f7}
-.sub-tab-agua.active{background:var(--cyan);border-color:var(--cyan)}
-.sub-panel{display:none}
-.sub-panel.active{display:block}
+.sub-nav{background:var(--paper);border-bottom:1px solid var(--border);padding:10px 28px;display:flex;gap:4px}
+.snav-btn{background:none;border:1px solid var(--border);color:var(--muted);font-family:'Inter',sans-serif;font-size:11px;font-weight:500;padding:5px 14px;border-radius:20px;cursor:pointer;transition:all .15s}
+.snav-btn:hover{border-color:var(--text);color:var(--text)}
+.snav-btn.ae{background:var(--green);border-color:var(--green);color:#fff;font-weight:600}
+.snav-btn.aa{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
 
-/* SECTION LABEL */
-.section-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;margin-top:4px;display:flex;align-items:center;gap:8px}
-.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+/* MAIN */
+main{padding:20px 28px;max-width:1440px;margin:0 auto}
+.panel,.sub-panel{display:none}
+.panel.on,.sub-panel.on{display:block}
+
+.slabel{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;margin-top:4px;display:flex;align-items:center;gap:8px}
+.slabel::after{content:'';flex:1;height:1px;background:var(--border)}
 
 /* KPI */
-.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
-.kpi-card{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:14px 16px;position:relative;overflow:hidden;transition:border-color .2s}
-.kpi-card:hover{border-color:var(--accent)}
-.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
-.kpi-card.orange::before{background:var(--accent)}.kpi-card.blue::before{background:var(--blue)}.kpi-card.green::before{background:var(--green)}.kpi-card.red::before{background:var(--red)}.kpi-card.cyan::before{background:var(--cyan)}.kpi-card.purple::before{background:#a371f7}
-.kpi-label{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:5px}
-.kpi-value{font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:800;line-height:1;margin-bottom:3px}
-.kpi-card.orange .kpi-value{color:var(--accent)}.kpi-card.blue .kpi-value{color:var(--blue)}.kpi-card.green .kpi-value{color:var(--green)}.kpi-card.red .kpi-value{color:var(--red)}.kpi-card.cyan .kpi-value{color:var(--cyan)}.kpi-card.purple .kpi-value{color:#a371f7}
-.kpi-sub{font-size:10px;color:var(--muted)}
-.kpi-icon{position:absolute;right:12px;bottom:10px;font-size:26px;opacity:.09}
+
 
 /* PROGRESS */
-.prog-card{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:16px 20px;margin-bottom:18px}
-.prog-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.prog-title{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.8px}
-.prog-pct{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:800;color:var(--accent)}
-.prog-pct.cyan{color:var(--cyan)}
-.prog-track{height:9px;background:var(--border);border-radius:100px;overflow:hidden}
-.prog-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width 1s ease}
-.prog-fill.cyan{background:linear-gradient(90deg,#1a8a90,var(--cyan))}
-.prog-legend{display:flex;gap:16px;margin-top:8px;font-size:10px;color:var(--muted)}
-.prog-legend span{display:flex;align-items:center;gap:4px}
-.dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.prog{background:var(--card);border:1px solid var(--border);border-radius:5px;padding:16px 18px;margin-bottom:16px}
+.prog-top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:8px}
+.prog-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
+.prog-pct{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;color:var(--green)}
+.prog-pct.blue{color:var(--blue)}
+.prog-detail{font-size:11px;color:var(--muted);margin-bottom:8px}
+.prog-track{height:7px;background:var(--border);border-radius:100px;overflow:hidden}
+.prog-fill{height:100%;background:var(--green);border-radius:100px;transition:width 1s ease}
+.prog-fill.blue{background:var(--blue)}
+.prog-meta{display:flex;gap:14px;margin-top:7px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
 
-/* GRID */
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
-.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:18px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
 
-/* TABLE CARD */
-.tcard{background:var(--card);border:1px solid var(--border);border-radius:9px;overflow:hidden;margin-bottom:18px}
-.tcard-header{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-.tcard-title{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.8px}
-.tcard-badge{font-size:10px;background:var(--border);border-radius:3px;padding:2px 6px;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:5px;overflow:hidden;margin-bottom:16px}
+.card-head{padding:11px 14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.card-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.card-badge{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);background:var(--paper);padding:2px 6px;border-radius:2px}
+
 table{width:100%;border-collapse:collapse}
-th{font-family:'Barlow Condensed',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);font-weight:600;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);background:var(--surface)}
-td{padding:8px 12px;border-bottom:1px solid var(--border);font-size:12px}
+th{font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);padding:7px 12px;text-align:left;border-bottom:1px solid var(--border);background:var(--paper);font-weight:500}
+td{padding:6px 12px;border-bottom:1px solid var(--border);font-size:12px}
 tr:last-child td{border-bottom:none}
-tr:hover td{background:rgba(255,255,255,.02)}
-.tr-total td{background:rgba(240,165,0,.07);font-weight:600;color:var(--accent)}
-.num{text-align:right;font-variant-numeric:tabular-nums}
+.tr-tot td{background:rgba(74,156,90,.06);font-weight:600;color:var(--green2)}
+.num{text-align:right;font-family:'JetBrains Mono',monospace}
 
-/* BAR CHART */
-.bar-chart{padding:14px}
-.bar-row{display:flex;align-items:center;gap:7px;margin-bottom:10px}
+.bars{padding:12px 14px}
+.bar-row{display:flex;align-items:center;gap:7px;margin-bottom:9px}
 .bar-row:last-child{margin-bottom:0}
-.bar-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:600;text-transform:uppercase;color:var(--muted);width:54px;flex-shrink:0}
-.bar-track{flex:1;height:18px;background:var(--border);border-radius:3px;overflow:hidden;position:relative}
-.bar-proj{position:absolute;top:0;left:0;height:100%;opacity:.4;border-radius:3px}
-.bar-real{position:absolute;top:0;left:0;height:100%;border-radius:3px;min-width:0}
-.bar-val{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;width:60px;text-align:right;flex-shrink:0}
-.bar-pct{font-size:9px;color:var(--muted);width:32px;text-align:right;flex-shrink:0}
+.bar-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;color:var(--muted);width:44px;flex-shrink:0}
+.bar-track{flex:1;height:14px;background:var(--border);border-radius:2px;overflow:hidden;position:relative}
+.bar-bg{position:absolute;inset:0;opacity:.18;border-radius:2px}
+.bar-fg{position:absolute;top:0;left:0;height:100%;border-radius:2px;transition:width 1s ease}
+.bar-num{font-family:'JetBrains Mono',monospace;font-size:9px;width:52px;text-align:right;flex-shrink:0}
+.bar-pct{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);width:30px;text-align:right;flex-shrink:0}
 
-/* STATUS */
-.sb{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:600;border-radius:100px;padding:2px 7px}
-.sb-done{background:rgba(63,185,80,.15);color:var(--green)}
-.sb-pend{background:rgba(125,133,144,.15);color:var(--muted)}
-.sb-exec{background:rgba(56,139,253,.15);color:var(--blue)}
+.smini{padding:12px 14px}
+.sm-row{margin-bottom:10px}.sm-row:last-child{margin-bottom:0}
+.sm-head{display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px}
+.sm-track{height:5px;background:var(--border);border-radius:100px;overflow:hidden}
+.sm-fill{height:100%;border-radius:100px}
+.sm-note{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:2px}
 
 /* TRECHOS */
-.twrap{background:var(--card);border:1px solid var(--border);border-radius:9px;overflow:hidden;margin-bottom:18px}
-.toolbar{display:flex;gap:8px;padding:10px 12px;border-bottom:1px solid var(--border);background:var(--surface);align-items:center;flex-wrap:wrap}
-.fbtn{background:var(--card);border:1px solid var(--border);color:var(--muted);border-radius:4px;padding:4px 10px;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;cursor:pointer;transition:all .15s}
-.fbtn:hover{color:var(--text)}
-.fbtn.active-e{background:#a371f7;border-color:#a371f7;color:#000}
-.fbtn.active-a{background:var(--cyan);border-color:var(--cyan);color:#000}
-.sinput{background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:5px 9px;color:var(--text);font-family:'Barlow',sans-serif;font-size:11px;width:140px;outline:none}
-.sinput:focus{border-color:var(--accent)}
-.sinput::placeholder{color:var(--muted)}
-.cinfo{font-size:10px;color:var(--muted);margin-left:auto}
-.scroll-t{max-height:300px;overflow-y:auto}
+.trwrap{background:var(--card);border:1px solid var(--border);border-radius:5px;overflow:hidden;margin-bottom:16px}
+.tbar{display:flex;gap:5px;padding:9px 12px;border-bottom:1px solid var(--border);background:var(--paper);flex-wrap:wrap;align-items:center}
+.fbtn{background:none;border:1px solid var(--border);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;padding:3px 9px;border-radius:2px;cursor:pointer;transition:all .15s}
+.fbtn:hover{border-color:var(--text);color:var(--text)}
+.fbtn.fe{background:var(--green);border-color:var(--green);color:#fff}
+.fbtn.fa{background:var(--blue);border-color:var(--blue);color:#fff}
+.srch{background:#fff;border:1px solid var(--border);border-radius:2px;padding:4px 9px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text);outline:none;width:130px}
+.srch:focus{border-color:var(--green)}
+.tcount{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-left:auto}
+.scroll-t{max-height:360px;overflow-y:auto}
 .scroll-t::-webkit-scrollbar{width:4px}
-.scroll-t::-webkit-scrollbar-track{background:var(--border)}
-.scroll-t::-webkit-scrollbar-thumb{background:var(--muted);border-radius:2px}
-.dn-b{background:rgba(56,139,253,.12);color:var(--blue);border-radius:3px;padding:1px 5px;font-size:10px;font-weight:600}
-.dn-150{background:rgba(240,165,0,.12);color:var(--accent)}
-.dn-75{background:rgba(57,208,216,.12);color:var(--cyan)}
-.dn-50{background:rgba(63,185,80,.12);color:var(--green)}
+.scroll-t::-webkit-scrollbar-track{background:var(--paper)}
+.scroll-t::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 
-/* STATUS MINI */
-.status-mini{padding:14px 16px}
-.sm-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.sm-row:last-child{margin-bottom:0}
-.sm-label{font-size:11px;color:var(--muted);width:80px;flex-shrink:0}
-.sm-track{flex:1;height:7px;background:var(--border);border-radius:10px;overflow:hidden}
-.sm-fill{height:100%;border-radius:10px}
-.sm-val{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;width:36px;text-align:right;flex-shrink:0}
+/* STATUS EDITÁVEL */
+.st-sel{font-family:'JetBrains Mono',monospace;font-size:10px;border:1px solid var(--border);border-radius:3px;padding:3px 6px;cursor:pointer;outline:none;background:#fff;font-weight:500;transition:all .2s}
+.st-sel.ok{background:rgba(74,156,90,.12);color:var(--green2);border-color:rgba(74,156,90,.3)}
+.st-sel.nd{background:rgba(122,116,104,.1);color:var(--muted);border-color:var(--border)}
+.st-sel.ex{background:rgba(26,74,138,.1);color:var(--blue);border-color:rgba(26,74,138,.3)}
+.st-sel:hover{border-color:var(--green);box-shadow:0 0 0 2px rgba(74,156,90,.15)}
 
-@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.kpi-card{animation:fadeUp .3s ease both}
-.kpi-card:nth-child(1){animation-delay:.04s}.kpi-card:nth-child(2){animation-delay:.08s}.kpi-card:nth-child(3){animation-delay:.12s}.kpi-card:nth-child(4){animation-delay:.16s}
-@media(max-width:900px){main{padding:10px}.kpi-grid{grid-template-columns:repeat(2,1fr)}.two-col,.three-col{grid-template-columns:1fr}}
+/* ROW HIGHLIGHT */
+tr.updated td{background:rgba(74,156,90,.06);transition:background 1s}
+tr.just-updated td{background:rgba(74,156,90,.2)}
+
+.dn{font-family:'JetBrains Mono',monospace;font-size:9px;background:rgba(26,74,138,.08);color:var(--blue);border-radius:2px;padding:1px 5px}
+
+@keyframes up{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:900px){main,header,.update-panel,.main-nav,.sub-nav{padding-left:14px;padding-right:14px}}
+
+/* ── KPI CARDS ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;position:relative;overflow:hidden;height:120px;display:flex;flex-direction:column;justify-content:space-between}
+.kpi::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px}
+.kpi.kc-green::after{background:var(--green)}
+.kpi.kc-g2::after{background:var(--green2)}
+.kpi.kc-blue::after{background:var(--blue)}
+.kpi.kc-gold::after{background:var(--gold)}
+.kpi-lbl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:500}
+.kpi-val{font-family:'Inter',sans-serif;font-size:32px;font-weight:800;line-height:1;color:var(--text)}
+.kpi.kc-green .kpi-val{color:var(--green)}
+.kpi.kc-g2 .kpi-val{color:var(--green2)}
+.kpi.kc-blue .kpi-val{color:var(--blue)}
+.kpi.kc-gold .kpi-val{color:var(--gold)}
+.kpi-sub{font-size:11px;color:var(--muted)}
+@keyframes up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.kpi:nth-child(1){animation:up .3s .04s ease both}
+.kpi:nth-child(2){animation:up .3s .08s ease both}
+.kpi:nth-child(3){animation:up .3s .12s ease both}
+.kpi:nth-child(4){animation:up .3s .16s ease both}
+@media(max-width:900px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo-icon">🏗️</div>
-  <div>
-    <h1>Obra <span>Infraestrutura</span></h1>
-    <div class="header-sub">Dashboard de Acompanhamento Físico — Rede de Esgoto &amp; Água</div>
+  <div class="h-logo"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADkAAAA8CAYAAADc1RI2AAAQm0lEQVR42u1afXAd1XX/nXvv7r6nT/wlGwUb7LTFWNCB2nyYEEtqSnGcCeDQJz6K3TYU0UwLiUNmMpmhs3qdNsNMkgE3TZqSFBhqQNELCXFi40BSPScTx2JsYxtLHhIDtmRkW5IlWe/pfezevad/vF37IdtEEjJNOr0zO7vv3bP3nN+9556vvYSZaQSAExsS8YuWVzUpm4QxxCyYpjSIIRYxSSOHx3a1f679BBgEAr9f4dRMIHRdUDIJHrMH5ldZ9lZRYYEDLkGfQjPMkHGCx/m1AF5MpBIihVTwOwEyalIJNmyK2tc2G2ZMFSYhIM+XDDYzKdeMgizJSUREFP2YzsszLdOMghRKMgOamQWDGVwCGQouJ9Iz2IBRvmoBMzOBhNvZqLryGel2NhIA9AzWcapleqo7oyBJk7RjqsKutsH6zJ40xsDP+e8GyAwrZglpSVH2n7LiFoKiziebt2sAetsMWcUZs66rH1xdU7d89n3KUZKZGYYlAybQwWVOrfp75tI+ZWZjxSxRGPVeIRYvk4BgU1pRyxLw8/4fWbW20kWfGcTKFiLI8bGn7t30CIBor/MHDfI9283uzVdees2C15nZgCGYWcdq4upUb+ZLz9733Ucn0t/3/XWvVtVVXutliwABVsxCdmD8+JOJZ+unA3KmDQ+5nY0SaAIADOeH5ez47GDva7tmnUXJDCFQ6Xa6CjisgMs0BnsE5i0zR4ffzBXGCtrP6wAECnwjABqetq2YYZCcbN6uk81JnWxO6uPZ4zrZnNQwfE6DwcQm2ZzUwGUluu5lpTtIEJEiggJYEUHxOQzXhV9JPo+qz0CE8rvjQn4HwcwYSGYmIuJ7//OuZyrr4g1ezjMgkGVJ8jL62Osb31i7e/du/4Myahd0Jcniq+0qdRWTKVlAR8Er+IP5fJ7+76grMO7lfaOLOgBAbFgAlJkREz3DW2HK1rUl1SIAQFkqR4IEEQkQBIEESXIabmmQ5zFUTCAGg8OA5ywgybYkA0DgcxxgMPMZuIH54ECeTosCMyyISsIzkQkMQDTPqrfqSumXe1ptjWASShAJkkIJIiIlLUFEJN4dnoMb/6oxxsbUmzBVIyIGEZiRLU3V1AKBaYFcNm8ZAQAbfgNEpQUhkDEcxKpsW80215cESZ8emwqk/Zw/7uV1xs/547oYjHnj/rjxTCGiSXQkBBj0oWvrlipH1gdewAQSYLCQAmzMEQBIICEu+J7sGexhANAF3hlo8+7USACw8WkQOtAJpJpLWcM7h0/sOTU8/gfl41QCGM8hCwDJ5qR2O10FAqsn1b12lU2FTEETkWIwiAgI0AUAy9IDdMFBphIpAwCn3sr+0qlVIyouZxnfMBGkN140sVrnlnu+0dKcbO7odDtdlWxO6t1P7PYBHD/fmImOhEw2J/XaR9deYtWq+728xwSSYZomvXGf86eKPwUApJsMsP0C70kCJzghtzy6ZYQL5odWzAKjFLYxAxBgZ6791OoHV89LNid163+0WmHocPYFUKPbqFJ3pgIAsnZhxTN2parhgE2YcAdWTMHP+a91PPiDva7rimQyaT4YF5Iq3XJDhcdVjbVeSEFsmIlI6II2To196Yc+Om/LbTV/fscTDzzRBwLcdKNKp4G6hjoe6B6gpiagjdMBEekbEjfEL7/1w5vic51mL1sMQKVVZGYWQhAX+KsATBppBcBMfV2m2RIdCZlqSQXrn77ziepLqu7PjxY0CVLhigZ2hSX9rO4vjPlfPHrfsfbt2K7PNc66J1pusWc5j9o11tXeuBdEFQRmDuxKW+YH87sPf+fYDU3pJpOk5LT8yPSjEwa5cGnXl3bV1l1du9eusRf5eT+gM6tglK2EkALFjN8Nj1/ytdlbPDWes6srYpYlGihGN1sxdR0pgp/XAdFpgEZakhEgyPcVrtv0UMc+l10xXZDvL0Bn0JZHt4zc9fU77pCO+rmyVVx7OiAiSURCe5oBsF1lNUhLNsQMo7IuBhKAkAKBNvDzHsMHl0+OkIKVpWTmePbTmx7q2JfoSMgkJYPpi/o+W6S2LY996pbay6pfEDGq9HO+TyAVVeuY2QAwRESRK+cw0i8vcLFhLW2phJQY681+7vnPpDa6nY0qrPf879Z4Gt1GtT25Xbc8vvba6oVVz8Rq7aWFjAc2Rkch3/m1vlSxIyLpVNlUzPgjhQG/9dnPtH8vwQmZovdfXJYzAfLI9iMm0ZGQqfteODrnorpN8bqYIyVd49Q4NgFkAg7LjTAAG4BMGIQLZSmyK2zBPpOX8dv79w3d/YMvvvjLRrdRbW3eGsyEfDOaFpX7scRjicur5zt/DYXbIbHUqbBB8gw7Ngw/78NoPsw+flIYKj75/EOpV8u3wMwVvGe6MSiRSogzQjaqux6fu8yutpaSjXpjqJIk5aDpuM55v36rs69nZ2pnHgBcdgXakkgmYfD70FzXFY2djZOy3glOSNd1xYWS5YPI4sl1XUojLZqagFK5Mo10GmhqazJJSvJUU6cpC8DMNI0Y1hART6j9yHdn9xScg9f75hPyEueQmc9H/3vVOjo6ZLgo71VokxM1VHV1dc257rrrGqbIbw8RZaPKHQB4nne9ZVkOAOTzeV1RUbETgIloDh48WL106dJrJm2+ABodHd0/a9as0UjbIu04dOjQ8osuumilEGKJMSYmhDh+6tSp17u7u9NENFJeVQQA7N+//3aeers2HMhiZvrNb37zJxMJ3nzzzY8yMx04cMAGgK6urpVTZTI6OnpzyMcGgN7e3sZsNrs9CIJz0hcKhf7h4eFHWltbrQgoAOD111//ZEhjyuiDCRdPoFleznxkZOTfwr5ieJnR0dGny2l27dp1/RT4BMzMIyMjH4sEHR4e/getdXl/IeTlhc9e1JnNZre/8sorc5iZXNcVIowrC9FljCmGOh1tbirvD6/Ij/lbt26ticfjLSGdioL+eDx+W1dX1xwAPgAIISbDp1hOU/pmTXzs2LG7Zs2a9XUppTHG6JDeAWADsMJnyxgTAPAqKytXrVy5sqOlpUU0NDQQduzYEWfmhcy8iJkX7tu376pcLjcazYrv+70jIyOLmXlhLpdbFNLanZ2dCgD6+/vXhaS6bCU0M/Pg4OAD4WqqAwcO2OV8jhw58uFCofDO6Re0Pjk0NLQspInoYjt27Jidz+eHmNkEQaCZmYvFYm5kZOTL/f39jf39/SuGh4fX5XK5nWWr7DEzDwwM3H/uYLuxsSqbzQ6XgXzzPFZMAEAmk9keqWEmk+nKZDK/iFQym82++l6uI5/PHynjM/DUU0/FJtIMDQ09FJJ4zGw8zxt7++23V54rDh8dHX2xjDbI5XIHOjs7lYgEZmbJzOKee+6JTTibQFu3bnXKaTo6OiQRmZ6enivj8fhHAGgAlM/nvzM+Pv7NUPV0LBZbcejQoeVEZKJ3o/vXvva1+ARTT8uXL4+X0URq/4nIBwKgsbGxryxevPhXzOyELkWExi3Yv3///b7vnwq3DFmWtfTSSy9tEKHjjvI9k81mz4ob+/r6TDlNIpEgAKivr18vpZQASGvtnzhxYtvRo0df8X2/AICklDRnzpxPn4kPzoxx+PDhs/h4nmeIyLS1tTER6UQiIYloSTgZVhAEPDQ09ENmFqlUSre0tAREZK688kqPmeWqVasGfd/fEU2yUkrG4/GlU44XmZmEEHrz5s0V8Xj87nCWped5v7jqqqv6VqxYMeT7/n+HaRxXVFTcsXPnzhoi0r/NkUetra0NALBo0aJYWKIFAOH7vunr68uGE83niqiMMSfOiMqIxWKV0wmKJQCsWLFijW3bl0TWc3x8/PmIIJPJRM+ebdt1ixcvvm0q+WsEsre3t0BE2SjEs21bLFmypOo8e5xDTbm4THNQKBTGpwPSMDOqq6v/NoqafN/PHTp06KWI4ODBg9s8zzsVmnhUVlZGtGaSIJmZZSqVCrTWbwFgY4wvhKDq6uq1IRgr2t8HDhywiSjo7Oxc4DjOjaF2Ka11kMvlDk4JZCqVEkRkuru7/zAWi/0pgACAKBaLP73xxhvfCZnK5ubmoUKhsK3MAH2kp6fnylC4yfIkACgWiz8GQEIIAYBra2u/cPTo0ZVEVCSi03uytbXVWrFixbcty6oODSF7ntfzzDPP9EypWpdIJASAYMGCBeuVUlbovGU2m93EzJROp6M9R5lM5tmampo7AQRSSmfevHl/A+DhEORksv6AmWnv3r2bqqqqHnEcpw5AYNt2VV1d3c+Ghob+XWv9ktY6Z9v2surq6gdisdiKMm0RY2NjjyeTST3VkqTeuHGjE4/H7w1Vwi4WiwOvvfbaT9asWcPMpc8FRMR79uz52dy5c/sdx6kHwNXV1Xfu2LHjkTCamcSHWGJmltdcc83o8ePHW+fPn/9DANIYoy3Lis+ZM+fzAD4/Ub5QLmt0dPTliy+++GlmFuI8DEw4I5HrADMLIuKWlpY/i8fjl0XCFovFF9esWTPGzIqImIjYGKNuvfXWXLFY/EHItOA4zoeWLFmyOhSezsdnYk7KzHLBggWbBwcHW7XWgRBChWMWAXih4SuEdwXAGhsbe6W7u/svwhNg545EfN+vjGLK8Pk0X9u2N4TPcQB08uTJZ3H2CSkOrexzYV8cABzH2RABHBsbo4l8MpkMnQ9oXV3dt/v6+m7KZrM/8X3fTIhdYwCsQqFwZGho6Au1tbWrb7rppkykEapcPULmYz09PTfHYjELAIIgyLe2tmoiYtd1xdtvv93W29v7L2Gf/tGPfvTL0HwHE6sCGzZs6Hr44YdXOY6jyugpmUwa13W9np6eW23bjoV9PlD6Xjkxu4+AElEXgNXd3d0N9fX11wJYQkQ2Mw8Ui8X9L7/88q/Wr18/TkQwxtDvZZUgDPnEJCoDky4zSGaWHR0dcrJ9F3qsCWDVhEtONqL6/3b6PN2Zc3XhB50J/5edu3tXPZVB4W96jzGjMqZ41/vhl+mzxvwg2vLW5dZ7/J6S+jy4cbVzzkmdkCBckOJyVPm67Z8+sSYIKM3QTVuS215a9811V1Ogl3taD7RvSG2+/Z8//vGqupp6nTHvtD+c2gYAdz+29gEh8s8/+9ltYy1f+dQqSGVLo4+i2hma5dsqw8VL/uvB9l33/Oud9xmPBtu/0L75zsduvwKQV3x3wwvfv+frd/2dPz/4No5hNtjcYZGQJpDp9s+3d0/2DMGklr2trY0AQDl0+Y+TP86TosUAqGp2/KL4vLgthFkIACKmFipbkbCoAQDWPZ5YBGUt97j6jwHArpKOJfFJsuVHK2ZVGNSoKrsmVgcALIxNVnDKdV1BQsaEI9fc8eVbr1c2NaVaUkHgeauLvv/z5z6b+oawg48BZ05wzQjI00VaaY/c/Y27V8UrYhIAS02en/elVzQD4ZcqKuQ83wQmAIBc4N9Cjtgj2HwEAJmAisrC85B0g7a0KcUsbABQPuunifGJNyreWCAkD4sAB2TMXqtse4vrusJSqq/Sil3xlxtbbiCDYQBw21yaMZDJZGnGlBX/vlSYC6itAHj8pPfrfb/q+ZYp0qslp21vq6mo7hVsNgMAe/7Pnmtt/xay6jnXdUmy033ZiSv2xBzxj7m3ckVtZL/Jid0AYIEuYWDz5bnLj8fG9XAQiOdFvvgYnSq+nEZafHfDC2nPL57UCOarkwPfK5frt7X/AZrXkuIXMsLiAAAAAElFTkSuQmCC" height="60" style="width:auto;display:block"></div>
+  <div class="h-title">Acompanhamento Físico da Obra</div>
+  <div class="h-right">
+    <span class="save-indicator" id="saveInd">✓ Salvo</span>
+    <div class="h-date" id="hDate"></div>
   </div>
-  <div class="header-spacer"></div>
-  <div class="badge-date" id="dateBadge"></div>
 </header>
 
-<!-- UPDATE BAR -->
-<div class="update-bar" id="updateBar">
-  <div class="update-left">
-    <div class="update-icon">☁️</div>
-    <div>
-      <div class="update-title">Conectado ao Google Sheets</div>
-      <div class="update-sub" id="updateSub">Clique em "Atualizar" para buscar os dados mais recentes da planilha</div>
-    </div>
+<!-- PAINEL DE ATUALIZAÇÃO RÁPIDA -->
+<div class="update-panel">
+  <div class="up-field">
+    <div class="up-label">Rede</div>
+    <select class="up-select" id="up-rede" onchange="upFiltrar()">
+      <option value="rp">Rede Principal (Esgoto)</option>
+      <option value="ct1">Coletor Tronco 1</option>
+      <option value="ct2">Coletor Tronco 2</option>
+      <option value="rp2">Rede Principal (Água)</option>
+      <option value="trav">Travessias</option>
+      <option value="adutora">Rede Adutora</option>
+    </select>
   </div>
-  <div class="update-right">
-    <div class="update-status" id="updateStatus"></div>
-    <button class="update-btn" id="updateBtn" onclick="fetchFromSheets()">🔄 Atualizar Dados</button>
-    <div class="update-divider"></div>
-    <label class="upload-btn" title="Ou carregue um arquivo local">
-      📂 Arquivo local
-      <input type="file" accept=".xlsx,.xls" id="fileInput" onchange="handleFile(this.files[0])" style="display:none">
-    </label>
+  <div class="up-field">
+    <div class="up-label">Buscar PV / Módulo</div>
+    <input class="up-input" id="up-busca" placeholder="Ex: 15, MD 04..." oninput="upFiltrar()">
   </div>
+  <div class="up-field">
+    <div class="up-label">Novo Status</div>
+    <select class="up-select" id="up-status">
+      <option value="Executado">✓ Executado</option>
+      <option value="Em Execução">⚙ Em Execução</option>
+      <option value="Não Executado">○ Não Executado</option>
+    </select>
+  </div>
+  <button class="up-btn" onclick="upAplicar()">Aplicar</button>
+  <div class="up-result" id="up-result"></div>
+</div>
+
+<div class="main-nav">
+  <button class="mnav-btn ae" onclick="mainTab('esgoto',this)">Rede de Esgoto</button>
+  <button class="mnav-btn" onclick="mainTab('agua',this)">Rede de Água</button>
+</div>
+<div class="sub-nav" id="snav-esgoto">
+  <button class="snav-btn ae" onclick="subTab('esgoto','rp',this)">Rede Principal</button>
+  <button class="snav-btn" onclick="subTab('esgoto','ct1',this)">Coletor Tronco 1</button>
+  <button class="snav-btn" onclick="subTab('esgoto','ct2',this)">Coletor Tronco 2</button>
+</div>
+<div class="sub-nav" id="snav-agua" style="display:none">
+  <button class="snav-btn aa" onclick="subTab('agua','rp2',this)">Rede Principal</button>
+  <button class="snav-btn" onclick="subTab('agua','adutora',this)">Rede Adutora</button>
+  <button class="snav-btn" onclick="subTab('agua','trav',this)">Travessias</button>
 </div>
 
 <main>
-  <!-- MAIN TABS -->
-  <div class="main-tabs">
-    <button class="main-tab-btn active-esgoto" id="mainTabEsgoto" onclick="switchMain('esgoto')">🟣 Rede de Esgoto</button>
-    <button class="main-tab-btn" id="mainTabAgua" onclick="switchMain('agua')">🔵 Rede de Água</button>
+<!-- ESGOTO -->
+<div class="panel on" id="p-esgoto">
+  <div class="sub-panel on" id="sp-esgoto-rp">
+    <div class="slabel">Indicadores — Rede Principal</div>
+    <div class="kpi-grid" id="kpi-rp"></div>
+    <div class="prog"><div class="prog-top"><div><div class="prog-title">Execução — Rede Principal</div><div class="prog-detail" id="pd-rp"></div></div><div class="prog-pct" id="pp-rp">0%</div></div><div class="prog-track"><div class="prog-fill" id="pf-rp" style="width:0%"></div></div><div class="prog-meta" id="pm-rp"></div></div>
+    <div class="slabel">Distribuição por Bacia</div>
+    <div class="g2">
+      <div class="card"><div class="card-head"><div class="card-title">Metros por Bacia</div><div class="card-badge">Proj vs Real</div></div><div class="bars" id="ch-rp"></div></div>
+      <div class="card"><div class="card-head"><div class="card-title">Resumo de Metros</div></div><table><thead><tr><th>Bacia</th><th class="num">Projeto</th><th class="num">Realizado</th><th class="num">Saldo</th><th class="num">%</th></tr></thead><tbody id="tb-metros-rp"></tbody></table></div>
+    </div>
+    <div class="g3">
+      <div class="card"><div class="card-head"><div class="card-title">PVs por Bacia</div></div><table><thead><tr><th>Bacia</th><th class="num">Proj</th><th class="num">Real</th><th class="num">Saldo</th></tr></thead><tbody id="tb-pv-rp"></tbody></table></div>
+      <div class="card"><div class="card-head"><div class="card-title">Ramais por Bacia</div></div><table><thead><tr><th>Bacia</th><th class="num">Proj</th><th class="num">Real</th><th class="num">Saldo</th></tr></thead><tbody id="tb-ram-rp"></tbody></table></div>
+      <div class="card"><div class="card-head"><div class="card-title">Status Trechos</div></div><div class="smini" id="sm-rp"></div></div>
+    </div>
+    <div class="slabel">Trechos — clique no status para editar</div>
+    <div class="trwrap"><div class="tbar" id="bar-rp">
+      <button class="fbtn fe" onclick="fB('rp','all',this)">Todas</button>
+      <button class="fbtn" onclick="fB('rp',4,this)">B04</button><button class="fbtn" onclick="fB('rp',5,this)">B05</button><button class="fbtn" onclick="fB('rp',6,this)">B06</button><button class="fbtn" onclick="fB('rp',7,this)">B07</button><button class="fbtn" onclick="fB('rp',8,this)">B08</button><button class="fbtn" onclick="fB('rp',9,this)">B09</button>
+      <input class="srch" placeholder="Buscar PV..." id="s-rp" oninput="rt('rp')">
+      <div class="tcount" id="c-rp"></div>
+    </div><div class="scroll-t"><table><thead><tr><th>Bacia</th><th>QD</th><th>PV</th><th>PV2</th><th class="num">Metros</th><th>DN</th><th>Status ✎</th></tr></thead><tbody id="td-rp"></tbody></table></div></div>
   </div>
 
-  <!-- ════════════ ESGOTO ════════════ -->
-  <div class="main-panel active" id="panel-esgoto">
-    <div class="sub-tabs" id="subTabsEsgoto">
-      <button class="sub-tab-btn sub-tab-esgoto active" onclick="switchSub('esgoto','rp',this)">🗺 Rede Principal</button>
-      <button class="sub-tab-btn sub-tab-esgoto" onclick="switchSub('esgoto','ct1',this)">🔵 Coletor Tronco 1</button>
-      <button class="sub-tab-btn sub-tab-esgoto" onclick="switchSub('esgoto','ct2',this)">🟠 Coletor Tronco 2</button>
+  <div class="sub-panel" id="sp-esgoto-ct1">
+    <div class="slabel">Indicadores — Coletor Tronco 1</div>
+    <div class="kpi-grid" id="kpi-ct1"></div>
+    <div class="prog"><div class="prog-top"><div><div class="prog-title">Execução — Coletor Tronco 1</div><div class="prog-detail" id="pd-ct1"></div></div><div class="prog-pct" id="pp-ct1">0%</div></div><div class="prog-track"><div class="prog-fill" id="pf-ct1" style="width:0%"></div></div><div class="prog-meta" id="pm-ct1"></div></div>
+    <div class="slabel">Trechos — clique no status para editar</div>
+    <div class="trwrap"><div class="tbar"><input class="srch" placeholder="Buscar PV..." id="s-ct1" oninput="rt('ct1')"><div class="tcount" id="c-ct1"></div></div><div class="scroll-t"><table><thead><tr><th>PV</th><th>PV2</th><th class="num">Metros</th><th>DN</th><th>Status ✎</th></tr></thead><tbody id="td-ct1"></tbody></table></div></div>
+  </div>
+
+  <div class="sub-panel" id="sp-esgoto-ct2">
+    <div class="slabel">Indicadores — Coletor Tronco 2</div>
+    <div class="kpi-grid" id="kpi-ct2"></div>
+    <div class="prog"><div class="prog-top"><div><div class="prog-title">Execução — Coletor Tronco 2</div><div class="prog-detail" id="pd-ct2"></div></div><div class="prog-pct" id="pp-ct2">0%</div></div><div class="prog-track"><div class="prog-fill" id="pf-ct2" style="width:0%"></div></div><div class="prog-meta" id="pm-ct2"></div></div>
+    <div class="slabel">Trechos — clique no status para editar</div>
+    <div class="trwrap"><div class="tbar"><input class="srch" placeholder="Buscar PV..." id="s-ct2" oninput="rt('ct2')"><div class="tcount" id="c-ct2"></div></div><div class="scroll-t"><table><thead><tr><th>PV</th><th>PV2</th><th class="num">Metros</th><th>DN</th><th>Status ✎</th></tr></thead><tbody id="td-ct2"></tbody></table></div></div>
+  </div>
+</div>
+
+<!-- ÁGUA -->
+<div class="panel" id="p-agua">
+  <div class="sub-panel on" id="sp-agua-rp2">
+    <div class="slabel">Indicadores — Rede Principal</div>
+    <div class="kpi-grid" id="kpi-rp2"></div>
+    <div class="prog"><div class="prog-top"><div><div class="prog-title">Execução — Rede Principal</div><div class="prog-detail" id="pd-rp2"></div></div><div class="prog-pct blue" id="pp-rp2">0%</div></div><div class="prog-track"><div class="prog-fill blue" id="pf-rp2" style="width:0%"></div></div><div class="prog-meta" id="pm-rp2"></div></div>
+    <div class="slabel">Distribuição por Módulo</div>
+    <div class="g2">
+      <div class="card"><div class="card-head"><div class="card-title">Metros por Módulo</div></div><div class="bars" id="ch-rp2"></div></div>
+      <div class="card"><div class="card-head"><div class="card-title">Resumo por Módulo</div></div><table><thead><tr><th>Módulo</th><th class="num">Projeto</th><th class="num">Realizado</th><th class="num">Saldo</th><th class="num">%</th></tr></thead><tbody id="tb-rp2"></tbody></table></div>
     </div>
+    <div class="slabel">Trechos — clique no status para editar</div>
+    <div class="trwrap"><div class="tbar" id="bar-rp2">
+      <button class="fbtn fa" onclick="fM('all',this)">Todos</button>
+      <button class="fbtn" onclick="fM('TP MD 04',this)">MD04</button><button class="fbtn" onclick="fM('TP MD 05',this)">MD05</button><button class="fbtn" onclick="fM('TP MD 06',this)">MD06</button><button class="fbtn" onclick="fM('TP MD 07',this)">MD07</button><button class="fbtn" onclick="fM('TP MD 08',this)">MD08</button><button class="fbtn" onclick="fM('TP MD 09',this)">MD09</button>
+      <input class="srch" placeholder="Buscar..." id="s-rp2" oninput="rt('rp2')">
+      <div class="tcount" id="c-rp2"></div>
+    </div><div class="scroll-t"><table><thead><tr><th>Módulo</th><th>QD</th><th class="num">Metros</th><th>DN</th><th>Status ✎</th></tr></thead><tbody id="td-rp2"></tbody></table></div></div>
+  </div>
 
-    <!-- RP -->
-    <div class="sub-panel active" id="sub-esgoto-rp">
-      <div class="section-label">Indicadores — Rede Principal (Esgoto)</div>
-      <div class="kpi-grid" id="kpi-rp"></div>
-      <div class="prog-card"><div class="prog-header"><div><div class="prog-title">Execução — Metros Lineares (Rede Principal)</div><div style="font-size:10px;color:var(--muted);margin-top:2px" id="sub-rp-sub"></div></div><div class="prog-pct" id="sub-rp-pct">0%</div></div><div class="prog-track"><div class="prog-fill" id="sub-rp-bar" style="width:0%"></div></div><div class="prog-legend" id="sub-rp-leg"></div></div>
-      <div class="section-label">Distribuição por Bacia</div>
-      <div class="two-col">
-        <div class="tcard"><div class="tcard-header"><div class="tcard-title">📐 Metros por Bacia</div><div class="tcard-badge">Proj. vs Real.</div></div><div class="bar-chart" id="chart-rp"></div></div>
-        <div class="tcard"><div class="tcard-header"><div class="tcard-title">📊 Resumo Metros</div></div><table><thead><tr><th>Bacia</th><th class="num">Projeto</th><th class="num">Realizado</th><th class="num">Saldo</th><th class="num">%</th></tr></thead><tbody id="tbl-metros-rp"></tbody></table></div>
-      </div>
-      <div class="three-col">
-        <div class="tcard"><div class="tcard-header"><div class="tcard-title">🔵 PVs</div></div><table><thead><tr><th>Bacia</th><th class="num">Proj.</th><th class="num">Real.</th><th class="num">Saldo</th></tr></thead><tbody id="tbl-pv-rp"></tbody></table></div>
-        <div class="tcard"><div class="tcard-header"><div class="tcard-title">🔗 Ramais</div></div><table><thead><tr><th>Bacia</th><th class="num">Proj.</th><th class="num">Real.</th><th class="num">Saldo</th></tr></thead><tbody id="tbl-ramal-rp"></tbody></table></div>
-        <div class="tcard"><div class="tcard-header"><div class="tcard-title">📈 Status Trechos</div></div><div class="status-mini" id="status-rp"></div></div>
-      </div>
-      <div class="section-label">Trechos — Rede Principal</div>
-      <div class="twrap"><div class="toolbar" id="toolbar-rp">
-        <button class="fbtn active-e" onclick="fBacia('rp','all',this)">Todas</button>
-        <button class="fbtn" onclick="fBacia('rp',4,this)">B04</button><button class="fbtn" onclick="fBacia('rp',5,this)">B05</button><button class="fbtn" onclick="fBacia('rp',6,this)">B06</button><button class="fbtn" onclick="fBacia('rp',7,this)">B07</button><button class="fbtn" onclick="fBacia('rp',8,this)">B08</button><button class="fbtn" onclick="fBacia('rp',9,this)">B09</button>
-        <input class="sinput" placeholder="Buscar PV..." id="srch-rp" oninput="renderT('rp')">
-        <div class="cinfo" id="cnt-rp"></div>
-      </div><div class="scroll-t"><table><thead><tr><th>Bacia</th><th>QD</th><th>PV</th><th>PV2</th><th class="num">Metros</th><th>DN</th><th>Status</th></tr></thead><tbody id="tbody-rp"></tbody></table></div></div>
-    </div><!-- /sub-rp -->
+  <div class="sub-panel" id="sp-agua-adutora">
+    <div class="slabel">Indicadores — Rede Adutora</div>
+    <div class="kpi-grid" id="kpi-ad"></div>
+    <div class="prog"><div class="prog-top"><div><div class="prog-title">Execução — Rede Adutora</div><div class="prog-detail" id="pd-ad"></div></div><div class="prog-pct blue" id="pp-ad">0%</div></div><div class="prog-track"><div class="prog-fill blue" id="pf-ad" style="width:0%"></div></div><div class="prog-meta" id="pm-ad"></div></div>
+    <div class="slabel">Módulos — clique no status para editar</div>
+    <div class="card"><div class="card-head"><div class="card-title">Trechos por DN</div></div>
+    <table><thead><tr><th>Módulo</th><th>DN</th><th class="num">Metragem (m)</th><th class="num">Realizado</th><th class="num">Saldo</th><th>Status ✎</th></tr></thead><tbody id="td-ad"></tbody></table></div>
+  </div>
 
-    <!-- CT1 -->
-    <div class="sub-panel" id="sub-esgoto-ct1">
-      <div class="section-label">Indicadores — Coletor Tronco 1</div>
-      <div class="kpi-grid" id="kpi-ct1"></div>
-      <div class="prog-card"><div class="prog-header"><div><div class="prog-title">Execução — Coletor Tronco 1</div><div style="font-size:10px;color:var(--muted);margin-top:2px" id="sub-ct1-sub"></div></div><div class="prog-pct" id="sub-ct1-pct">0%</div></div><div class="prog-track"><div class="prog-fill" id="sub-ct1-bar" style="width:0%"></div></div><div class="prog-legend" id="sub-ct1-leg"></div></div>
-      <div class="section-label">Trechos — Coletor Tronco 1</div>
-      <div class="twrap"><div class="toolbar"><input class="sinput" placeholder="Buscar PV..." id="srch-ct1" oninput="renderT('ct1')"><div class="cinfo" id="cnt-ct1"></div></div><div class="scroll-t"><table><thead><tr><th>PV</th><th>PV2</th><th class="num">Metros</th><th>DN</th><th>Status</th></tr></thead><tbody id="tbody-ct1"></tbody></table></div></div>
-    </div>
-
-    <!-- CT2 -->
-    <div class="sub-panel" id="sub-esgoto-ct2">
-      <div class="section-label">Indicadores — Coletor Tronco 2</div>
-      <div class="kpi-grid" id="kpi-ct2"></div>
-      <div class="prog-card"><div class="prog-header"><div><div class="prog-title">Execução — Coletor Tronco 2</div><div style="font-size:10px;color:var(--muted);margin-top:2px" id="sub-ct2-sub"></div></div><div class="prog-pct" id="sub-ct2-pct">0%</div></div><div class="prog-track"><div class="prog-fill" id="sub-ct2-bar" style="width:0%"></div></div><div class="prog-legend" id="sub-ct2-leg"></div></div>
-      <div class="section-label">Trechos — Coletor Tronco 2</div>
-      <div class="twrap"><div class="toolbar"><input class="sinput" placeholder="Buscar PV..." id="srch-ct2" oninput="renderT('ct2')"><div class="cinfo" id="cnt-ct2"></div></div><div class="scroll-t"><table><thead><tr><th>PV</th><th>PV2</th><th class="num">Metros</th><th>DN</th><th>Status</th></tr></thead><tbody id="tbody-ct2"></tbody></table></div></div>
-    </div>
-  </div><!-- /panel-esgoto -->
-
-  <!-- ════════════ ÁGUA ════════════ -->
-  <div class="main-panel" id="panel-agua">
-    <div class="sub-tabs">
-      <button class="sub-tab-btn sub-tab-agua active" onclick="switchSub('agua','adutora',this)">💧 Rede Adutora</button>
-      <button class="sub-tab-btn sub-tab-agua" onclick="switchSub('agua','rp2',this)">🗺 Rede Principal 2°</button>
-      <button class="sub-tab-btn sub-tab-agua" onclick="switchSub('agua','trav',this)">🌉 Travessias</button>
-    </div>
-
-    <!-- ADUTORA -->
-    <div class="sub-panel active" id="sub-agua-adutora">
-      <div class="section-label">Indicadores — Rede Adutora</div>
-      <div class="kpi-grid" id="kpi-adutora"></div>
-      <div class="prog-card"><div class="prog-header"><div><div class="prog-title">Execução — Rede Adutora</div><div style="font-size:10px;color:var(--muted);margin-top:2px" id="sub-adutora-sub"></div></div><div class="prog-pct cyan" id="sub-adutora-pct">0%</div></div><div class="prog-track"><div class="prog-fill cyan" id="sub-adutora-bar" style="width:0%"></div></div><div class="prog-legend" id="sub-adutora-leg"></div></div>
-      <div class="section-label">Módulos — Rede Adutora</div>
-      <div class="tcard">
-        <div class="tcard-header"><div class="tcard-title">💧 Trechos por DN</div><div class="tcard-badge">3 módulos</div></div>
-        <table><thead><tr><th>Módulo</th><th>DN</th><th class="num">Metros Proj.</th><th class="num">Metros Real.</th><th class="num">Saldo</th><th>Status</th></tr></thead>
-        <tbody id="tbl-adutora"></tbody></table>
-      </div>
-    </div>
-
-    <!-- RP2 -->
-    <div class="sub-panel" id="sub-agua-rp2">
-      <div class="section-label">Indicadores — Rede Principal 2° (Água)</div>
-      <div class="kpi-grid" id="kpi-rp2"></div>
-      <div class="prog-card"><div class="prog-header"><div><div class="prog-title">Execução — Rede Principal 2°</div><div style="font-size:10px;color:var(--muted);margin-top:2px" id="sub-rp2-sub"></div></div><div class="prog-pct cyan" id="sub-rp2-pct">0%</div></div><div class="prog-track"><div class="prog-fill cyan" id="sub-rp2-bar" style="width:0%"></div></div><div class="prog-legend" id="sub-rp2-leg"></div></div>
-      <div class="section-label">Distribuição por Módulo</div>
-      <div class="two-col">
-        <div class="tcard"><div class="tcard-header"><div class="tcard-title">📐 Metros por Módulo</div></div><div class="bar-chart" id="chart-rp2"></div></div>
-        <div class="tcard"><div class="tcard-header"><div class="tcard-title">📊 Resumo por Módulo</div></div><table><thead><tr><th>Módulo</th><th class="num">Projeto</th><th class="num">Realizado</th><th class="num">Saldo</th><th class="num">%</th></tr></thead><tbody id="tbl-rp2-sum"></tbody></table></div>
-      </div>
-      <div class="section-label">Trechos — Rede Principal 2°</div>
-      <div class="twrap">
-        <div class="toolbar" id="toolbar-rp2">
-          <button class="fbtn active-a" onclick="fModulo('rp2','all',this)">Todos</button>
-          <button class="fbtn" onclick="fModulo('rp2','TP MD 04',this)">MD04</button>
-          <button class="fbtn" onclick="fModulo('rp2','TP MD 05',this)">MD05</button>
-          <button class="fbtn" onclick="fModulo('rp2','TP MD 06',this)">MD06</button>
-          <button class="fbtn" onclick="fModulo('rp2','TP MD 07',this)">MD07</button>
-          <button class="fbtn" onclick="fModulo('rp2','TP MD 08',this)">MD08</button>
-          <button class="fbtn" onclick="fModulo('rp2','TP MD 09',this)">MD09</button>
-          <input class="sinput" placeholder="Buscar QD/DN..." id="srch-rp2" oninput="renderT('rp2')">
-          <div class="cinfo" id="cnt-rp2"></div>
-        </div>
-        <div class="scroll-t"><table><thead><tr><th>Módulo</th><th>QD</th><th class="num">Metros</th><th>DN</th><th>Status</th></tr></thead><tbody id="tbody-rp2"></tbody></table></div>
-      </div>
-    </div>
-
-    <!-- TRAVESSIAS -->
-    <div class="sub-panel" id="sub-agua-trav">
-      <div class="section-label">Indicadores — Travessias</div>
-      <div class="kpi-grid" id="kpi-trav"></div>
-      <div class="section-label">Status das Travessias</div>
-      <div class="tcard">
-        <div class="tcard-header"><div class="tcard-title">🌉 Travessias DN 150</div><div class="tcard-badge">2 travessias</div></div>
-        <table><thead><tr><th>Travessia</th><th>DN</th><th>Status</th></tr></thead>
-        <tbody id="tbl-trav"></tbody></table>
-      </div>
-    </div>
-  </div><!-- /panel-agua -->
-
+  <div class="sub-panel" id="sp-agua-trav">
+    <div class="slabel">Indicadores — Travessias</div>
+    <div class="kpi-grid" id="kpi-tv"></div>
+    <div class="slabel">Status — clique para editar</div>
+    <div class="card"><div class="card-head"><div class="card-title">Travessias DN 150</div></div>
+    <table><thead><tr><th>Travessia</th><th>DN</th><th>Status ✎</th></tr></thead><tbody id="td-tv"></tbody></table></div>
+  </div>
+</div>
 </main>
 
 <script>
-// ══════════════════════════════════════════════
-// DADOS BASE
-// ══════════════════════════════════════════════
-let DATA = {"esgoto":[{"sheet":"RP","bacia":4,"qd":"27","pv":"1","pv2":"2","m":37.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":4,"qd":"27","pv":"2","pv2":"3","m":44.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":4,"qd":"27","pv":"3","pv2":"4","m":20.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":4,"qd":"27","pv":"4","pv2":"5","m":7.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":4,"qd":"27","pv":"5","pv2":"6","m":8.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":4,"qd":"27","pv":"6","pv2":"7","m":30.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":4,"qd":"27","pv":"7","pv2":"8","m":9.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":4,"qd":"27","pv":"8","pv2":"RC","m":13.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":4,"qd":"27","pv":"8","pv2":"12","m":9.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":4,"qd":"27","pv":"12","pv2":"11","m":29.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":4,"qd":"27","pv":"11","pv2":"10","m":30.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":4,"qd":"27","pv":"10","pv2":"9","m":22.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":4,"qd":"27","pv":"5","pv2":"RC","m":8.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"26","pv":"43","pv2":"44","m":72.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"26","pv":"44","pv2":"45","m":51.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"26","pv":"45","pv2":"24","m":5.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"26","pv":"24","pv2":"25","m":5.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"26","pv":"25","pv2":"26","m":40.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"26","pv":"26","pv2":"27","m":4.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"26","pv":"27","pv2":"RC","m":17.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"26","pv":"27","pv2":"48","m":6.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"26","pv":"48","pv2":"47","m":44.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"26","pv":"47","pv2":"46","m":73.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"26","pv":"3","pv2":"RC","m":15.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"25","pv":"49","pv2":"50","m":42.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"25","pv":"50","pv2":"51","m":39.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"25","pv":"51","pv2":"52","m":44.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"25","pv":"52","pv2":"53","m":12.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"25","pv":"53","pv2":"23","m":6.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"25","pv":"23","pv2":"22","m":7.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"25","pv":"22","pv2":"21","m":68.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"25","pv":"21","pv2":"20","m":80.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"24","pv":"58","pv2":"59","m":76.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":5,"qd":"24","pv":"59","pv2":"17","m":7.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":5,"qd":"24","pv":"17","pv2":"18","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":5,"qd":"24","pv":"18","pv2":"19","m":36.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":5,"qd":"24","pv":"19","pv2":"20","m":7.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":5,"qd":"24","pv":"20","pv2":"42","m":7.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":5,"qd":"24","pv":"42","pv2":"41","m":55.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":5,"qd":"23","pv":"60","pv2":"61","m":80.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"23","pv":"61","pv2":"62","m":31.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"23","pv":"62","pv2":"13","m":6.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"23","pv":"13","pv2":"14","m":7.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"23","pv":"14","pv2":"15","m":35.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"23","pv":"15","pv2":"16","m":5.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"23","pv":"16","pv2":"17","m":17.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"23","pv":"16","pv2":"40","m":4.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"23","pv":"40","pv2":"39","m":12.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"23","pv":"39","pv2":"38","m":80.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"21","pv":"54","pv2":"55","m":80.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"21","pv":"55","pv2":"56","m":77.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"21","pv":"56","pv2":"9","m":7.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"21","pv":"9","pv2":"10","m":7.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"21","pv":"10","pv2":"11","m":36.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"21","pv":"11","pv2":"12","m":4.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"21","pv":"12","pv2":"13","m":17.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"21","pv":"12","pv2":"37","m":5.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"21","pv":"37","pv2":"36","m":19.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"21","pv":"36","pv2":"35","m":60.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"21","pv":"35","pv2":"34","m":30.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"21","pv":"34","pv2":"33","m":22.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"18","pv":"28","pv2":"29","m":31.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"18","pv":"29","pv2":"30","m":30.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"18","pv":"30","pv2":"31","m":40.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"18","pv":"31","pv2":"32","m":53.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"18","pv":"32","pv2":"8","m":5.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"18","pv":"8","pv2":"9","m":17.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"18","pv":"8","pv2":"7","m":4.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"18","pv":"7","pv2":"6","m":36.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"18","pv":"6","pv2":"5","m":7.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"18","pv":"5","pv2":"4","m":5.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"18","pv":"4","pv2":"3","m":78.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"18","pv":"3","pv2":"2","m":80.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"18","pv":"2","pv2":"57","m":25.0,"dn":100,"status":"Executado"},{"sheet":"RP","bacia":5,"qd":"18","pv":"2","pv2":"1","m":12.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"22","pv":"37","pv2":"38","m":62.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"22","pv":"38","pv2":"39","m":40.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"22","pv":"39","pv2":"40","m":8.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"22","pv":"40","pv2":"49","m":6.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"22","pv":"49","pv2":"48","m":35.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"22","pv":"48","pv2":"47","m":9.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"22","pv":"47","pv2":"46","m":9.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"22","pv":"46","pv2":"45","m":23.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"22","pv":"45","pv2":"44","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"22","pv":"44","pv2":"43","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"22","pv":"43","pv2":"42","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"22","pv":"42","pv2":"41","m":22.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"20","pv":"31","pv2":"32","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"20","pv":"32","pv2":"33","m":64.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"20","pv":"21","pv2":"22","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"20","pv":"22","pv2":"23","m":66.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"19","pv":"33","pv2":"34","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"19","pv":"34","pv2":"35","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"19","pv":"35","pv2":"36","m":29.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"19","pv":"36","pv2":"30","m":7.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"19","pv":"30","pv2":"18","m":20.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"19","pv":"30","pv2":"29","m":6.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"19","pv":"29","pv2":"28","m":37.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"19","pv":"28","pv2":"27","m":3.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"19","pv":"27","pv2":"26","m":3.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"19","pv":"26","pv2":"25","m":20.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"19","pv":"25","pv2":"24","m":61.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"19","pv":"24","pv2":"23","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"17","pv":"1","pv2":"2","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"17","pv":"2","pv2":"3","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"17","pv":"3","pv2":"4","m":58.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"17","pv":"11","pv2":"12","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"17","pv":"12","pv2":"13","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"17","pv":"13","pv2":"14","m":57.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"4","pv2":"5","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"5","pv2":"6","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"6","pv2":"7","m":34.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"7","pv2":"8","m":51.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"8","pv2":"9","m":7.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"9","pv2":"10","m":4.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"10","pv2":"20","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"10","pv2":"RC","m":21.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"20","pv2":"19","m":41.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"19","pv2":"18","m":3.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"18","pv2":"29","m":20.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"18","pv2":"17","m":4.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"17","pv2":"16","m":45.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"16","pv2":"15","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"15","pv2":"14","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":6,"qd":"16","pv":"9","pv2":"RC","m":15.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"1","pv":"1","pv2":"2","m":71.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"1","pv":"2","pv2":"3","m":60.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"1","pv":"3","pv2":"4","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"1","pv":"4","pv2":"5","m":23.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"1","pv":"5","pv2":"6","m":6.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"1","pv":"6","pv2":"7","m":6.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"1","pv":"7","pv2":"8","m":40.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"1","pv":"8","pv2":"9","m":3.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"1","pv":"9","pv2":"34","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"1","pv":"34","pv2":"33","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"1","pv":"33","pv2":"32","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"1","pv":"32","pv2":"31","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"5","pv":"26","pv2":"27","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"5","pv":"27","pv2":"28","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"5","pv":"28","pv2":"29","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"5","pv":"29","pv2":"30","m":6.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"5","pv":"30","pv2":"10","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"5","pv":"10","pv2":"8","m":27.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"5","pv":"10","pv2":"11","m":6.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"5","pv":"11","pv2":"12","m":49.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"5","pv":"12","pv2":"13","m":3.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"5","pv":"13","pv2":"25","m":56.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"5","pv":"25","pv2":"24","m":81.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"5","pv":"24","pv2":"23","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"9","pv":"18","pv2":"19","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"9","pv":"19","pv2":"20","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"9","pv":"20","pv2":"21","m":37.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"9","pv":"21","pv2":"22","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"9","pv":"22","pv2":"14","m":6.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"9","pv":"14","pv2":"13","m":27.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"9","pv":"14","pv2":"15","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"9","pv":"15","pv2":"16","m":39.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"9","pv":"16","pv2":"38","m":6.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"9","pv":"38","pv2":"RC 12","m":13.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"9","pv":"38","pv2":"17","m":6.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"9","pv":"17","pv2":"37","m":22.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"9","pv":"37","pv2":"36","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":7,"qd":"9","pv":"36","pv2":"35","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"4","pv":"1","pv2":"2","m":74.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"4","pv":"2","pv2":"40","m":12.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"4","pv":"2","pv2":"3","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"4","pv":"48","pv2":"49","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"3","pv":"3","pv2":"4","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"3","pv":"49","pv2":"50","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"3","pv":"50","pv2":"51","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"2","pv":"4","pv2":"5","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"2","pv":"5","pv2":"6","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"2","pv":"6","pv2":"7","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"2","pv":"7","pv2":"8","m":48.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"2","pv":"8","pv2":"9","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"2","pv":"9","pv2":"10","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"2","pv":"10","pv2":"11","m":38.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"2","pv":"11","pv2":"12","m":4.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"2","pv":"12","pv2":"13","m":17.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"2","pv":"12","pv2":"55","m":4.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"2","pv":"55","pv2":"54","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"2","pv":"54","pv2":"53","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"2","pv":"53","pv2":"52","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"8","pv":"25","pv2":"26","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"8","pv":"56","pv2":"57","m":56.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"7","pv":"26","pv2":"27","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"7","pv":"27","pv2":"28","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"7","pv":"57","pv2":"58","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"7","pv":"58","pv2":"59","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"6","pv":"28","pv2":"29","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"6","pv":"29","pv2":"30","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"6","pv":"30","pv2":"31","m":40.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"6","pv":"31","pv2":"32","m":43.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"6","pv":"32","pv2":"13","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"6","pv":"13","pv2":"14","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"6","pv":"14","pv2":"15","m":38.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"6","pv":"15","pv2":"16","m":4.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"6","pv":"16","pv2":"17","m":17.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"6","pv":"16","pv2":"62","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"6","pv":"62","pv2":"61","m":71.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"6","pv":"61","pv2":"60","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"6","pv":"60","pv2":"59","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"11","pv":"33","pv2":"34","m":47.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"11","pv":"34","pv2":"35","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"11","pv":"35","pv2":"36","m":71.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"11","pv":"63","pv2":"64","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"11","pv":"64","pv2":"65","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"10","pv":"36","pv2":"37","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"10","pv":"37","pv2":"38","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"10","pv":"38","pv2":"39","m":64.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"10","pv":"39","pv2":"17","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"10","pv":"17","pv2":"18","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"10","pv":"18","pv2":"19","m":37.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"10","pv":"19","pv2":"20","m":5.0,"dn":150,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"10","pv":"20","pv2":"21","m":17.0,"dn":150,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"10","pv":"20","pv2":"68","m":4.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"10","pv":"68","pv2":"67","m":74.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"10","pv":"67","pv2":"66","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"10","pv":"66","pv2":"65","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"12","pv":"41","pv2":"42","m":76.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"12","pv":"42","pv2":"43","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"12","pv":"43","pv2":"21","m":7.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"12","pv":"21","pv2":"22","m":5.0,"dn":150,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"12","pv":"22","pv2":"23","m":38.0,"dn":150,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"12","pv":"23","pv2":"24","m":5.0,"dn":150,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"12","pv":"24","pv2":"RC 06","m":13.0,"dn":150,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"12","pv":"24","pv2":"47","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"12","pv":"47","pv2":"46","m":62.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"12","pv":"46","pv2":"45","m":70.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":8,"qd":"12","pv":"45","pv2":"44","m":14.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"13","pv":"1","pv2":"2","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"13","pv":"2","pv2":"3","m":56.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"13","pv":"3","pv2":"4","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"13","pv":"4","pv2":"5","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"13","pv":"5","pv2":"6","m":38.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"13","pv":"6","pv2":"7","m":4.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"13","pv":"7","pv2":"8","m":17.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"13","pv":"7","pv2":"20","m":6.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"13","pv":"20","pv2":"19","m":61.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"13","pv":"19","pv2":"18","m":74.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"14","pv":"30","pv2":"31","m":73.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"14","pv":"31","pv2":"32","m":52.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"14","pv":"32","pv2":"8","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"14","pv":"8","pv2":"9","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"14","pv":"9","pv2":"10","m":38.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"14","pv":"10","pv2":"11","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"14","pv":"11","pv2":"12","m":14.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"14","pv":"11","pv2":"23","m":4.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"14","pv":"23","pv2":"22","m":52.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"14","pv":"22","pv2":"21","m":73.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"15","pv":"24","pv2":"25","m":72.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"15","pv":"25","pv2":"12","m":56.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"15","pv":"12","pv2":"13","m":72.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"15","pv":"13","pv2":"14","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"15","pv":"14","pv2":"15","m":5.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"15","pv":"15","pv2":"16","m":27.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"15","pv":"16","pv2":"17","m":8.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"15","pv":"17","pv2":"RC 01","m":13.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"15","pv":"17","pv2":"29","m":8.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"15","pv":"29","pv2":"28","m":44.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"15","pv":"28","pv2":"27","m":80.0,"dn":100,"status":"Não Executado"},{"sheet":"RP","bacia":9,"qd":"15","pv":"27","pv2":"26","m":73.0,"dn":100,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"1","pv2":"2","m":79.0,"dn":150,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"2","pv2":"3","m":54.0,"dn":150,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"3","pv2":"4","m":38.0,"dn":150,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"4","pv2":"5","m":35.0,"dn":150,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"5","pv2":"6","m":37.0,"dn":150,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"6","pv2":"7","m":65.0,"dn":150,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"7","pv2":"8","m":54.0,"dn":150,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"8","pv2":"9","m":51.0,"dn":150,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"9","pv2":"10","m":70.0,"dn":150,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"10","pv2":"11","m":75.0,"dn":150,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"11","pv2":"12","m":42.0,"dn":150,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"12","pv2":"13","m":59.0,"dn":150,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"13","pv2":"14","m":58.0,"dn":150,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"14","pv2":"15","m":57.0,"dn":150,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"15","pv2":"16","m":52.0,"dn":150,"status":"Não Executado"},{"sheet":"CT1","bacia":"CT1","qd":"-","pv":"16","pv2":"TRAVESSIA","m":60.0,"dn":150,"status":"Não Executado"},{"sheet":"CT2","bacia":"CT2","qd":"-","pv":"1","pv2":"2","m":35.0,"dn":150,"status":"Não Executado"},{"sheet":"CT2","bacia":"CT2","qd":"-","pv":"2","pv2":"3","m":46.0,"dn":150,"status":"Não Executado"},{"sheet":"CT2","bacia":"CT2","qd":"-","pv":"3","pv2":"4","m":73.0,"dn":150,"status":"Não Executado"},{"sheet":"CT2","bacia":"CT2","qd":"-","pv":"4","pv2":"5","m":44.0,"dn":150,"status":"Não Executado"},{"sheet":"CT2","bacia":"CT2","qd":"-","pv":"5","pv2":"6","m":14.0,"dn":150,"status":"Não Executado"},{"sheet":"CT2","bacia":"CT2","qd":"-","pv":"6","pv2":"7","m":19.0,"dn":150,"status":"Não Executado"},{"sheet":"CT2","bacia":"CT2","qd":"-","pv":"7","pv2":"8","m":29.0,"dn":150,"status":"Não Executado"},{"sheet":"CT2","bacia":"CT2","qd":"-","pv":"8","pv2":"9","m":55.0,"dn":150,"status":"Não Executado"},{"sheet":"CT2","bacia":"CT2","qd":"-","pv":"9","pv2":"10","m":40.0,"dn":150,"status":"Não Executado"},{"sheet":"CT2","bacia":"CT2","qd":"-","pv":"10","pv2":"11","m":69.0,"dn":150,"status":"Não Executado"},{"sheet":"CT2","bacia":"CT2","qd":"-","pv":"11","pv2":"12","m":38.0,"dn":150,"status":"Não Executado"},{"sheet":"CT2","bacia":"CT2","qd":"-","pv":"12","pv2":"13","m":55.0,"dn":150,"status":"Não Executado"},{"sheet":"CT2","bacia":"CT2","qd":"-","pv":"13","pv2":"-","m":0,"dn":150,"status":"Não Executado"}],"adutora":[{"modulo":"DN 75","proj":203.0,"real":0,"dn":75,"status":"Não Executado"},{"modulo":"DN 100","proj":306.0,"real":0,"dn":100,"status":"Não Executado"},{"modulo":"DN 150","proj":895.0,"real":0,"dn":150,"status":"Não Executado"}],"rp2_summary":[{"modulo":"TP MD 04","proj":1349.0,"real":436.0,"saldo":913.0},{"modulo":"TP MD 05","proj":2177.0,"real":1158.0,"saldo":1019.0},{"modulo":"TP MD 06","proj":1294.0,"real":1005.0,"saldo":289.0},{"modulo":"TP MD 07","proj":1776.0,"real":0.0,"saldo":1776.0},{"modulo":"TP MD 08","proj":2131.0,"real":0.0,"saldo":2131.0},{"modulo":"TP MD 09","proj":3237.0,"real":0.0,"saldo":3237.0}],"rp2_trechos":[{"sheet":"RP2","modulo":"TP MD 04","qd":"16","m":436.0,"dn":50,"status":"Executado"},{"sheet":"RP2","modulo":"TP MD 04","qd":"16","m":87.0,"dn":75,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 04","qd":"19","m":439.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 04","qd":"22","m":387.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 05","qd":"17","m":558.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 05","qd":"18","m":142.0,"dn":50,"status":"Executado"},{"sheet":"RP2","modulo":"TP MD 05","qd":"18","m":317.0,"dn":75,"status":"Executado"},{"sheet":"RP2","modulo":"TP MD 05","qd":"20","m":461.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 05","qd":"21","m":312.0,"dn":50,"status":"Executado"},{"sheet":"RP2","modulo":"TP MD 05","qd":"23","m":387.0,"dn":50,"status":"Executado"},{"sheet":"RP2","modulo":"TP MD 06","qd":"24","m":289.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 06","qd":"25","m":285.0,"dn":50,"status":"Executado"},{"sheet":"RP2","modulo":"TP MD 06","qd":"26","m":408.0,"dn":50,"status":"Executado"},{"sheet":"RP2","modulo":"TP MD 06","qd":"26","m":312.0,"dn":50,"status":"Executado"},{"sheet":"RP2","modulo":"TP MD 07","qd":"1","m":549.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 07","qd":"1","m":82.0,"dn":75,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 07","qd":"5","m":613.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 07","qd":"9","m":532.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 08","qd":"2","m":488.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 08","qd":"2","m":103.0,"dn":75,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 08","qd":"6","m":477.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 08","qd":"6","m":89.0,"dn":75,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 08","qd":"10","m":530.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 08","qd":"12","m":444.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 09","qd":"3 e 4","m":586.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 09","qd":"3 e 4","m":84.0,"dn":100,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 09","qd":"7 e 8","m":524.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 09","qd":"7 e 8","m":105.0,"dn":75,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 09","qd":"11","m":411.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 09","qd":"11","m":142.0,"dn":75,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 09","qd":"13","m":412.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 09","qd":"14","m":416.0,"dn":50,"status":"Não Executado"},{"sheet":"RP2","modulo":"TP MD 09","qd":"15","m":557.0,"dn":50,"status":"Não Executado"}],"travessias":[{"sheet":"TRAV1","modulo":"Travessia 1","m":1,"dn":150,"status":"Não Executado"},{"sheet":"TRAV2","modulo":"Travessia 2","m":1,"dn":150,"status":"Não Executado"}]};
+// ══════════════════════════════════════════
+// DADOS BASE (embutidos)
+// ══════════════════════════════════════════
+const BASE = {"rp":[{"sheet":"RP","bacia":4,"qd":"27","pv":"1","pv2":"2","m":37.0,"dn":100,"status":"Executado","id":"rp_0"},{"sheet":"RP","bacia":4,"qd":"27","pv":"2","pv2":"3","m":44.0,"dn":100,"status":"Executado","id":"rp_1"},{"sheet":"RP","bacia":4,"qd":"27","pv":"3","pv2":"4","m":20.0,"dn":100,"status":"Executado","id":"rp_2"},{"sheet":"RP","bacia":4,"qd":"27","pv":"4","pv2":"5","m":7.0,"dn":100,"status":"Executado","id":"rp_3"},{"sheet":"RP","bacia":4,"qd":"27","pv":"5","pv2":"6","m":8.0,"dn":100,"status":"Executado","id":"rp_4"},{"sheet":"RP","bacia":4,"qd":"27","pv":"6","pv2":"7","m":30.0,"dn":100,"status":"Executado","id":"rp_5"},{"sheet":"RP","bacia":4,"qd":"27","pv":"7","pv2":"8","m":9.0,"dn":100,"status":"Executado","id":"rp_6"},{"sheet":"RP","bacia":4,"qd":"27","pv":"8","pv2":"RC","m":13.0,"dn":100,"status":"Executado","id":"rp_7"},{"sheet":"RP","bacia":4,"qd":"27","pv":"8","pv2":"12","m":9.0,"dn":100,"status":"Executado","id":"rp_8"},{"sheet":"RP","bacia":4,"qd":"27","pv":"12","pv2":"11","m":29.0,"dn":100,"status":"Executado","id":"rp_9"},{"sheet":"RP","bacia":4,"qd":"27","pv":"11","pv2":"10","m":30.0,"dn":100,"status":"Executado","id":"rp_10"},{"sheet":"RP","bacia":4,"qd":"27","pv":"10","pv2":"9","m":22.0,"dn":100,"status":"Executado","id":"rp_11"},{"sheet":"RP","bacia":4,"qd":"27","pv":"5","pv2":"RC","m":8.0,"dn":100,"status":"Executado","id":"rp_12"},{"sheet":"RP","bacia":5,"qd":"26","pv":"43","pv2":"44","m":72.0,"dn":100,"status":"Executado","id":"rp_13"},{"sheet":"RP","bacia":5,"qd":"26","pv":"44","pv2":"45","m":51.0,"dn":100,"status":"Executado","id":"rp_14"},{"sheet":"RP","bacia":5,"qd":"26","pv":"45","pv2":"24","m":5.0,"dn":100,"status":"Executado","id":"rp_15"},{"sheet":"RP","bacia":5,"qd":"26","pv":"24","pv2":"25","m":5.0,"dn":100,"status":"Executado","id":"rp_16"},{"sheet":"RP","bacia":5,"qd":"26","pv":"25","pv2":"26","m":40.0,"dn":100,"status":"Executado","id":"rp_17"},{"sheet":"RP","bacia":5,"qd":"26","pv":"26","pv2":"27","m":4.0,"dn":100,"status":"Executado","id":"rp_18"},{"sheet":"RP","bacia":5,"qd":"26","pv":"27","pv2":"RC","m":17.0,"dn":100,"status":"Executado","id":"rp_19"},{"sheet":"RP","bacia":5,"qd":"26","pv":"27","pv2":"48","m":6.0,"dn":100,"status":"Executado","id":"rp_20"},{"sheet":"RP","bacia":5,"qd":"26","pv":"48","pv2":"47","m":44.0,"dn":100,"status":"Executado","id":"rp_21"},{"sheet":"RP","bacia":5,"qd":"26","pv":"47","pv2":"46","m":73.0,"dn":100,"status":"Executado","id":"rp_22"},{"sheet":"RP","bacia":5,"qd":"26","pv":"3","pv2":"RC","m":15.0,"dn":100,"status":"Executado","id":"rp_23"},{"sheet":"RP","bacia":5,"qd":"25","pv":"49","pv2":"50","m":42.0,"dn":100,"status":"Executado","id":"rp_24"},{"sheet":"RP","bacia":5,"qd":"25","pv":"50","pv2":"51","m":39.0,"dn":100,"status":"Executado","id":"rp_25"},{"sheet":"RP","bacia":5,"qd":"25","pv":"51","pv2":"52","m":44.0,"dn":100,"status":"Executado","id":"rp_26"},{"sheet":"RP","bacia":5,"qd":"25","pv":"52","pv2":"53","m":12.0,"dn":100,"status":"Executado","id":"rp_27"},{"sheet":"RP","bacia":5,"qd":"25","pv":"53","pv2":"23","m":6.0,"dn":100,"status":"Executado","id":"rp_28"},{"sheet":"RP","bacia":5,"qd":"25","pv":"23","pv2":"22","m":7.0,"dn":100,"status":"Executado","id":"rp_29"},{"sheet":"RP","bacia":5,"qd":"25","pv":"22","pv2":"21","m":68.0,"dn":100,"status":"Executado","id":"rp_30"},{"sheet":"RP","bacia":5,"qd":"25","pv":"21","pv2":"20","m":80.0,"dn":100,"status":"Executado","id":"rp_31"},{"sheet":"RP","bacia":5,"qd":"24","pv":"58","pv2":"59","m":76.0,"dn":100,"status":"Não Executado","id":"rp_32"},{"sheet":"RP","bacia":5,"qd":"24","pv":"59","pv2":"17","m":7.0,"dn":100,"status":"Não Executado","id":"rp_33"},{"sheet":"RP","bacia":5,"qd":"24","pv":"17","pv2":"18","m":5.0,"dn":100,"status":"Não Executado","id":"rp_34"},{"sheet":"RP","bacia":5,"qd":"24","pv":"18","pv2":"19","m":36.0,"dn":100,"status":"Não Executado","id":"rp_35"},{"sheet":"RP","bacia":5,"qd":"24","pv":"19","pv2":"20","m":7.0,"dn":100,"status":"Não Executado","id":"rp_36"},{"sheet":"RP","bacia":5,"qd":"24","pv":"20","pv2":"42","m":7.0,"dn":100,"status":"Não Executado","id":"rp_37"},{"sheet":"RP","bacia":5,"qd":"24","pv":"42","pv2":"41","m":55.0,"dn":100,"status":"Não Executado","id":"rp_38"},{"sheet":"RP","bacia":5,"qd":"23","pv":"60","pv2":"61","m":80.0,"dn":100,"status":"Executado","id":"rp_39"},{"sheet":"RP","bacia":5,"qd":"23","pv":"61","pv2":"62","m":31.0,"dn":100,"status":"Executado","id":"rp_40"},{"sheet":"RP","bacia":5,"qd":"23","pv":"62","pv2":"13","m":6.0,"dn":100,"status":"Executado","id":"rp_41"},{"sheet":"RP","bacia":5,"qd":"23","pv":"13","pv2":"14","m":7.0,"dn":100,"status":"Executado","id":"rp_42"},{"sheet":"RP","bacia":5,"qd":"23","pv":"14","pv2":"15","m":35.0,"dn":100,"status":"Executado","id":"rp_43"},{"sheet":"RP","bacia":5,"qd":"23","pv":"15","pv2":"16","m":5.0,"dn":100,"status":"Executado","id":"rp_44"},{"sheet":"RP","bacia":5,"qd":"23","pv":"16","pv2":"17","m":17.0,"dn":100,"status":"Executado","id":"rp_45"},{"sheet":"RP","bacia":5,"qd":"23","pv":"16","pv2":"40","m":4.0,"dn":100,"status":"Executado","id":"rp_46"},{"sheet":"RP","bacia":5,"qd":"23","pv":"40","pv2":"39","m":12.0,"dn":100,"status":"Executado","id":"rp_47"},{"sheet":"RP","bacia":5,"qd":"23","pv":"39","pv2":"38","m":80.0,"dn":100,"status":"Executado","id":"rp_48"},{"sheet":"RP","bacia":5,"qd":"21","pv":"54","pv2":"55","m":80.0,"dn":100,"status":"Executado","id":"rp_49"},{"sheet":"RP","bacia":5,"qd":"21","pv":"55","pv2":"56","m":77.0,"dn":100,"status":"Executado","id":"rp_50"},{"sheet":"RP","bacia":5,"qd":"21","pv":"56","pv2":"9","m":7.0,"dn":100,"status":"Executado","id":"rp_51"},{"sheet":"RP","bacia":5,"qd":"21","pv":"9","pv2":"10","m":7.0,"dn":100,"status":"Executado","id":"rp_52"},{"sheet":"RP","bacia":5,"qd":"21","pv":"10","pv2":"11","m":36.0,"dn":100,"status":"Executado","id":"rp_53"},{"sheet":"RP","bacia":5,"qd":"21","pv":"11","pv2":"12","m":4.0,"dn":100,"status":"Executado","id":"rp_54"},{"sheet":"RP","bacia":5,"qd":"21","pv":"12","pv2":"13","m":17.0,"dn":100,"status":"Executado","id":"rp_55"},{"sheet":"RP","bacia":5,"qd":"21","pv":"12","pv2":"37","m":5.0,"dn":100,"status":"Executado","id":"rp_56"},{"sheet":"RP","bacia":5,"qd":"21","pv":"37","pv2":"36","m":19.0,"dn":100,"status":"Executado","id":"rp_57"},{"sheet":"RP","bacia":5,"qd":"21","pv":"36","pv2":"35","m":60.0,"dn":100,"status":"Executado","id":"rp_58"},{"sheet":"RP","bacia":5,"qd":"21","pv":"35","pv2":"34","m":30.0,"dn":100,"status":"Executado","id":"rp_59"},{"sheet":"RP","bacia":5,"qd":"21","pv":"34","pv2":"33","m":22.0,"dn":100,"status":"Executado","id":"rp_60"},{"sheet":"RP","bacia":5,"qd":"18","pv":"28","pv2":"29","m":31.0,"dn":100,"status":"Executado","id":"rp_61"},{"sheet":"RP","bacia":5,"qd":"18","pv":"29","pv2":"30","m":30.0,"dn":100,"status":"Executado","id":"rp_62"},{"sheet":"RP","bacia":5,"qd":"18","pv":"30","pv2":"31","m":40.0,"dn":100,"status":"Executado","id":"rp_63"},{"sheet":"RP","bacia":5,"qd":"18","pv":"31","pv2":"32","m":53.0,"dn":100,"status":"Executado","id":"rp_64"},{"sheet":"RP","bacia":5,"qd":"18","pv":"32","pv2":"8","m":5.0,"dn":100,"status":"Executado","id":"rp_65"},{"sheet":"RP","bacia":5,"qd":"18","pv":"8","pv2":"9","m":17.0,"dn":100,"status":"Executado","id":"rp_66"},{"sheet":"RP","bacia":5,"qd":"18","pv":"8","pv2":"7","m":4.0,"dn":100,"status":"Executado","id":"rp_67"},{"sheet":"RP","bacia":5,"qd":"18","pv":"7","pv2":"6","m":36.0,"dn":100,"status":"Executado","id":"rp_68"},{"sheet":"RP","bacia":5,"qd":"18","pv":"6","pv2":"5","m":7.0,"dn":100,"status":"Executado","id":"rp_69"},{"sheet":"RP","bacia":5,"qd":"18","pv":"5","pv2":"4","m":5.0,"dn":100,"status":"Executado","id":"rp_70"},{"sheet":"RP","bacia":5,"qd":"18","pv":"4","pv2":"3","m":78.0,"dn":100,"status":"Executado","id":"rp_71"},{"sheet":"RP","bacia":5,"qd":"18","pv":"3","pv2":"2","m":80.0,"dn":100,"status":"Executado","id":"rp_72"},{"sheet":"RP","bacia":5,"qd":"18","pv":"2","pv2":"57","m":25.0,"dn":100,"status":"Executado","id":"rp_73"},{"sheet":"RP","bacia":5,"qd":"18","pv":"2","pv2":"1","m":12.0,"dn":100,"status":"Não Executado","id":"rp_74"},{"sheet":"RP","bacia":6,"qd":"22","pv":"37","pv2":"38","m":62.0,"dn":100,"status":"Não Executado","id":"rp_75"},{"sheet":"RP","bacia":6,"qd":"22","pv":"38","pv2":"39","m":40.0,"dn":100,"status":"Não Executado","id":"rp_76"},{"sheet":"RP","bacia":6,"qd":"22","pv":"39","pv2":"40","m":8.0,"dn":100,"status":"Não Executado","id":"rp_77"},{"sheet":"RP","bacia":6,"qd":"22","pv":"40","pv2":"49","m":6.0,"dn":100,"status":"Não Executado","id":"rp_78"},{"sheet":"RP","bacia":6,"qd":"22","pv":"49","pv2":"48","m":35.0,"dn":100,"status":"Não Executado","id":"rp_79"},{"sheet":"RP","bacia":6,"qd":"22","pv":"48","pv2":"47","m":9.0,"dn":100,"status":"Não Executado","id":"rp_80"},{"sheet":"RP","bacia":6,"qd":"22","pv":"47","pv2":"46","m":9.0,"dn":100,"status":"Não Executado","id":"rp_81"},{"sheet":"RP","bacia":6,"qd":"22","pv":"46","pv2":"45","m":23.0,"dn":100,"status":"Não Executado","id":"rp_82"},{"sheet":"RP","bacia":6,"qd":"22","pv":"45","pv2":"44","m":80.0,"dn":100,"status":"Não Executado","id":"rp_83"},{"sheet":"RP","bacia":6,"qd":"22","pv":"44","pv2":"43","m":5.0,"dn":100,"status":"Não Executado","id":"rp_84"},{"sheet":"RP","bacia":6,"qd":"22","pv":"43","pv2":"42","m":5.0,"dn":100,"status":"Não Executado","id":"rp_85"},{"sheet":"RP","bacia":6,"qd":"22","pv":"42","pv2":"41","m":22.0,"dn":100,"status":"Não Executado","id":"rp_86"},{"sheet":"RP","bacia":6,"qd":"20","pv":"31","pv2":"32","m":80.0,"dn":100,"status":"Não Executado","id":"rp_87"},{"sheet":"RP","bacia":6,"qd":"20","pv":"32","pv2":"33","m":64.0,"dn":100,"status":"Não Executado","id":"rp_88"},{"sheet":"RP","bacia":6,"qd":"20","pv":"21","pv2":"22","m":80.0,"dn":100,"status":"Não Executado","id":"rp_89"},{"sheet":"RP","bacia":6,"qd":"20","pv":"22","pv2":"23","m":66.0,"dn":100,"status":"Não Executado","id":"rp_90"},{"sheet":"RP","bacia":6,"qd":"19","pv":"33","pv2":"34","m":80.0,"dn":100,"status":"Não Executado","id":"rp_91"},{"sheet":"RP","bacia":6,"qd":"19","pv":"34","pv2":"35","m":80.0,"dn":100,"status":"Não Executado","id":"rp_92"},{"sheet":"RP","bacia":6,"qd":"19","pv":"35","pv2":"36","m":29.0,"dn":100,"status":"Não Executado","id":"rp_93"},{"sheet":"RP","bacia":6,"qd":"19","pv":"36","pv2":"30","m":7.0,"dn":100,"status":"Não Executado","id":"rp_94"},{"sheet":"RP","bacia":6,"qd":"19","pv":"30","pv2":"18","m":20.0,"dn":100,"status":"Não Executado","id":"rp_95"},{"sheet":"RP","bacia":6,"qd":"19","pv":"30","pv2":"29","m":6.0,"dn":100,"status":"Não Executado","id":"rp_96"},{"sheet":"RP","bacia":6,"qd":"19","pv":"29","pv2":"28","m":37.0,"dn":100,"status":"Não Executado","id":"rp_97"},{"sheet":"RP","bacia":6,"qd":"19","pv":"28","pv2":"27","m":3.0,"dn":100,"status":"Não Executado","id":"rp_98"},{"sheet":"RP","bacia":6,"qd":"19","pv":"27","pv2":"26","m":3.0,"dn":100,"status":"Não Executado","id":"rp_99"},{"sheet":"RP","bacia":6,"qd":"19","pv":"26","pv2":"25","m":20.0,"dn":100,"status":"Não Executado","id":"rp_100"},{"sheet":"RP","bacia":6,"qd":"19","pv":"25","pv2":"24","m":61.0,"dn":100,"status":"Não Executado","id":"rp_101"},{"sheet":"RP","bacia":6,"qd":"19","pv":"24","pv2":"23","m":80.0,"dn":100,"status":"Não Executado","id":"rp_102"},{"sheet":"RP","bacia":6,"qd":"17","pv":"1","pv2":"2","m":80.0,"dn":100,"status":"Não Executado","id":"rp_103"},{"sheet":"RP","bacia":6,"qd":"17","pv":"2","pv2":"3","m":80.0,"dn":100,"status":"Não Executado","id":"rp_104"},{"sheet":"RP","bacia":6,"qd":"17","pv":"3","pv2":"4","m":58.0,"dn":100,"status":"Não Executado","id":"rp_105"},{"sheet":"RP","bacia":6,"qd":"17","pv":"11","pv2":"12","m":80.0,"dn":100,"status":"Não Executado","id":"rp_106"},{"sheet":"RP","bacia":6,"qd":"17","pv":"12","pv2":"13","m":80.0,"dn":100,"status":"Não Executado","id":"rp_107"},{"sheet":"RP","bacia":6,"qd":"17","pv":"13","pv2":"14","m":57.0,"dn":100,"status":"Não Executado","id":"rp_108"},{"sheet":"RP","bacia":6,"qd":"16","pv":"4","pv2":"5","m":80.0,"dn":100,"status":"Não Executado","id":"rp_109"},{"sheet":"RP","bacia":6,"qd":"16","pv":"5","pv2":"6","m":80.0,"dn":100,"status":"Não Executado","id":"rp_110"},{"sheet":"RP","bacia":6,"qd":"16","pv":"6","pv2":"7","m":34.0,"dn":100,"status":"Não Executado","id":"rp_111"},{"sheet":"RP","bacia":6,"qd":"16","pv":"7","pv2":"8","m":51.0,"dn":100,"status":"Não Executado","id":"rp_112"},{"sheet":"RP","bacia":6,"qd":"16","pv":"8","pv2":"9","m":7.0,"dn":100,"status":"Não Executado","id":"rp_113"},{"sheet":"RP","bacia":6,"qd":"16","pv":"9","pv2":"10","m":4.0,"dn":100,"status":"Não Executado","id":"rp_114"},{"sheet":"RP","bacia":6,"qd":"16","pv":"10","pv2":"20","m":5.0,"dn":100,"status":"Não Executado","id":"rp_115"},{"sheet":"RP","bacia":6,"qd":"16","pv":"10","pv2":"RC","m":21.0,"dn":100,"status":"Não Executado","id":"rp_116"},{"sheet":"RP","bacia":6,"qd":"16","pv":"20","pv2":"19","m":41.0,"dn":100,"status":"Não Executado","id":"rp_117"},{"sheet":"RP","bacia":6,"qd":"16","pv":"19","pv2":"18","m":3.0,"dn":100,"status":"Não Executado","id":"rp_118"},{"sheet":"RP","bacia":6,"qd":"16","pv":"18","pv2":"29","m":20.0,"dn":100,"status":"Não Executado","id":"rp_119"},{"sheet":"RP","bacia":6,"qd":"16","pv":"18","pv2":"17","m":4.0,"dn":100,"status":"Não Executado","id":"rp_120"},{"sheet":"RP","bacia":6,"qd":"16","pv":"17","pv2":"16","m":45.0,"dn":100,"status":"Não Executado","id":"rp_121"},{"sheet":"RP","bacia":6,"qd":"16","pv":"16","pv2":"15","m":80.0,"dn":100,"status":"Não Executado","id":"rp_122"},{"sheet":"RP","bacia":6,"qd":"16","pv":"15","pv2":"14","m":80.0,"dn":100,"status":"Não Executado","id":"rp_123"},{"sheet":"RP","bacia":6,"qd":"16","pv":"9","pv2":"RC","m":15.0,"dn":100,"status":"Não Executado","id":"rp_124"},{"sheet":"RP","bacia":7,"qd":"1","pv":"1","pv2":"2","m":71.0,"dn":100,"status":"Não Executado","id":"rp_125"},{"sheet":"RP","bacia":7,"qd":"1","pv":"2","pv2":"3","m":60.0,"dn":100,"status":"Não Executado","id":"rp_126"},{"sheet":"RP","bacia":7,"qd":"1","pv":"3","pv2":"4","m":80.0,"dn":100,"status":"Não Executado","id":"rp_127"},{"sheet":"RP","bacia":7,"qd":"1","pv":"4","pv2":"5","m":23.0,"dn":100,"status":"Não Executado","id":"rp_128"},{"sheet":"RP","bacia":7,"qd":"1","pv":"5","pv2":"6","m":6.0,"dn":100,"status":"Não Executado","id":"rp_129"},{"sheet":"RP","bacia":7,"qd":"1","pv":"6","pv2":"7","m":6.0,"dn":100,"status":"Não Executado","id":"rp_130"},{"sheet":"RP","bacia":7,"qd":"1","pv":"7","pv2":"8","m":40.0,"dn":100,"status":"Não Executado","id":"rp_131"},{"sheet":"RP","bacia":7,"qd":"1","pv":"8","pv2":"9","m":3.0,"dn":100,"status":"Não Executado","id":"rp_132"},{"sheet":"RP","bacia":7,"qd":"1","pv":"9","pv2":"34","m":5.0,"dn":100,"status":"Não Executado","id":"rp_133"},{"sheet":"RP","bacia":7,"qd":"1","pv":"34","pv2":"33","m":80.0,"dn":100,"status":"Não Executado","id":"rp_134"},{"sheet":"RP","bacia":7,"qd":"1","pv":"33","pv2":"32","m":80.0,"dn":100,"status":"Não Executado","id":"rp_135"},{"sheet":"RP","bacia":7,"qd":"1","pv":"32","pv2":"31","m":80.0,"dn":100,"status":"Não Executado","id":"rp_136"},{"sheet":"RP","bacia":7,"qd":"5","pv":"26","pv2":"27","m":80.0,"dn":100,"status":"Não Executado","id":"rp_137"},{"sheet":"RP","bacia":7,"qd":"5","pv":"27","pv2":"28","m":80.0,"dn":100,"status":"Não Executado","id":"rp_138"},{"sheet":"RP","bacia":7,"qd":"5","pv":"28","pv2":"29","m":80.0,"dn":100,"status":"Não Executado","id":"rp_139"},{"sheet":"RP","bacia":7,"qd":"5","pv":"29","pv2":"30","m":6.0,"dn":100,"status":"Não Executado","id":"rp_140"},{"sheet":"RP","bacia":7,"qd":"5","pv":"30","pv2":"10","m":5.0,"dn":100,"status":"Não Executado","id":"rp_141"},{"sheet":"RP","bacia":7,"qd":"5","pv":"10","pv2":"8","m":27.0,"dn":100,"status":"Não Executado","id":"rp_142"},{"sheet":"RP","bacia":7,"qd":"5","pv":"10","pv2":"11","m":6.0,"dn":100,"status":"Não Executado","id":"rp_143"},{"sheet":"RP","bacia":7,"qd":"5","pv":"11","pv2":"12","m":49.0,"dn":100,"status":"Não Executado","id":"rp_144"},{"sheet":"RP","bacia":7,"qd":"5","pv":"12","pv2":"13","m":3.0,"dn":100,"status":"Não Executado","id":"rp_145"},{"sheet":"RP","bacia":7,"qd":"5","pv":"13","pv2":"25","m":56.0,"dn":100,"status":"Não Executado","id":"rp_146"},{"sheet":"RP","bacia":7,"qd":"5","pv":"25","pv2":"24","m":81.0,"dn":100,"status":"Não Executado","id":"rp_147"},{"sheet":"RP","bacia":7,"qd":"5","pv":"24","pv2":"23","m":80.0,"dn":100,"status":"Não Executado","id":"rp_148"},{"sheet":"RP","bacia":7,"qd":"9","pv":"18","pv2":"19","m":80.0,"dn":100,"status":"Não Executado","id":"rp_149"},{"sheet":"RP","bacia":7,"qd":"9","pv":"19","pv2":"20","m":80.0,"dn":100,"status":"Não Executado","id":"rp_150"},{"sheet":"RP","bacia":7,"qd":"9","pv":"20","pv2":"21","m":37.0,"dn":100,"status":"Não Executado","id":"rp_151"},{"sheet":"RP","bacia":7,"qd":"9","pv":"21","pv2":"22","m":5.0,"dn":100,"status":"Não Executado","id":"rp_152"},{"sheet":"RP","bacia":7,"qd":"9","pv":"22","pv2":"14","m":6.0,"dn":100,"status":"Não Executado","id":"rp_153"},{"sheet":"RP","bacia":7,"qd":"9","pv":"14","pv2":"13","m":27.0,"dn":100,"status":"Não Executado","id":"rp_154"},{"sheet":"RP","bacia":7,"qd":"9","pv":"14","pv2":"15","m":5.0,"dn":100,"status":"Não Executado","id":"rp_155"},{"sheet":"RP","bacia":7,"qd":"9","pv":"15","pv2":"16","m":39.0,"dn":100,"status":"Não Executado","id":"rp_156"},{"sheet":"RP","bacia":7,"qd":"9","pv":"16","pv2":"38","m":6.0,"dn":100,"status":"Não Executado","id":"rp_157"},{"sheet":"RP","bacia":7,"qd":"9","pv":"38","pv2":"RC 12","m":13.0,"dn":100,"status":"Não Executado","id":"rp_158"},{"sheet":"RP","bacia":7,"qd":"9","pv":"38","pv2":"17","m":6.0,"dn":100,"status":"Não Executado","id":"rp_159"},{"sheet":"RP","bacia":7,"qd":"9","pv":"17","pv2":"37","m":22.0,"dn":100,"status":"Não Executado","id":"rp_160"},{"sheet":"RP","bacia":7,"qd":"9","pv":"37","pv2":"36","m":80.0,"dn":100,"status":"Não Executado","id":"rp_161"},{"sheet":"RP","bacia":7,"qd":"9","pv":"36","pv2":"35","m":80.0,"dn":100,"status":"Não Executado","id":"rp_162"},{"sheet":"RP","bacia":8,"qd":"4","pv":"1","pv2":"2","m":74.0,"dn":100,"status":"Não Executado","id":"rp_163"},{"sheet":"RP","bacia":8,"qd":"4","pv":"2","pv2":"40","m":12.0,"dn":100,"status":"Não Executado","id":"rp_164"},{"sheet":"RP","bacia":8,"qd":"4","pv":"2","pv2":"3","m":80.0,"dn":100,"status":"Não Executado","id":"rp_165"},{"sheet":"RP","bacia":8,"qd":"4","pv":"48","pv2":"49","m":80.0,"dn":100,"status":"Não Executado","id":"rp_166"},{"sheet":"RP","bacia":8,"qd":"3","pv":"3","pv2":"4","m":80.0,"dn":100,"status":"Não Executado","id":"rp_167"},{"sheet":"RP","bacia":8,"qd":"3","pv":"49","pv2":"50","m":80.0,"dn":100,"status":"Não Executado","id":"rp_168"},{"sheet":"RP","bacia":8,"qd":"3","pv":"50","pv2":"51","m":80.0,"dn":100,"status":"Não Executado","id":"rp_169"},{"sheet":"RP","bacia":8,"qd":"2","pv":"4","pv2":"5","m":80.0,"dn":100,"status":"Não Executado","id":"rp_170"},{"sheet":"RP","bacia":8,"qd":"2","pv":"5","pv2":"6","m":80.0,"dn":100,"status":"Não Executado","id":"rp_171"},{"sheet":"RP","bacia":8,"qd":"2","pv":"6","pv2":"7","m":80.0,"dn":100,"status":"Não Executado","id":"rp_172"},{"sheet":"RP","bacia":8,"qd":"2","pv":"7","pv2":"8","m":48.0,"dn":100,"status":"Não Executado","id":"rp_173"},{"sheet":"RP","bacia":8,"qd":"2","pv":"8","pv2":"9","m":5.0,"dn":100,"status":"Não Executado","id":"rp_174"},{"sheet":"RP","bacia":8,"qd":"2","pv":"9","pv2":"10","m":5.0,"dn":100,"status":"Não Executado","id":"rp_175"},{"sheet":"RP","bacia":8,"qd":"2","pv":"10","pv2":"11","m":38.0,"dn":100,"status":"Não Executado","id":"rp_176"},{"sheet":"RP","bacia":8,"qd":"2","pv":"11","pv2":"12","m":4.0,"dn":100,"status":"Não Executado","id":"rp_177"},{"sheet":"RP","bacia":8,"qd":"2","pv":"12","pv2":"13","m":17.0,"dn":100,"status":"Não Executado","id":"rp_178"},{"sheet":"RP","bacia":8,"qd":"2","pv":"12","pv2":"55","m":4.0,"dn":100,"status":"Não Executado","id":"rp_179"},{"sheet":"RP","bacia":8,"qd":"2","pv":"55","pv2":"54","m":80.0,"dn":100,"status":"Não Executado","id":"rp_180"},{"sheet":"RP","bacia":8,"qd":"2","pv":"54","pv2":"53","m":80.0,"dn":100,"status":"Não Executado","id":"rp_181"},{"sheet":"RP","bacia":8,"qd":"2","pv":"53","pv2":"52","m":80.0,"dn":100,"status":"Não Executado","id":"rp_182"},{"sheet":"RP","bacia":8,"qd":"8","pv":"25","pv2":"26","m":80.0,"dn":100,"status":"Não Executado","id":"rp_183"},{"sheet":"RP","bacia":8,"qd":"8","pv":"56","pv2":"57","m":56.0,"dn":100,"status":"Não Executado","id":"rp_184"},{"sheet":"RP","bacia":8,"qd":"7","pv":"26","pv2":"27","m":80.0,"dn":100,"status":"Não Executado","id":"rp_185"},{"sheet":"RP","bacia":8,"qd":"7","pv":"27","pv2":"28","m":80.0,"dn":100,"status":"Não Executado","id":"rp_186"},{"sheet":"RP","bacia":8,"qd":"7","pv":"57","pv2":"58","m":80.0,"dn":100,"status":"Não Executado","id":"rp_187"},{"sheet":"RP","bacia":8,"qd":"7","pv":"58","pv2":"59","m":80.0,"dn":100,"status":"Não Executado","id":"rp_188"},{"sheet":"RP","bacia":8,"qd":"6","pv":"28","pv2":"29","m":80.0,"dn":100,"status":"Não Executado","id":"rp_189"},{"sheet":"RP","bacia":8,"qd":"6","pv":"29","pv2":"30","m":80.0,"dn":100,"status":"Não Executado","id":"rp_190"},{"sheet":"RP","bacia":8,"qd":"6","pv":"30","pv2":"31","m":40.0,"dn":100,"status":"Não Executado","id":"rp_191"},{"sheet":"RP","bacia":8,"qd":"6","pv":"31","pv2":"32","m":43.0,"dn":100,"status":"Não Executado","id":"rp_192"},{"sheet":"RP","bacia":8,"qd":"6","pv":"32","pv2":"13","m":5.0,"dn":100,"status":"Não Executado","id":"rp_193"},{"sheet":"RP","bacia":8,"qd":"6","pv":"13","pv2":"14","m":5.0,"dn":100,"status":"Não Executado","id":"rp_194"},{"sheet":"RP","bacia":8,"qd":"6","pv":"14","pv2":"15","m":38.0,"dn":100,"status":"Não Executado","id":"rp_195"},{"sheet":"RP","bacia":8,"qd":"6","pv":"15","pv2":"16","m":4.0,"dn":100,"status":"Não Executado","id":"rp_196"},{"sheet":"RP","bacia":8,"qd":"6","pv":"16","pv2":"17","m":17.0,"dn":100,"status":"Não Executado","id":"rp_197"},{"sheet":"RP","bacia":8,"qd":"6","pv":"16","pv2":"62","m":5.0,"dn":100,"status":"Não Executado","id":"rp_198"},{"sheet":"RP","bacia":8,"qd":"6","pv":"62","pv2":"61","m":71.0,"dn":100,"status":"Não Executado","id":"rp_199"},{"sheet":"RP","bacia":8,"qd":"6","pv":"61","pv2":"60","m":80.0,"dn":100,"status":"Não Executado","id":"rp_200"},{"sheet":"RP","bacia":8,"qd":"6","pv":"60","pv2":"59","m":80.0,"dn":100,"status":"Não Executado","id":"rp_201"},{"sheet":"RP","bacia":8,"qd":"11","pv":"33","pv2":"34","m":47.0,"dn":100,"status":"Não Executado","id":"rp_202"},{"sheet":"RP","bacia":8,"qd":"11","pv":"34","pv2":"35","m":80.0,"dn":100,"status":"Não Executado","id":"rp_203"},{"sheet":"RP","bacia":8,"qd":"11","pv":"35","pv2":"36","m":71.0,"dn":100,"status":"Não Executado","id":"rp_204"},{"sheet":"RP","bacia":8,"qd":"11","pv":"63","pv2":"64","m":80.0,"dn":100,"status":"Não Executado","id":"rp_205"},{"sheet":"RP","bacia":8,"qd":"11","pv":"64","pv2":"65","m":80.0,"dn":100,"status":"Não Executado","id":"rp_206"},{"sheet":"RP","bacia":8,"qd":"10","pv":"36","pv2":"37","m":80.0,"dn":100,"status":"Não Executado","id":"rp_207"},{"sheet":"RP","bacia":8,"qd":"10","pv":"37","pv2":"38","m":80.0,"dn":100,"status":"Não Executado","id":"rp_208"},{"sheet":"RP","bacia":8,"qd":"10","pv":"38","pv2":"39","m":64.0,"dn":100,"status":"Não Executado","id":"rp_209"},{"sheet":"RP","bacia":8,"qd":"10","pv":"39","pv2":"17","m":5.0,"dn":100,"status":"Não Executado","id":"rp_210"},{"sheet":"RP","bacia":8,"qd":"10","pv":"17","pv2":"18","m":5.0,"dn":100,"status":"Não Executado","id":"rp_211"},{"sheet":"RP","bacia":8,"qd":"10","pv":"18","pv2":"19","m":37.0,"dn":100,"status":"Não Executado","id":"rp_212"},{"sheet":"RP","bacia":8,"qd":"10","pv":"19","pv2":"20","m":5.0,"dn":150,"status":"Não Executado","id":"rp_213"},{"sheet":"RP","bacia":8,"qd":"10","pv":"20","pv2":"21","m":17.0,"dn":150,"status":"Não Executado","id":"rp_214"},{"sheet":"RP","bacia":8,"qd":"10","pv":"20","pv2":"68","m":4.0,"dn":100,"status":"Não Executado","id":"rp_215"},{"sheet":"RP","bacia":8,"qd":"10","pv":"68","pv2":"67","m":74.0,"dn":100,"status":"Não Executado","id":"rp_216"},{"sheet":"RP","bacia":8,"qd":"10","pv":"67","pv2":"66","m":80.0,"dn":100,"status":"Não Executado","id":"rp_217"},{"sheet":"RP","bacia":8,"qd":"10","pv":"66","pv2":"65","m":80.0,"dn":100,"status":"Não Executado","id":"rp_218"},{"sheet":"RP","bacia":8,"qd":"12","pv":"41","pv2":"42","m":76.0,"dn":100,"status":"Não Executado","id":"rp_219"},{"sheet":"RP","bacia":8,"qd":"12","pv":"42","pv2":"43","m":80.0,"dn":100,"status":"Não Executado","id":"rp_220"},{"sheet":"RP","bacia":8,"qd":"12","pv":"43","pv2":"21","m":7.0,"dn":100,"status":"Não Executado","id":"rp_221"},{"sheet":"RP","bacia":8,"qd":"12","pv":"21","pv2":"22","m":5.0,"dn":150,"status":"Não Executado","id":"rp_222"},{"sheet":"RP","bacia":8,"qd":"12","pv":"22","pv2":"23","m":38.0,"dn":150,"status":"Não Executado","id":"rp_223"},{"sheet":"RP","bacia":8,"qd":"12","pv":"23","pv2":"24","m":5.0,"dn":150,"status":"Não Executado","id":"rp_224"},{"sheet":"RP","bacia":8,"qd":"12","pv":"24","pv2":"RC 06","m":13.0,"dn":150,"status":"Não Executado","id":"rp_225"},{"sheet":"RP","bacia":8,"qd":"12","pv":"24","pv2":"47","m":5.0,"dn":100,"status":"Não Executado","id":"rp_226"},{"sheet":"RP","bacia":8,"qd":"12","pv":"47","pv2":"46","m":62.0,"dn":100,"status":"Não Executado","id":"rp_227"},{"sheet":"RP","bacia":8,"qd":"12","pv":"46","pv2":"45","m":70.0,"dn":100,"status":"Não Executado","id":"rp_228"},{"sheet":"RP","bacia":8,"qd":"12","pv":"45","pv2":"44","m":14.0,"dn":100,"status":"Não Executado","id":"rp_229"},{"sheet":"RP","bacia":9,"qd":"13","pv":"1","pv2":"2","m":80.0,"dn":100,"status":"Não Executado","id":"rp_230"},{"sheet":"RP","bacia":9,"qd":"13","pv":"2","pv2":"3","m":56.0,"dn":100,"status":"Não Executado","id":"rp_231"},{"sheet":"RP","bacia":9,"qd":"13","pv":"3","pv2":"4","m":5.0,"dn":100,"status":"Não Executado","id":"rp_232"},{"sheet":"RP","bacia":9,"qd":"13","pv":"4","pv2":"5","m":5.0,"dn":100,"status":"Não Executado","id":"rp_233"},{"sheet":"RP","bacia":9,"qd":"13","pv":"5","pv2":"6","m":38.0,"dn":100,"status":"Não Executado","id":"rp_234"},{"sheet":"RP","bacia":9,"qd":"13","pv":"6","pv2":"7","m":4.0,"dn":100,"status":"Não Executado","id":"rp_235"},{"sheet":"RP","bacia":9,"qd":"13","pv":"7","pv2":"8","m":17.0,"dn":100,"status":"Não Executado","id":"rp_236"},{"sheet":"RP","bacia":9,"qd":"13","pv":"7","pv2":"20","m":6.0,"dn":100,"status":"Não Executado","id":"rp_237"},{"sheet":"RP","bacia":9,"qd":"13","pv":"20","pv2":"19","m":61.0,"dn":100,"status":"Não Executado","id":"rp_238"},{"sheet":"RP","bacia":9,"qd":"13","pv":"19","pv2":"18","m":74.0,"dn":100,"status":"Não Executado","id":"rp_239"},{"sheet":"RP","bacia":9,"qd":"14","pv":"30","pv2":"31","m":73.0,"dn":100,"status":"Não Executado","id":"rp_240"},{"sheet":"RP","bacia":9,"qd":"14","pv":"31","pv2":"32","m":52.0,"dn":100,"status":"Não Executado","id":"rp_241"},{"sheet":"RP","bacia":9,"qd":"14","pv":"32","pv2":"8","m":5.0,"dn":100,"status":"Não Executado","id":"rp_242"},{"sheet":"RP","bacia":9,"qd":"14","pv":"8","pv2":"9","m":5.0,"dn":100,"status":"Não Executado","id":"rp_243"},{"sheet":"RP","bacia":9,"qd":"14","pv":"9","pv2":"10","m":38.0,"dn":100,"status":"Não Executado","id":"rp_244"},{"sheet":"RP","bacia":9,"qd":"14","pv":"10","pv2":"11","m":5.0,"dn":100,"status":"Não Executado","id":"rp_245"},{"sheet":"RP","bacia":9,"qd":"14","pv":"11","pv2":"12","m":14.0,"dn":100,"status":"Não Executado","id":"rp_246"},{"sheet":"RP","bacia":9,"qd":"14","pv":"11","pv2":"23","m":4.0,"dn":100,"status":"Não Executado","id":"rp_247"},{"sheet":"RP","bacia":9,"qd":"14","pv":"23","pv2":"22","m":52.0,"dn":100,"status":"Não Executado","id":"rp_248"},{"sheet":"RP","bacia":9,"qd":"14","pv":"22","pv2":"21","m":73.0,"dn":100,"status":"Não Executado","id":"rp_249"},{"sheet":"RP","bacia":9,"qd":"15","pv":"24","pv2":"25","m":72.0,"dn":100,"status":"Não Executado","id":"rp_250"},{"sheet":"RP","bacia":9,"qd":"15","pv":"25","pv2":"12","m":56.0,"dn":100,"status":"Não Executado","id":"rp_251"},{"sheet":"RP","bacia":9,"qd":"15","pv":"12","pv2":"13","m":72.0,"dn":100,"status":"Não Executado","id":"rp_252"},{"sheet":"RP","bacia":9,"qd":"15","pv":"13","pv2":"14","m":5.0,"dn":100,"status":"Não Executado","id":"rp_253"},{"sheet":"RP","bacia":9,"qd":"15","pv":"14","pv2":"15","m":5.0,"dn":100,"status":"Não Executado","id":"rp_254"},{"sheet":"RP","bacia":9,"qd":"15","pv":"15","pv2":"16","m":27.0,"dn":100,"status":"Não Executado","id":"rp_255"},{"sheet":"RP","bacia":9,"qd":"15","pv":"16","pv2":"17","m":8.0,"dn":100,"status":"Não Executado","id":"rp_256"},{"sheet":"RP","bacia":9,"qd":"15","pv":"17","pv2":"RC 01","m":13.0,"dn":100,"status":"Não Executado","id":"rp_257"},{"sheet":"RP","bacia":9,"qd":"15","pv":"17","pv2":"29","m":8.0,"dn":100,"status":"Não Executado","id":"rp_258"},{"sheet":"RP","bacia":9,"qd":"15","pv":"29","pv2":"28","m":44.0,"dn":100,"status":"Não Executado","id":"rp_259"},{"sheet":"RP","bacia":9,"qd":"15","pv":"28","pv2":"27","m":80.0,"dn":100,"status":"Não Executado","id":"rp_260"},{"sheet":"RP","bacia":9,"qd":"15","pv":"27","pv2":"26","m":73.0,"dn":100,"status":"Não Executado","id":"rp_261"}],"ct1":[{"sheet":"CT1","pv":"1","pv2":"2","m":79.0,"dn":150,"status":"Não Executado","id":"ct1_0"},{"sheet":"CT1","pv":"2","pv2":"3","m":54.0,"dn":150,"status":"Não Executado","id":"ct1_1"},{"sheet":"CT1","pv":"3","pv2":"4","m":38.0,"dn":150,"status":"Não Executado","id":"ct1_2"},{"sheet":"CT1","pv":"4","pv2":"5","m":35.0,"dn":150,"status":"Não Executado","id":"ct1_3"},{"sheet":"CT1","pv":"5","pv2":"6","m":37.0,"dn":150,"status":"Não Executado","id":"ct1_4"},{"sheet":"CT1","pv":"6","pv2":"7","m":65.0,"dn":150,"status":"Não Executado","id":"ct1_5"},{"sheet":"CT1","pv":"7","pv2":"8","m":54.0,"dn":150,"status":"Não Executado","id":"ct1_6"},{"sheet":"CT1","pv":"8","pv2":"9","m":51.0,"dn":150,"status":"Não Executado","id":"ct1_7"},{"sheet":"CT1","pv":"9","pv2":"10","m":70.0,"dn":150,"status":"Não Executado","id":"ct1_8"},{"sheet":"CT1","pv":"10","pv2":"11","m":75.0,"dn":150,"status":"Não Executado","id":"ct1_9"},{"sheet":"CT1","pv":"11","pv2":"12","m":42.0,"dn":150,"status":"Não Executado","id":"ct1_10"},{"sheet":"CT1","pv":"12","pv2":"13","m":59.0,"dn":150,"status":"Não Executado","id":"ct1_11"},{"sheet":"CT1","pv":"13","pv2":"14","m":58.0,"dn":150,"status":"Não Executado","id":"ct1_12"},{"sheet":"CT1","pv":"14","pv2":"15","m":57.0,"dn":150,"status":"Não Executado","id":"ct1_13"},{"sheet":"CT1","pv":"15","pv2":"16","m":52.0,"dn":150,"status":"Não Executado","id":"ct1_14"},{"sheet":"CT1","pv":"16","pv2":"TRAVESSIA","m":60.0,"dn":150,"status":"Não Executado","id":"ct1_15"}],"ct2":[{"sheet":"CT2","pv":"1","pv2":"2","m":35.0,"dn":150,"status":"Não Executado","id":"ct2_0"},{"sheet":"CT2","pv":"2","pv2":"3","m":46.0,"dn":150,"status":"Não Executado","id":"ct2_1"},{"sheet":"CT2","pv":"3","pv2":"4","m":73.0,"dn":150,"status":"Não Executado","id":"ct2_2"},{"sheet":"CT2","pv":"4","pv2":"5","m":44.0,"dn":150,"status":"Não Executado","id":"ct2_3"},{"sheet":"CT2","pv":"5","pv2":"6","m":14.0,"dn":150,"status":"Não Executado","id":"ct2_4"},{"sheet":"CT2","pv":"6","pv2":"7","m":19.0,"dn":150,"status":"Não Executado","id":"ct2_5"},{"sheet":"CT2","pv":"7","pv2":"8","m":29.0,"dn":150,"status":"Não Executado","id":"ct2_6"},{"sheet":"CT2","pv":"8","pv2":"9","m":55.0,"dn":150,"status":"Não Executado","id":"ct2_7"},{"sheet":"CT2","pv":"9","pv2":"10","m":40.0,"dn":150,"status":"Não Executado","id":"ct2_8"},{"sheet":"CT2","pv":"10","pv2":"11","m":69.0,"dn":150,"status":"Não Executado","id":"ct2_9"},{"sheet":"CT2","pv":"11","pv2":"12","m":38.0,"dn":150,"status":"Não Executado","id":"ct2_10"},{"sheet":"CT2","pv":"12","pv2":"13","m":55.0,"dn":150,"status":"Não Executado","id":"ct2_11"},{"sheet":"CT2","pv":"13","pv2":"-","m":28.0,"dn":150,"status":"Não Executado","id":"ct2_12"}],"rp2":[{"sheet":"RP2","modulo":"TP MD 04","qd":"16","m":436.0,"dn":50,"status":"Executado","id":"rp2_0"},{"sheet":"RP2","modulo":"TP MD 04","qd":"16","m":87.0,"dn":75,"status":"Executado","id":"rp2_1"},{"sheet":"RP2","modulo":"TP MD 04","qd":"19","m":439.0,"dn":50,"status":"Executado","id":"rp2_2"},{"sheet":"RP2","modulo":"TP MD 04","qd":"22","m":387.0,"dn":50,"status":"Executado","id":"rp2_3"},{"sheet":"RP2","modulo":"TP MD 05","qd":"17","m":558.0,"dn":50,"status":"Executado","id":"rp2_4"},{"sheet":"RP2","modulo":"TP MD 05","qd":"18","m":142.0,"dn":50,"status":"Não Executado","id":"rp2_5"},{"sheet":"RP2","modulo":"TP MD 05","qd":"18","m":317.0,"dn":75,"status":"Não Executado","id":"rp2_6"},{"sheet":"RP2","modulo":"TP MD 05","qd":"20","m":461.0,"dn":50,"status":"Não Executado","id":"rp2_7"},{"sheet":"RP2","modulo":"TP MD 05","qd":"21","m":312.0,"dn":50,"status":"Não Executado","id":"rp2_8"},{"sheet":"RP2","modulo":"TP MD 05","qd":"23","m":387.0,"dn":50,"status":"Executado","id":"rp2_9"},{"sheet":"RP2","modulo":"TP MD 06","qd":"24","m":289.0,"dn":50,"status":"Executado","id":"rp2_10"},{"sheet":"RP2","modulo":"TP MD 06","qd":"25","m":285.0,"dn":50,"status":"Executado","id":"rp2_11"},{"sheet":"RP2","modulo":"TP MD 06","qd":"26","m":408.0,"dn":50,"status":"Executado","id":"rp2_12"},{"sheet":"RP2","modulo":"TP MD 06","qd":"26","m":312.0,"dn":50,"status":"Executado","id":"rp2_13"},{"sheet":"RP2","modulo":"TP MD 07","qd":"1","m":549.0,"dn":50,"status":"Não Executado","id":"rp2_14"},{"sheet":"RP2","modulo":"TP MD 07","qd":"1","m":82.0,"dn":75,"status":"Não Executado","id":"rp2_15"},{"sheet":"RP2","modulo":"TP MD 07","qd":"5","m":613.0,"dn":50,"status":"Não Executado","id":"rp2_16"},{"sheet":"RP2","modulo":"TP MD 07","qd":"9","m":532.0,"dn":50,"status":"Não Executado","id":"rp2_17"},{"sheet":"RP2","modulo":"TP MD 08","qd":"2","m":488.0,"dn":50,"status":"Não Executado","id":"rp2_18"},{"sheet":"RP2","modulo":"TP MD 08","qd":"2","m":103.0,"dn":75,"status":"Não Executado","id":"rp2_19"},{"sheet":"RP2","modulo":"TP MD 08","qd":"6","m":477.0,"dn":50,"status":"Não Executado","id":"rp2_20"},{"sheet":"RP2","modulo":"TP MD 08","qd":"6","m":89.0,"dn":75,"status":"Não Executado","id":"rp2_21"},{"sheet":"RP2","modulo":"TP MD 08","qd":"10","m":530.0,"dn":50,"status":"Não Executado","id":"rp2_22"},{"sheet":"RP2","modulo":"TP MD 08","qd":"12","m":444.0,"dn":50,"status":"Não Executado","id":"rp2_23"},{"sheet":"RP2","modulo":"TP MD 09","qd":"3 e 4","m":586.0,"dn":50,"status":"Não Executado","id":"rp2_24"},{"sheet":"RP2","modulo":"TP MD 09","qd":"3 e 4","m":84.0,"dn":100,"status":"Não Executado","id":"rp2_25"},{"sheet":"RP2","modulo":"TP MD 09","qd":"7 e 8","m":524.0,"dn":50,"status":"Não Executado","id":"rp2_26"},{"sheet":"RP2","modulo":"TP MD 09","qd":"7 e 8","m":105.0,"dn":75,"status":"Não Executado","id":"rp2_27"},{"sheet":"RP2","modulo":"TP MD 09","qd":"11","m":411.0,"dn":50,"status":"Não Executado","id":"rp2_28"},{"sheet":"RP2","modulo":"TP MD 09","qd":"11","m":142.0,"dn":75,"status":"Não Executado","id":"rp2_29"},{"sheet":"RP2","modulo":"TP MD 09","qd":"13","m":412.0,"dn":50,"status":"Não Executado","id":"rp2_30"},{"sheet":"RP2","modulo":"TP MD 09","qd":"14","m":416.0,"dn":50,"status":"Não Executado","id":"rp2_31"}],"rp2_summary":[{"modulo":"TP MD 04","proj":1349.0,"real":1349.0,"saldo":0.0},{"modulo":"TP MD 05","proj":2177.0,"real":945.0,"saldo":1232.0},{"modulo":"TP MD 06","proj":1294.0,"real":1294.0,"saldo":0.0},{"modulo":"TP MD 07","proj":1776.0,"real":0,"saldo":1776.0},{"modulo":"TP MD 08","proj":2131.0,"real":0,"saldo":2131.0},{"modulo":"TP MD 09","proj":2680.0,"real":0,"saldo":2680.0}],"trav":[{"modulo":"Travessia 1","m":1.0,"dn":150,"status":"Não Executado","id":"trav_0"},{"modulo":"Travessia 2","m":1.0,"dn":150,"status":"Não Executado","id":"trav_1"}],"adutora":[{"modulo":"DN 75","m":203.0,"dn":75,"status":"Não Executado","id":"ad_0"},{"modulo":"DN 100","m":306.0,"dn":50,"status":"Não Executado","id":"ad_1"},{"modulo":"DN 150","m":895.0,"dn":75,"status":"Não Executado","id":"ad_2"}]};
 
-let FILTERS = { rp: 'all', rp2: 'all' };
-
-// ── helpers ──
-const fmt = n => typeof n==='number' ? n.toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:1}) : (n??'-');
-const pct = (r,p) => p>0 ? (r/p*100).toFixed(1)+'%' : '0.0%';
-const pctN = (r,p) => p>0 ? Math.min(r/p*100,100) : 0;
-
-function sb(s){
-  if(s==='Executado') return `<span class="sb sb-done">✓ Exec.</span>`;
-  if(s==='Em Execução') return `<span class="sb sb-exec">⚙ Em Exec.</span>`;
-  return `<span class="sb sb-pend">○ Pend.</span>`;
-}
-function dnBadge(dn){
-  const cls = dn===150?'dn-b dn-150':dn===75?'dn-b dn-75':dn===50?'dn-b dn-50':'dn-b';
-  return `<span class="${cls}">DN ${dn}</span>`;
-}
-
-// ── RENDER KPI ──
-function renderKPI(id, cards){
-  document.getElementById(id).innerHTML = cards.map(c=>`
-    <div class="kpi-card ${c.c}">
-      <div class="kpi-label">${c.l}</div>
-      <div class="kpi-value">${c.v}</div>
-      <div class="kpi-sub">${c.s}</div>
-      <div class="kpi-icon">${c.i}</div>
-    </div>`).join('');
+// Carrega do localStorage ou usa base
+function loadData(){
+  try{
+    const saved = localStorage.getItem('tato_obra_v1');
+    if(saved){
+      const parsed = JSON.parse(saved);
+      // Merge: mantém estrutura base, aplica status salvos
+      const statusMap = parsed.statusMap || {};
+      ['rp','ct1','ct2','rp2','trav','adutora'].forEach(key=>{
+        (BASE[key]||[]).forEach(t=>{
+          if(statusMap[t.id]) t.status = statusMap[t.id];
+        });
+      });
+    }
+  }catch(e){ console.warn('Erro ao carregar dados:', e); }
+  return BASE;
 }
 
-// ── RENDER PROGRESS ──
-function renderProg(pfx, real, proj, isCyan){
-  const p = pctN(real,proj);
-  document.getElementById(`sub-${pfx}-pct`).textContent = p.toFixed(1)+'%';
-  document.getElementById(`sub-${pfx}-bar`).style.width = p+'%';
-  document.getElementById(`sub-${pfx}-sub`).textContent = `${fmt(real)} m executados de ${fmt(proj)} m previstos`;
-  document.getElementById(`sub-${pfx}-leg`).innerHTML =
-    `<span><span class="dot" style="background:${isCyan?'var(--cyan)':'var(--accent)'}"></span>Realizado: ${fmt(real)} m</span>
-     <span><span class="dot" style="background:var(--border)"></span>Saldo: ${fmt(proj-real)} m</span>`;
+let D = loadData();
+
+// ── SALVAR ──
+let saveTimer = null;
+function salvar(){
+  const ind = document.getElementById('saveInd');
+  ind.textContent = '⏳ Salvando...';
+  ind.className = 'save-indicator saving';
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(()=>{
+    try{
+      const statusMap = {};
+      ['rp','ct1','ct2','rp2','trav','adutora'].forEach(key=>{
+        (D[key]||[]).forEach(t=>{ statusMap[t.id] = t.status; });
+      });
+      localStorage.setItem('tato_obra_v1', JSON.stringify({statusMap, savedAt: new Date().toISOString()}));
+      ind.textContent = '✓ Salvo às ' + new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+      ind.className = 'save-indicator';
+    }catch(e){
+      ind.textContent = '⚠ Erro ao salvar';
+    }
+  }, 500);
 }
 
-// ── RENDER METROS TABLE ──
-function renderMetrosTable(id, data){
-  const tP=data.reduce((a,r)=>a+r.proj,0), tR=data.reduce((a,r)=>a+r.real,0);
-  document.getElementById(id).innerHTML = data.map(r=>`<tr>
-    <td>${r.bacia}</td><td class="num">${fmt(r.proj)}</td>
-    <td class="num" style="color:var(--green)">${fmt(r.real)}</td>
-    <td class="num">${fmt(r.saldo)}</td>
-    <td class="num" style="color:var(--accent)">${pct(r.real,r.proj)}</td>
-  </tr>`).join('')+`<tr class="tr-total"><td>TOTAL</td><td class="num">${fmt(tP)}</td><td class="num">${fmt(tR)}</td><td class="num">${fmt(tP-tR)}</td><td class="num">${pct(tR,tP)}</td></tr>`;
-}
-function renderSimpleTable(id, data){
-  const tP=data.reduce((a,r)=>a+r.proj,0), tR=data.reduce((a,r)=>a+r.real,0);
-  document.getElementById(id).innerHTML = data.map(r=>`<tr>
-    <td>${r.bacia}</td><td class="num">${r.proj}</td>
-    <td class="num" style="color:var(--green)">${r.real}</td><td class="num">${r.saldo}</td>
-  </tr>`).join('')+`<tr class="tr-total"><td>TOTAL</td><td class="num">${tP}</td><td class="num">${tR}</td><td class="num">${tP-tR}</td></tr>`;
+// ── ATUALIZAR STATUS (inline) ──
+function mudarStatus(id, novoStatus, key){
+  const arr = D[key]||[];
+  const trecho = arr.find(t=>t.id===id);
+  if(!trecho) return;
+  trecho.status = novoStatus;
+  salvar();
+  renderAll();
+  // Highlight linha
+  setTimeout(()=>{
+    const tr = document.querySelector(`tr[data-id="${id}"]`);
+    if(tr){ tr.classList.add('just-updated'); setTimeout(()=>tr.classList.remove('just-updated'),1000); }
+  }, 50);
 }
 
-// ── BAR CHART ──
-function renderBarChart(id, data, colorArr){
-  const cols = colorArr||['#f0a500','#388bfd','#3fb950','#e05c2a','#a371f7','#58a6ff'];
-  const maxP = Math.max(...data.map(r=>r.proj),1);
-  document.getElementById(id).innerHTML = data.map((r,i)=>{
-    const pw=(r.proj/maxP*100).toFixed(1), rw=(r.real/maxP*100).toFixed(1);
-    return `<div class="bar-row">
-      <div class="bar-label">${r.label||r.bacia||r.modulo}</div>
-      <div class="bar-track">
-        <div class="bar-proj" style="width:${pw}%;background:${cols[i%cols.length]}"></div>
-        <div class="bar-real" style="width:${rw}%;background:${cols[i%cols.length]}"></div>
-      </div>
-      <div class="bar-val">${fmt(r.proj)}m</div>
-      <div class="bar-pct">${pct(r.real,r.proj)}</div>
-    </div>`;
-  }).join('');
+// ── STATUS SELECT ──
+function stSel(trecho, key){
+  const cls = trecho.status==='Executado'?'ok':trecho.status==='Em Execução'?'ex':'nd';
+  return `<select class="st-sel ${cls}" onchange="mudarStatus('${trecho.id}',this.value,'${key}');applyClass(this)">
+    <option value="Executado" ${trecho.status==='Executado'?'selected':''}>✓ Executado</option>
+    <option value="Em Execução" ${trecho.status==='Em Execução'?'selected':''}>⚙ Em Execução</option>
+    <option value="Não Executado" ${trecho.status==='Não Executado'?'selected':''}>○ Não Executado</option>
+  </select>`;
+}
+function applyClass(sel){
+  sel.className = 'st-sel '+(sel.value==='Executado'?'ok':sel.value==='Em Execução'?'ex':'nd');
 }
 
-// ── STATUS MINI ──
-function renderStatusMini(id, trechos){
-  const exec=trechos.filter(t=>t.status==='Executado').length;
-  const pend=trechos.filter(t=>t.status==='Não Executado').length;
-  const tot=trechos.length;
-  const mE=trechos.filter(t=>t.status==='Executado').reduce((a,r)=>a+r.m,0);
-  const mP=trechos.filter(t=>t.status==='Não Executado').reduce((a,r)=>a+r.m,0);
-  document.getElementById(id).innerHTML = `
-    <div class="sm-row"><div class="sm-label" style="color:var(--green)">✓ Executado</div><div class="sm-track"><div class="sm-fill" style="width:${pctN(exec,tot).toFixed(1)}%;background:var(--green)"></div></div><div class="sm-val" style="color:var(--green)">${exec}</div></div>
-    <div class="sm-row"><div class="sm-label" style="color:var(--muted)">○ Pendente</div><div class="sm-track"><div class="sm-fill" style="width:${pctN(pend,tot).toFixed(1)}%;background:var(--muted)"></div></div><div class="sm-val" style="color:var(--muted)">${pend}</div></div>
-    <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:10px;color:var(--muted);text-align:center">${tot} trechos · ${fmt(mE+mP)} m total</div>`;
+// ── PAINEL ATUALIZAÇÃO RÁPIDA ──
+function upFiltrar(){
+  const rede = document.getElementById('up-rede').value;
+  const busca = document.getElementById('up-busca').value.toLowerCase().trim();
+  const arr = D[rede]||[];
+  const encontrados = arr.filter(t=> busca==='' || JSON.stringify(t).toLowerCase().includes(busca));
+  const res = document.getElementById('up-result');
+  res.textContent = encontrados.length > 0 ? `${encontrados.length} trecho(s) encontrado(s)` : busca ? '❌ Nenhum encontrado' : '';
+  res.style.color = encontrados.length > 0 ? 'var(--green2)' : 'var(--red)';
 }
-
-// ── DERIVE RP ──
-function deriveRP(){
-  const trechos = DATA.esgoto.filter(t=>t.sheet==='RP');
-  const PROJ_BASE = {4:266,5:1887,6:2025,7:1573,8:3355,9:1130};
-  const PV_PROJ = {4:13,5:63,6:53,7:37,8:71,9:32};
-  const RAM_PROJ = {4:19,5:142,6:161,7:130,8:272,9:95};
-  const PROJ = {};
-  [4,5,6,7,8,9].forEach(b=>{
-    const total=trechos.filter(t=>t.bacia===b).reduce((a,r)=>a+r.m,0);
-    PROJ[b]=total>0?Math.round(total*10)/10:PROJ_BASE[b];
+function upAplicar(){
+  const rede = document.getElementById('up-rede').value;
+  const busca = document.getElementById('up-busca').value.toLowerCase().trim();
+  const novoStatus = document.getElementById('up-status').value;
+  const arr = D[rede]||[];
+  let count = 0;
+  arr.forEach(t=>{
+    if(busca==='' || JSON.stringify(t).toLowerCase().includes(busca)){
+      t.status = novoStatus; count++;
+    }
   });
-  const bacias=[4,5,6,7,8,9];
-  const metros = bacias.map(b=>{
-    const rows=trechos.filter(t=>t.bacia===b);
-    const real=rows.filter(r=>r.status==='Executado').reduce((a,r)=>a+r.m,0);
-    const proj=PROJ[b]||0;
-    return {bacia:'BACIA 0'+b,proj,real:Math.round(real*10)/10,saldo:Math.round((proj-real)*10)/10};
-  });
-  const pv=bacias.map(b=>{
-    const rows=trechos.filter(t=>t.bacia===b);
-    const real=rows.filter(r=>r.status==='Executado').length;
-    const proj=PV_PROJ[b]||0;
-    return {bacia:'BACIA 0'+b,proj,real,saldo:proj-real};
-  });
-  const ramal=bacias.map(b=>{
-    const proj=RAM_PROJ[b]||0;
-    // Ramais executados = trechos executados com ramal (campo ramal numérico, ou usa contagem de trechos executados como proxy)
-    const real=b===4?19:b===5?125:0; // mantém base até ter campo ramal na planilha
-    return {bacia:'BACIA 0'+b,proj,real,saldo:proj-real};
-  });
-  return {trechos,metros,pv,ramal};
+  if(count > 0){
+    salvar(); renderAll();
+    const res = document.getElementById('up-result');
+    res.textContent = `✓ ${count} trecho(s) atualizado(s)!`;
+    res.style.color = 'var(--green2)';
+    document.getElementById('up-busca').value = '';
+    setTimeout(()=>{ res.textContent=''; },3000);
+  }
 }
 
-// ── DERIVE CT ──
-function deriveCT(sheet){
-  const t=DATA.esgoto.filter(x=>x.sheet===sheet);
-  const proj=t.reduce((a,r)=>a+r.m,0);
-  const real=t.filter(r=>r.status==='Executado').reduce((a,r)=>a+r.m,0);
-  return {trechos:t,proj:Math.round(proj*10)/10,real:Math.round(real*10)/10,pvProj:t.length,pvReal:t.filter(r=>r.status==='Executado').length};
+// ── FILTROS ──
+const FL = {rp:'all', rp2:'all'};
+function fB(tab,val,btn){ FL[tab]=val; btn.closest('.tbar').querySelectorAll('.fbtn').forEach(b=>b.classList.remove('fe','fa')); btn.classList.add('fe'); rt(tab); }
+function fM(val,btn){ FL.rp2=val; document.getElementById('bar-rp2').querySelectorAll('.fbtn').forEach(b=>b.classList.remove('fe','fa')); btn.classList.add('fa'); rt('rp2'); }
+
+// ── HELPERS ──
+const fmt = n => typeof n==='number'?n.toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:1}):(n??'-');
+const pct = (r,p) => p>0?(r/p*100).toFixed(1)+'%':'0.0%';
+const pN  = (r,p) => p>0?Math.min(r/p*100,100):0;
+function dn(v){ return `<span class="dn">DN ${v}</span>`; }
+
+// ── KPI ──
+function kpi(id,cards){ document.getElementById(id).innerHTML=cards.map(c=>`<div class="kpi ${c.c}"><div class="kpi-lbl">${c.l}</div><div class="kpi-val">${c.v}</div><div class="kpi-sub">${c.s}</div></div>`).join(''); }
+
+// ── PROGRESS ──
+function prog(pfx,real,proj,blue){
+  const p=pN(real,proj);
+  document.getElementById('pp-'+pfx).textContent=p.toFixed(1)+'%';
+  document.getElementById('pf-'+pfx).style.width=p+'%';
+  document.getElementById('pd-'+pfx).textContent=`${fmt(real)} m executados de ${fmt(proj)} m previstos`;
+  document.getElementById('pm-'+pfx).innerHTML=`<span>Realizado: ${fmt(real)} m</span><span>Saldo: ${fmt(proj-real)} m</span>`;
+}
+
+// ── CHARTS ──
+const COLS=['#4a9c5a','#1a4a8a','#2d7a40','#b8860a','#7a3a8a','#2a7a7a'];
+function barChart(id,rows){
+  const max=Math.max(...rows.map(r=>r.proj),1);
+  document.getElementById(id).innerHTML=rows.map((r,i)=>`<div class="bar-row"><div class="bar-lbl">${r.lbl||r.modulo||r.bacia}</div><div class="bar-track"><div class="bar-bg" style="width:${(r.proj/max*100).toFixed(1)}%;background:${COLS[i%6]}"></div><div class="bar-fg" style="width:${(r.real/max*100).toFixed(1)}%;background:${COLS[i%6]}"></div></div><div class="bar-num">${fmt(r.proj)}m</div><div class="bar-pct">${pct(r.real,r.proj)}</div></div>`).join('');
+}
+function mTable(id,rows){
+  const tP=rows.reduce((a,r)=>a+r.proj,0),tR=rows.reduce((a,r)=>a+r.real,0);
+  document.getElementById(id).innerHTML=rows.map(r=>`<tr><td>${r.bacia||r.modulo}</td><td class="num">${fmt(r.proj)}</td><td class="num" style="color:var(--green2)">${fmt(r.real)}</td><td class="num">${fmt(r.saldo!=null?r.saldo:r.proj-r.real)}</td><td class="num">${pct(r.real,r.proj)}</td></tr>`).join('')+`<tr class="tr-tot"><td>TOTAL</td><td class="num">${fmt(tP)}</td><td class="num">${fmt(tR)}</td><td class="num">${fmt(tP-tR)}</td><td class="num">${pct(tR,tP)}</td></tr>`;
+}
+function sTable(id,rows){
+  const tP=rows.reduce((a,r)=>a+r.proj,0),tR=rows.reduce((a,r)=>a+r.real,0);
+  document.getElementById(id).innerHTML=rows.map(r=>`<tr><td>${r.bacia}</td><td class="num">${r.proj}</td><td class="num" style="color:var(--green2)">${r.real}</td><td class="num">${r.saldo}</td></tr>`).join('')+`<tr class="tr-tot"><td>TOTAL</td><td class="num">${tP}</td><td class="num">${tR}</td><td class="num">${tP-tR}</td></tr>`;
+}
+function smini(id,rows){
+  const tot=rows.length,exec=rows.filter(r=>r.status==='Executado').length,pend=tot-exec;
+  const mE=rows.filter(r=>r.status==='Executado').reduce((a,r)=>a+r.m,0);
+  document.getElementById(id).innerHTML=`<div class="sm-row"><div class="sm-head"><span style="color:var(--green2)">✓ Executado</span><strong style="color:var(--green2)">${exec} trechos</strong></div><div class="sm-track"><div class="sm-fill" style="width:${pN(exec,tot).toFixed(1)}%;background:var(--green2)"></div></div><div class="sm-note">${fmt(mE)} m executados</div></div><div class="sm-row"><div class="sm-head"><span style="color:var(--muted)">○ Pendente</span><strong style="color:var(--muted)">${pend} trechos</strong></div><div class="sm-track"><div class="sm-fill" style="width:${pN(pend,tot).toFixed(1)}%;background:var(--border)"></div></div><div class="sm-note">${tot} total</div></div>`;
 }
 
 // ── RENDER TRECHOS ──
-function renderT(tab){
-  const sh = tab==='rp'?'RP':tab==='ct1'?'CT1':tab==='ct2'?'CT2':tab==='rp2'?'RP2':tab;
-  const search=(document.getElementById('srch-'+tab)||{value:''}).value.toLowerCase();
-  const bF=FILTERS[tab]||'all';
-  let rows;
-  if(tab==='rp2') rows=DATA.rp2_trechos;
-  else rows=DATA.esgoto.filter(t=>t.sheet===sh);
-  const filtered=rows.filter(t=>{
-    if(tab==='rp'&&bF!=='all'&&t.bacia!==bF) return false;
-    if(tab==='rp2'&&bF!=='all'&&t.modulo!==bF) return false;
-    if(search&&!JSON.stringify(t).toLowerCase().includes(search)) return false;
+function rt(tab){
+  const srch=(document.getElementById('s-'+tab)||{value:''}).value.toLowerCase();
+  const bF=FL[tab]||'all';
+  let rows=tab==='rp'?D.rp:tab==='ct1'?D.ct1:tab==='ct2'?D.ct2:D.rp2;
+  rows=rows.filter(r=>{
+    if(tab==='rp'&&bF!=='all'&&r.bacia!==bF)return false;
+    if(tab==='rp2'&&bF!=='all'&&r.modulo!==bF)return false;
+    if(srch&&!JSON.stringify(r).toLowerCase().includes(srch))return false;
     return true;
   });
-  document.getElementById('cnt-'+tab).textContent=filtered.length+' trechos';
-  const tbody=document.getElementById('tbody-'+tab);
+  document.getElementById('c-'+tab).textContent=rows.length+' trechos';
+  const key=tab;
+  const tb=document.getElementById('td-'+tab);
   if(tab==='rp'){
-    tbody.innerHTML=filtered.map(t=>`<tr><td><strong>B0${t.bacia}</strong></td><td>${t.qd}</td><td>${t.pv}</td><td>${t.pv2}</td><td class="num"><strong>${t.m}</strong> m</td><td>${dnBadge(t.dn)}</td><td>${sb(t.status)}</td></tr>`).join('');
-  } else if(tab==='rp2'){
-    tbody.innerHTML=filtered.map(t=>`<tr><td>${t.modulo}</td><td>${t.qd}</td><td class="num"><strong>${t.m}</strong> m</td><td>${dnBadge(t.dn)}</td><td>${sb(t.status)}</td></tr>`).join('');
-  } else {
-    tbody.innerHTML=filtered.map(t=>`<tr><td>${t.pv}</td><td>${t.pv2}</td><td class="num"><strong>${t.m}</strong> m</td><td>${dnBadge(t.dn)}</td><td>${sb(t.status)}</td></tr>`).join('');
+    tb.innerHTML=rows.map(r=>`<tr data-id="${r.id}"><td><b>B0${r.bacia}</b></td><td>${r.qd}</td><td>${r.pv}</td><td>${r.pv2}</td><td class="num">${r.m}m</td><td>${dn(r.dn)}</td><td>${stSel(r,key)}</td></tr>`).join('');
+  }else if(tab==='rp2'){
+    tb.innerHTML=rows.map(r=>`<tr data-id="${r.id}"><td>${r.modulo}</td><td>${r.qd}</td><td class="num">${r.m}m</td><td>${dn(r.dn)}</td><td>${stSel(r,key)}</td></tr>`).join('');
+  }else{
+    tb.innerHTML=rows.map(r=>`<tr data-id="${r.id}"><td>${r.pv}</td><td>${r.pv2}</td><td class="num">${r.m}m</td><td>${dn(r.dn)}</td><td>${stSel(r,key)}</td></tr>`).join('');
   }
-}
-
-function fBacia(tab,val,btn){
-  FILTERS[tab]=val;
-  btn.closest('.toolbar').querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active-e','active-a'));
-  btn.classList.add('active-e');
-  renderT(tab);
-}
-function fModulo(tab,val,btn){
-  FILTERS[tab]=val;
-  btn.closest('.toolbar').querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active-e','active-a'));
-  btn.classList.add('active-a');
-  renderT(tab);
 }
 
 // ── RENDER ALL ──
+const PV_PROJ={4:13,5:63,6:53,7:37,8:71,9:32};
+const RAM_PROJ={4:19,5:142,6:161,7:130,8:272,9:95};
+const RAM_REAL={4:19,5:125,6:0,7:0,8:0,9:0};
+
 function renderAll(){
-  // ESGOTO
-  const rp=deriveRP();
-  const ct1=deriveCT('CT1');
-  const ct2=deriveCT('CT2');
-  const tRP=rp.metros.reduce((a,r)=>a+r.proj,0), rRP=rp.metros.reduce((a,r)=>a+r.real,0);
-  const tPVRP=rp.pv.reduce((a,r)=>a+r.proj,0), rPVRP=rp.pv.reduce((a,r)=>a+r.real,0);
-  const tRamRP=rp.ramal.reduce((a,r)=>a+r.proj,0), rRamRP=rp.ramal.reduce((a,r)=>a+r.real,0);
+  // RP
+  const rp=D.rp||[];
+  const bacias=[4,5,6,7,8,9];
+  const metros=bacias.map(b=>{
+    const rows=rp.filter(r=>r.bacia===b);
+    const proj=rows.reduce((a,r)=>a+r.m,0);
+    const real=rows.filter(r=>r.status==='Executado').reduce((a,r)=>a+r.m,0);
+    return {bacia:'Bacia 0'+b,lbl:'B0'+b,proj:Math.round(proj*10)/10,real:Math.round(real*10)/10};
+  });
+  const pvD=bacias.map(b=>{const rows=rp.filter(r=>r.bacia===b);const real=rows.filter(r=>r.status==='Executado').length;return {bacia:'B0'+b,proj:PV_PROJ[b],real,saldo:PV_PROJ[b]-real};});
+  const ramD=bacias.map(b=>({bacia:'B0'+b,proj:RAM_PROJ[b],real:RAM_REAL[b],saldo:RAM_PROJ[b]-RAM_REAL[b]}));
+  const totP=metros.reduce((a,r)=>a+r.proj,0),totR=metros.reduce((a,r)=>a+r.real,0);
+  const totPV=pvD.reduce((a,r)=>a+r.proj,0),totPVR=pvD.reduce((a,r)=>a+r.real,0);
+  const totRam=ramD.reduce((a,r)=>a+r.proj,0),totRamR=ramD.reduce((a,r)=>a+r.real,0);
+  kpi('kpi-rp',[{c:'kc-green',l:'Metros Projeto',v:fmt(totP),s:'m rede coletora'},{c:'kc-g2',l:'Metros Executados',v:fmt(totR),s:pct(totR,totP)+' concluído'},{c:'kc-blue',l:'PVs Executados',v:totPVR+'/'+totPV,s:'Poços de Visita'},{c:'kc-gold',l:'Ramais Executados',v:totRamR+'/'+totRam,s:'ramais prediais'}]);
+  prog('rp',totR,totP,false); mTable('tb-metros-rp',metros); sTable('tb-pv-rp',pvD); sTable('tb-ram-rp',ramD); barChart('ch-rp',metros); smini('sm-rp',rp); rt('rp');
 
-  renderKPI('kpi-rp',[
-    {c:'orange',l:'Metros Projeto (RP)',v:fmt(tRP),s:'m de rede coletora',i:'📏'},
-    {c:'green',l:'Metros Executados',v:fmt(rRP),s:pct(rRP,tRP)+' concluído',i:'✅'},
-    {c:'blue',l:'PVs Executados',v:rPVRP+'/'+tPVRP,s:'Poços de Visita',i:'🔵'},
-    {c:'red',l:'Ramais Executados',v:rRamRP+'/'+tRamRP,s:'ramais prediais',i:'🔗'},
-  ]);
-  renderProg('rp',rRP,tRP,false);
-  renderMetrosTable('tbl-metros-rp',rp.metros);
-  renderSimpleTable('tbl-pv-rp',rp.pv);
-  renderSimpleTable('tbl-ramal-rp',rp.ramal);
-  renderBarChart('chart-rp',rp.metros.map(r=>({...r,label:r.bacia.replace('BACIA ','')})));
-  renderStatusMini('status-rp',rp.trechos);
-  renderT('rp');
+  // CT1
+  const ct1=D.ct1||[];
+  const ct1P=ct1.reduce((a,r)=>a+r.m,0),ct1R=ct1.filter(r=>r.status==='Executado').reduce((a,r)=>a+r.m,0);
+  kpi('kpi-ct1',[{c:'kc-green',l:'Metros Projeto',v:fmt(ct1P),s:'m coletora DN150'},{c:'kc-g2',l:'Metros Executados',v:fmt(ct1R),s:pct(ct1R,ct1P)+' concluído'},{c:'kc-blue',l:'PVs',v:ct1.filter(r=>r.status==='Executado').length+'/'+ct1.length,s:'Poços de Visita'},{c:'kc-gold',l:'Saldo',v:fmt(ct1P-ct1R),s:'metros restantes'}]);
+  prog('ct1',ct1R,ct1P,false); rt('ct1');
 
-  renderKPI('kpi-ct1',[
-    {c:'purple',l:'Metros Projeto (CT1)',v:fmt(ct1.proj),s:'m coletora DN150',i:'📏'},
-    {c:'green',l:'Metros Executados',v:fmt(ct1.real),s:pct(ct1.real,ct1.proj)+' concluído',i:'✅'},
-    {c:'blue',l:'PVs',v:ct1.pvReal+'/'+ct1.pvProj,s:'Poços de Visita',i:'🔵'},
-    {c:'red',l:'Saldo',v:fmt(ct1.proj-ct1.real),s:'metros restantes',i:'⏳'},
-  ]);
-  renderProg('ct1',ct1.real,ct1.proj,false);
-  renderT('ct1');
+  // CT2
+  const ct2=D.ct2||[];
+  const ct2P=ct2.reduce((a,r)=>a+r.m,0),ct2R=ct2.filter(r=>r.status==='Executado').reduce((a,r)=>a+r.m,0);
+  kpi('kpi-ct2',[{c:'kc-green',l:'Metros Projeto',v:fmt(ct2P),s:'m coletora DN150'},{c:'kc-g2',l:'Metros Executados',v:fmt(ct2R),s:pct(ct2R,ct2P)+' concluído'},{c:'kc-blue',l:'PVs',v:ct2.filter(r=>r.status==='Executado').length+'/'+ct2.length,s:'Poços de Visita'},{c:'kc-gold',l:'Saldo',v:fmt(ct2P-ct2R),s:'metros restantes'}]);
+  prog('ct2',ct2R,ct2P,false); rt('ct2');
 
-  renderKPI('kpi-ct2',[
-    {c:'purple',l:'Metros Projeto (CT2)',v:fmt(ct2.proj),s:'m coletora DN150',i:'📏'},
-    {c:'green',l:'Metros Executados',v:fmt(ct2.real),s:pct(ct2.real,ct2.proj)+' concluído',i:'✅'},
-    {c:'blue',l:'PVs',v:ct2.pvReal+'/'+ct2.pvProj,s:'Poços de Visita',i:'🔵'},
-    {c:'red',l:'Saldo',v:fmt(ct2.proj-ct2.real),s:'metros restantes',i:'⏳'},
-  ]);
-  renderProg('ct2',ct2.real,ct2.proj,false);
-  renderT('ct2');
+  // RP2
+  const r2s=D.rp2_summary||[];
+  const r2P=r2s.reduce((a,r)=>a+r.proj,0),r2R=r2s.reduce((a,r)=>a+r.real,0);
+  // Recalc summary from trechos
+  const mp={};
+  (D.rp2||[]).forEach(t=>{if(!mp[t.modulo])mp[t.modulo]={proj:0,real:0};mp[t.modulo].proj+=t.m;if(t.status==='Executado')mp[t.modulo].real+=t.m;});
+  const r2sum=Object.keys(mp).sort().map(k=>({modulo:k,bacia:k,proj:Math.round(mp[k].proj*10)/10,real:Math.round(mp[k].real*10)/10,saldo:Math.round((mp[k].proj-mp[k].real)*10)/10}));
+  const r2Pt=r2sum.reduce((a,r)=>a+r.proj,0),r2Rt=r2sum.reduce((a,r)=>a+r.real,0);
+  kpi('kpi-rp2',[{c:'kc-blue',l:'Metros Projeto',v:fmt(r2Pt),s:'m rede distribuição'},{c:'kc-g2',l:'Metros Executados',v:fmt(r2Rt),s:pct(r2Rt,r2Pt)+' concluído'},{c:'kc-green',l:'Módulos',v:r2sum.length,s:'módulos'},{c:'kc-gold',l:'Saldo',v:fmt(r2Pt-r2Rt),s:'metros restantes'}]);
+  prog('rp2',r2Rt,r2Pt,true);
+  mTable('tb-rp2',r2sum);
+  barChart('ch-rp2',r2sum.map(r=>({...r,lbl:r.modulo.replace('TP MD 0','MD')})));
+  rt('rp2');
 
-  // ÁGUA
-  const adutora=DATA.adutora;
-  const adProj=adutora.reduce((a,r)=>a+r.proj,0);
-  const adReal=adutora.reduce((a,r)=>a+r.real,0);
-  renderKPI('kpi-adutora',[
-    {c:'cyan',l:'Total Metros Projeto',v:fmt(adProj),s:'m rede adutora',i:'💧'},
-    {c:'green',l:'Metros Executados',v:fmt(adReal),s:pct(adReal,adProj)+' concluído',i:'✅'},
-    {c:'cyan',l:'Módulos DN150',v:adutora.filter(r=>r.dn===150).length,s:'trechos DN150',i:'🔵'},
-    {c:'red',l:'Saldo a Executar',v:fmt(adProj-adReal),s:'metros restantes',i:'⏳'},
-  ]);
-  renderProg('adutora',adReal,adProj,true);
-  document.getElementById('tbl-adutora').innerHTML=adutora.map(r=>`<tr>
-    <td>${r.modulo}</td><td>${dnBadge(r.dn)}</td>
-    <td class="num">${fmt(r.proj)}</td>
-    <td class="num" style="color:var(--green)">${fmt(r.real)}</td>
-    <td class="num">${fmt(r.proj-r.real)}</td>
-    <td>${sb(r.status)}</td>
-  </tr>`).join('');
+  // ADUTORA
+  const ad=D.adutora||[];
+  const adP=ad.reduce((a,r)=>a+r.m,0),adR=ad.filter(r=>r.status==='Executado').reduce((a,r)=>a+r.m,0);
+  kpi('kpi-ad',[{c:'kc-blue',l:'Total Metros',v:fmt(adP),s:'m rede adutora'},{c:'kc-g2',l:'Executados',v:fmt(adR),s:pct(adR,adP)+' concluído'},{c:'kc-green',l:'Módulos',v:ad.length,s:'trechos por DN'},{c:'kc-gold',l:'Saldo',v:fmt(adP-adR),s:'metros restantes'}]);
+  prog('ad',adR,adP,true);
+  document.getElementById('td-ad').innerHTML=ad.map(r=>`<tr data-id="${r.id}"><td>${r.modulo}</td><td>${dn(r.dn)}</td><td class="num">${fmt(r.m)}</td><td class="num" style="color:var(--green2)">${r.status==='Executado'?fmt(r.m):'0'}</td><td class="num">${r.status==='Executado'?'0':fmt(r.m)}</td><td>${stSel(r,'adutora')}</td></tr>`).join('');
 
-  const rp2=DATA.rp2_summary;
-  const r2P=rp2.reduce((a,r)=>a+r.proj,0), r2R=rp2.reduce((a,r)=>a+r.real,0);
-  renderKPI('kpi-rp2',[
-    {c:'cyan',l:'Total Metros Projeto',v:fmt(r2P),s:'m rede distribução',i:'💧'},
-    {c:'green',l:'Metros Executados',v:fmt(r2R),s:pct(r2R,r2P)+' concluído',i:'✅'},
-    {c:'blue',l:'Módulos',v:rp2.length,s:'módulos de distribuição',i:'🗺'},
-    {c:'red',l:'Saldo a Executar',v:fmt(r2P-r2R),s:'metros restantes',i:'⏳'},
-  ]);
-  renderProg('rp2',r2R,r2P,true);
-  const rp2Chart=rp2.map(r=>({...r,label:r.modulo.replace('TP MD 0','')||r.modulo}));
-  renderBarChart('chart-rp2',rp2Chart,['#39d0d8','#388bfd','#3fb950','#f0a500','#a371f7','#f85149']);
-  document.getElementById('tbl-rp2-sum').innerHTML=rp2.map(r=>`<tr>
-    <td>${r.modulo}</td><td class="num">${fmt(r.proj)}</td>
-    <td class="num" style="color:var(--green)">${fmt(r.real)}</td>
-    <td class="num">${fmt(r.saldo)}</td>
-    <td class="num" style="color:var(--cyan)">${pct(r.real,r.proj)}</td>
-  </tr>`).join('')+`<tr class="tr-total"><td>TOTAL</td><td class="num">${fmt(r2P)}</td><td class="num">${fmt(r2R)}</td><td class="num">${fmt(r2P-r2R)}</td><td class="num">${pct(r2R,r2P)}</td></tr>`;
-  renderT('rp2');
-
-  const trav=DATA.travessias;
-  const travExec=trav.filter(t=>t.status==='Executado').length;
-  renderKPI('kpi-trav',[
-    {c:'cyan',l:'Total Travessias',v:trav.length,s:'travessias DN150',i:'🌉'},
-    {c:'green',l:'Executadas',v:travExec,s:'travessias concluídas',i:'✅'},
-    {c:'red',l:'Pendentes',v:trav.length-travExec,s:'travessias restantes',i:'⏳'},
-    {c:'blue',l:'DN',v:'150',s:'diâmetro nominal (mm)',i:'📐'},
-  ]);
-  document.getElementById('tbl-trav').innerHTML=trav.map(t=>`<tr>
-    <td><strong>${t.modulo}</strong></td><td>${dnBadge(150)}</td><td>${sb(t.status)}</td>
-  </tr>`).join('');
+  // TRAVESSIAS
+  const tv=D.trav||[];
+  const tvE=tv.filter(r=>r.status==='Executado').length;
+  kpi('kpi-tv',[{c:'kc-blue',l:'Total',v:tv.length,s:'travessias'},{c:'kc-g2',l:'Executadas',v:tvE,s:'concluídas'},{c:'kc-green',l:'Pendentes',v:tv.length-tvE,s:'restantes'},{c:'kc-gold',l:'DN',v:'150',s:'diâmetro (mm)'}]);
+  document.getElementById('td-tv').innerHTML=tv.map(r=>`<tr data-id="${r.id}"><td><b>${r.modulo}</b></td><td>${dn(150)}</td><td>${stSel(r,'trav')}</td></tr>`).join('');
 }
 
-// ══════════════════════════════════════════════
-// PARSE PLANILHA
-// ══════════════════════════════════════════════
-// ── Helpers de parse ──
-function toRows(ws){ return XLSX.utils.sheet_to_json(ws,{header:1,defval:null}); }
-function clean(v){ return v==null?'':String(v).trim(); }
-
-function parseRP(ws){
-  // Varre TODAS as linhas; captura onde col[2] é número inteiro válido (= BACIA)
-  const rows=toRows(ws), result=[];
-  const VALID_STATUS=new Set(['Executado','Não Executado','Em Execução']);
-  for(const r of rows){
-    const bacia=r[2];
-    if(bacia==null) continue;
-    const b=parseInt(String(bacia));
-    if(isNaN(b)||b<1||b>20) continue;          // filtra títulos/headers
-    const status=VALID_STATUS.has(clean(r[13]))?clean(r[13]):'Não Executado';
-    result.push({sheet:'RP',bacia:b,qd:clean(r[3]),pv:clean(r[4]),pv2:clean(r[6])||'-',
-      m:parseFloat(r[7])||0,dn:parseInt(r[8])||100,status});
-  }
-  return result;
+// ── TABS ──
+function mainTab(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.mnav-btn').forEach(b=>b.classList.remove('ae','aa'));
+  document.getElementById('p-'+id).classList.add('on');
+  btn.classList.add(id==='esgoto'?'ae':'aa');
+  document.getElementById('snav-esgoto').style.display=id==='esgoto'?'flex':'none';
+  document.getElementById('snav-agua').style.display=id==='agua'?'flex':'none';
+}
+function subTab(main,id,btn){
+  document.querySelectorAll('#p-'+main+' .sub-panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('#snav-'+main+' .snav-btn').forEach(b=>b.classList.remove('ae','aa'));
+  document.getElementById('sp-'+main+'-'+id).classList.add('on');
+  btn.classList.add(main==='esgoto'?'ae':'aa');
 }
 
-function parseCT(ws,sh){
-  // Varre TODAS as linhas; captura onde col[2] é número (= PV)
-  const rows=toRows(ws), result=[];
-  const VALID_STATUS=new Set(['Executado','Não Executado','Em Execução']);
-  for(const r of rows){
-    const pv=r[2];
-    if(pv==null||isNaN(parseFloat(String(pv)))) continue;
-    const pv2=clean(r[4])||'-';
-    if(pv2==='' && parseFloat(clean(r[5]))==null) continue; // pula linhas de orçamento
-    const status=VALID_STATUS.has(clean(r[8]))?clean(r[8]):'Não Executado';
-    result.push({sheet:sh,bacia:sh,qd:'-',pv:clean(r[2]),pv2,
-      m:parseFloat(r[5])||0,dn:parseInt(r[6])||150,status});
-  }
-  return result;
-}
-
-function parseAdutora(ws){
-  // Busca linhas onde col[2] começa com 'DN '
-  const rows=toRows(ws), result=[];
-  const VALID_STATUS=new Set(['Executado','Não Executado','Em Execução']);
-  for(const r of rows){
-    const mod=clean(r[2]);
-    if(!mod.match(/^DN\s*\d+/)) continue;
-    const dn=parseInt(mod.replace(/DN\s*/,''))||0;
-    const status=VALID_STATUS.has(clean(r[6]))?clean(r[6]):'Não Executado';
-    result.push({modulo:mod,proj:parseFloat(r[3])||0,real:parseFloat(r[4])||0,dn,status});
-  }
-  return result;
-}
-
-function parseRP2(ws){
-  // Summary: linhas onde col[2] começa com 'TP'
-  // Trechos: mesma coisa mas também tem col[4] (M) numérico
-  const rows=toRows(ws), summary=[], trechos=[];
-  let inTrechos=false;
-  const VALID_STATUS=new Set(['Executado','Não Executado','Em Execução']);
-  for(const r of rows){
-    const mod=clean(r[2]);
-    if(!mod.startsWith('TP')) continue;
-    const mVal=parseFloat(r[4]);
-    const proj=parseFloat(r[3])||0;
-    // Se tem valor numérico grande em col[3] e col[4] é metros (< 5000), é trecho
-    // Se col[4] é % (entre 0 e 1) ou col[5] é 'Saldo', é summary
-    const col5=clean(r[5]);
-    const isSummary = !isNaN(parseFloat(r[5])) && parseFloat(r[5])>10 && isNaN(parseInt(r[5])/1%1==0?0:1);
-    // Simpler: summary rows have col[5] as large number (saldo in meters)
-    // Trecho rows have col[5] as DN (50, 75, 100, 150) and col[6] as status string
-    const dn=parseInt(r[5])||0;
-    const statusVal=clean(r[6]);
-    if(VALID_STATUS.has(statusVal) && dn>0 && dn<=200){
-      // É um trecho
-      const status=statusVal||'Não Executado';
-      trechos.push({sheet:'RP2',modulo:mod,qd:clean(r[3]),m:mVal||0,dn,status});
-    } else if(!isNaN(proj) && proj>10){
-      // É summary
-      summary.push({modulo:mod,proj,real:parseFloat(r[4])||0,saldo:parseFloat(r[5])||0});
-    }
-  }
-  return {summary,trechos};
-}
-
-function parseTrav(ws,name){
-  // Busca linha onde col[2] é o nome da travessia
-  const rows=toRows(ws);
-  const VALID_STATUS=new Set(['Executado','Não Executado','Em Execução']);
-  for(const r of rows){
-    const mod=clean(r[2]);
-    if(mod.toUpperCase().includes('TRAVESSIA')){
-      const status=VALID_STATUS.has(clean(r[6]))?clean(r[6]):'Não Executado';
-      return {sheet:name,modulo:name,m:parseFloat(r[4])||1,dn:150,status};
-    }
-  }
-  return {sheet:name,modulo:name,m:1,dn:150,status:'Não Executado'};
-}
-
-// ══════════════════════════════════════════════
-// GOOGLE SHEETS INTEGRATION
-// ══════════════════════════════════════════════
-const SHEETS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRhxgHbsGtYSB9rXYMQzvH9lJh4J9xTuxQyNImS8S09yYH8Utm1RhdulPbuJmnbaA/pub?output=xlsx';
-
-function setStatus(msg, color){
-  const el = document.getElementById('updateStatus');
-  el.textContent = msg;
-  el.style.color = color || 'var(--muted)';
-}
-
-function fetchFromSheets(){
-  const btn = document.getElementById('updateBtn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinning">🔄</span> Buscando...';
-  setStatus('Conectando ao Google Sheets...', 'var(--accent)');
-
-  // Proxy CORS para funcionar com arquivo local
-  const proxyUrl = 'https://api.allorigins.win/raw?url=';
-  const url = proxyUrl + encodeURIComponent(SHEETS_URL + '&t=' + Date.now());
-
-  fetch(url)
-    .then(res => {
-      if(!res.ok) throw new Error('Erro HTTP ' + res.status);
-      return res.arrayBuffer();
-    })
-    .then(buffer => {
-      processXlsx(buffer, 'Google Sheets');
-    })
-    .catch(err => {
-      setStatus('❌ Erro: ' + err.message, 'var(--red)');
-      document.getElementById('updateSub').textContent = 'Falha ao conectar. Verifique se a planilha está publicada.';
-      btn.disabled = false;
-      btn.innerHTML = '🔄 Tentar Novamente';
-    });
-}
-
-function processXlsx(buffer, source){
-  const btn = document.getElementById('updateBtn');
-  try{
-    const wb = XLSX.read(buffer, {type:'array'});
-    const newEsgoto=[], newAdutora=[], newRP2Sum=[], newRP2Trec=[], newTrav=[];
-    wb.SheetNames.forEach(name=>{
-      const ws=wb.Sheets[name], n=name.trim().toUpperCase();
-      if(n==='REDE PRINCIPAL') newEsgoto.push(...parseRP(ws));
-      else if(n.includes('COLETOR TRONCO 1')) newEsgoto.push(...parseCT(ws,'CT1'));
-      else if(n.includes('COLETOR TRONCO 2')) newEsgoto.push(...parseCT(ws,'CT2'));
-      else if(n.includes('REDE ADUTORA')) newAdutora.push(...parseAdutora(ws));
-      else if(n.includes('REDE PRINCIPAL 2')) { const d=parseRP2(ws); newRP2Sum.push(...d.summary); newRP2Trec.push(...d.trechos); }
-      else if(n.includes('TRAVESSIA 1')) newTrav.push(parseTrav(ws,'Travessia 1'));
-      else if(n.includes('TRAVESSIA 2')) newTrav.push(parseTrav(ws,'Travessia 2'));
-    });
-    if(newEsgoto.length>0||newAdutora.length>0){
-      if(newEsgoto.length>0) DATA.esgoto=newEsgoto;
-      if(newAdutora.length>0) DATA.adutora=newAdutora;
-      if(newRP2Sum.length>0) DATA.rp2_summary=newRP2Sum;
-      if(newRP2Trec.length>0) DATA.rp2_trechos=newRP2Trec;
-      if(newTrav.length>0) DATA.travessias=newTrav;
-      renderAll();
-      const now = new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-      setStatus('✓ Atualizado às ' + now, 'var(--green)');
-      document.getElementById('updateSub').textContent =
-        source + ' · ' + (newEsgoto.length) + ' trechos de esgoto · ' + newRP2Trec.length + ' trechos de água';
-    } else {
-      setStatus('⚠️ Nenhum dado encontrado', 'var(--accent)');
-    }
-  } catch(err){
-    setStatus('❌ Erro ao processar: ' + err.message, 'var(--red)');
-  }
-  btn.disabled = false;
-  btn.innerHTML = '🔄 Atualizar Dados';
-}
-
-function handleFile(file){
-  if(!file) return;
-  setStatus('Lendo arquivo...', 'var(--accent)');
-  const reader = new FileReader();
-  reader.onload = e => processXlsx(e.target.result, file.name);
-  reader.readAsArrayBuffer(file);
-}
-
-// DATE
-
-function switchMain(id){
-  document.querySelectorAll('.main-panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.main-tab-btn').forEach(b=>{b.classList.remove('active-esgoto','active-agua');});
-  document.getElementById('panel-'+id).classList.add('active');
-  const btn=id==='esgoto'?document.getElementById('mainTabEsgoto'):document.getElementById('mainTabAgua');
-  btn.classList.add('active-'+id);
-}
-function switchSub(main,id,btn){
-  const panel=document.getElementById('panel-'+main);
-  panel.querySelectorAll('.sub-panel').forEach(p=>p.classList.remove('active'));
-  panel.querySelectorAll('.sub-tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('sub-'+main+'-'+id).classList.add('active');
-  btn.classList.add('active');
-}
-
-// DATE
-document.getElementById('dateBadge').innerHTML='<strong>'+new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'})+'</strong>';
-
-// TABS
+// ── INIT ──
+document.getElementById('hDate').textContent=new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'});
 renderAll();
-
-// Busca automática ao abrir o dashboard
-fetchFromSheets();
 </script>
 </body>
 </html>
