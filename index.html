@@ -333,18 +333,10 @@ function loadData(){
 }
 
 let D = loadData();
-let AUTENTICADO = false;
-const SENHA_HASH = '7f8a3b2c9e1d4f6a'; // hash de 'topdoalto'
-
 function verificarSenha(){
-  if(AUTENTICADO) return true;
   const entrada = prompt('🔐 Digite a senha para editar:');
   if(entrada === null) return false;
-  // Verificação simples
-  if(entrada === 'topdoalto'){
-    AUTENTICADO = true;
-    return true;
-  }
+  if(entrada === 'topdoalto') return true;
   alert('❌ Senha incorreta!');
   return false;
 }
