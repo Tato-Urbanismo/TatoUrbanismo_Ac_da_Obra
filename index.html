@@ -333,6 +333,21 @@ function loadData(){
 }
 
 let D = loadData();
+let AUTENTICADO = false;
+const SENHA_HASH = '7f8a3b2c9e1d4f6a'; // hash de 'topdoalto'
+
+function verificarSenha(){
+  if(AUTENTICADO) return true;
+  const entrada = prompt('🔐 Digite a senha para editar:');
+  if(entrada === null) return false;
+  // Verificação simples
+  if(entrada === 'topdoalto'){
+    AUTENTICADO = true;
+    return true;
+  }
+  alert('❌ Senha incorreta!');
+  return false;
+}
 
 // ── SALVAR ──
 let saveTimer = null;
@@ -358,6 +373,10 @@ function salvar(){
 
 // ── ATUALIZAR STATUS (inline) ──
 function mudarStatus(id, novoStatus, key){
+  if(!verificarSenha()){
+    renderAll(); // reset dropdown visual
+    return;
+  }
   const arr = D[key]||[];
   const trecho = arr.find(t=>t.id===id);
   if(!trecho) return;
@@ -395,6 +414,7 @@ function upFiltrar(){
   res.style.color = encontrados.length > 0 ? 'var(--green2)' : 'var(--red)';
 }
 function upAplicar(){
+  if(!verificarSenha()) return;
   const rede = document.getElementById('up-rede').value;
   const busca = document.getElementById('up-busca').value.toLowerCase().trim();
   const novoStatus = document.getElementById('up-status').value;
