@@ -259,9 +259,6 @@ tr:last-child td{border-bottom:none}
     <table style="width:100%;border-collapse:collapse">
       <thead><tr>
         <th style="font-family:JetBrains Mono,monospace;font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);padding:8px 14px;text-align:left;border-bottom:1px solid var(--border);background:var(--paper)">Rede</th>
-        <th style="font-family:JetBrains Mono,monospace;font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);padding:8px 14px;text-align:right;border-bottom:1px solid var(--border);background:var(--paper)">Projeto</th>
-        <th style="font-family:JetBrains Mono,monospace;font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);padding:8px 14px;text-align:right;border-bottom:1px solid var(--border);background:var(--paper)">Realizado</th>
-        <th style="font-family:JetBrains Mono,monospace;font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);padding:8px 14px;text-align:right;border-bottom:1px solid var(--border);background:var(--paper)">Saldo</th>
         <th style="font-family:JetBrains Mono,monospace;font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);padding:8px 14px;text-align:right;border-bottom:1px solid var(--border);background:var(--paper)">%</th>
       </tr></thead>
       <tbody id="td-res-tabela"></tbody>
@@ -793,9 +790,6 @@ function renderResultados(){
   if(el) el.innerHTML=linhas.map(function(l){
     return '<tr>'
       +'<td style="padding:8px 14px;border-bottom:1px solid var(--border);font-size:12px"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:'+l.cor+';margin-right:8px;vertical-align:middle"></span>'+l.rede+'</td>'
-      +'<td style="padding:8px 14px;border-bottom:1px solid var(--border);font-size:12px;text-align:right;font-family:JetBrains Mono,monospace">'+fmt(l.p)+'m</td>'
-      +'<td style="padding:8px 14px;border-bottom:1px solid var(--border);font-size:12px;text-align:right;font-family:JetBrains Mono,monospace;color:var(--green2)">'+fmt(l.r)+'m</td>'
-      +'<td style="padding:8px 14px;border-bottom:1px solid var(--border);font-size:12px;text-align:right;font-family:JetBrains Mono,monospace">'+fmt(l.p-l.r)+'m</td>'
       +'<td style="padding:8px 14px;border-bottom:1px solid var(--border);font-size:12px;text-align:right;font-family:JetBrains Mono,monospace;font-weight:700;color:'+l.cor+'">'+pct(l.r,l.p)+'</td>'
       +'</tr>';
   }).join('');
