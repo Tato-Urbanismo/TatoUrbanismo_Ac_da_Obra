@@ -15,8 +15,8 @@
 body{background:var(--paper);color:var(--text);font-family:'Inter',sans-serif;font-size:14px}
 header{background:var(--ink);border-bottom:3px solid var(--green);padding:0 28px;display:flex;align-items:center;min-height:80px;position:sticky;top:0;z-index:200}
 .h-logo{padding:10px 24px 10px 0;border-right:1px solid rgba(255,255,255,.1);display:flex;align-items:center;flex-shrink:0}
-.h-title{position:absolute;left:50%;transform:translateX(-50%);text-align:center;font-size:28px;font-weight:800;color:#fff;pointer-events:none;width:60%}
-.h-right{display:flex;align-items:center;gap:10px;padding-left:24px;border-left:1px solid rgba(255,255,255,.1);margin-left:auto;flex-shrink:0}
+.h-title{flex:1;text-align:center;font-size:28px;font-weight:800;color:#fff}
+.h-right{display:flex;align-items:center;gap:10px;padding-left:24px;border-left:1px solid rgba(255,255,255,.1);flex-shrink:0}
 .save-ind{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--green);min-width:120px;text-align:right}
 .h-date{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,.35);padding:5px 10px;border:1px solid rgba(255,255,255,.1);border-radius:3px}
 .main-nav{background:var(--card);border-bottom:1px solid var(--border);padding:0 28px;display:flex}
@@ -108,8 +108,10 @@ tr:last-child td{border-bottom:none}
   .kpi-val{font-size:20px}
   .kpi-lbl{font-size:9px}
   .kpi-sub{font-size:10px}
-  .h-title{font-size:15px}
-  .h-logo img{height:44px !important}
+  .h-title{font-size:14px;line-height:1.2}
+  .h-logo{padding-right:12px}
+  .h-logo img{height:40px !important}
+  .h-right{display:none}
   .prog-pct{font-size:15px}
   .prog{padding:12px}
   .snav{font-size:10px;padding:4px 10px}
