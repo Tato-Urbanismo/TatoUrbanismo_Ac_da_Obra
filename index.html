@@ -122,6 +122,22 @@ tr:last-child td{border-bottom:none}
   .slabel{font-size:9px}
 }
 </style>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyCeCpbaXkIoSwBoeKmwgHvpXaaTOinEs1E",
+      authDomain: "acompanhamento-fisico-de-b6460.firebaseapp.com",
+      projectId: "acompanhamento-fisico-de-b6460",
+      storageBucket: "acompanhamento-fisico-de-b6460.firebasestorage.app",
+      messagingSenderId: "516728803415",
+      appId: "1:516728803415:web:cfee463f5dddc08c9b1312"
+    };
+    firebase.initializeApp(firebaseConfig);
+    var db = firebase.firestore();
+  </script>
 </head>
 <body>
 <header>
@@ -301,6 +317,7 @@ var D=carregarDados();
 var filtBacia='all',filtMod='all';
 
 function carregarDados(){
+  // Carrega do localStorage como fallback inicial
   try{
     var s=localStorage.getItem('tato_v4');
     if(s){
@@ -317,23 +334,62 @@ function carregarDados(){
 }
 
 var saveTimer=null;
+function getStatusMap(){
+  var sm={};
+  ['rp','ct1','ct2','rp2','trav','adutora','dispositivos'].forEach(function(k){
+    (D[k]||[]).forEach(function(t){sm[t.id]=t.status;});
+  });
+  ['rp1','ram1','rp2','ram2'].forEach(function(k){
+    ((D.drenagem||{})[k]||[]).forEach(function(t){sm[t.id]=t.status;});
+  });
+  return sm;
+}
+
+function aplicarStatusMap(sm){
+  ['rp','ct1','ct2','rp2','trav','adutora','dispositivos'].forEach(function(k){
+    (D[k]||[]).forEach(function(t){if(sm[t.id])t.status=sm[t.id];});
+  });
+  ['rp1','ram1','rp2','ram2'].forEach(function(k){
+    ((D.drenagem||{})[k]||[]).forEach(function(t){if(sm[t.id])t.status=sm[t.id];});
+  });
+}
+
 function salvar(){
   var ind=document.getElementById('saveInd');
   ind.textContent='&#8987; Salvando...';
   clearTimeout(saveTimer);
   saveTimer=setTimeout(function(){
     try{
-      var sm={};
-      ['rp','ct1','ct2','rp2','trav','adutora','dispositivos'].forEach(function(k){
-        (D[k]||[]).forEach(function(t){sm[t.id]=t.status;});
-      });
-      ['rp1','ram1','rp2','ram2'].forEach(function(k){
-        ((D.drenagem||{})[k]||[]).forEach(function(t){sm[t.id]=t.status;});
-      });
-      localStorage.setItem('tato_v4',JSON.stringify({statusMap:sm}));
-      ind.textContent='&#10003; Salvo '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+      var sm=getStatusMap();
+      // Salva no Firebase
+      db.collection('dashboard').doc('status').set({statusMap:sm, updatedAt: new Date().toISOString()})
+        .then(function(){
+          ind.textContent='&#10003; Salvo '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+        })
+        .catch(function(e){
+          ind.textContent='&#9888; Erro Firebase';
+          // fallback localStorage
+          localStorage.setItem('tato_v4',JSON.stringify({statusMap:sm}));
+        });
     }catch(e){ind.textContent='&#9888; Erro';}
   },400);
+}
+
+// Escuta mudanças em tempo real do Firebase
+function iniciarSincronizacao(){
+  db.collection('dashboard').doc('status').onSnapshot(function(doc){
+    if(doc.exists){
+      var data=doc.data();
+      if(data && data.statusMap){
+        aplicarStatusMap(data.statusMap);
+        renderTudo();
+        var ind=document.getElementById('saveInd');
+        if(ind) ind.textContent='&#10003; Sincronizado';
+      }
+    }
+  }, function(error){
+    console.log('Firebase sync error:', error);
+  });
 }
 
 function verificarSenha(){
@@ -824,7 +880,19 @@ function renderResultados(){
 }
 
 document.getElementById('hDate').textContent=new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'});
-renderTudo();
+
+// Carrega dados do Firebase e inicia sincronização em tempo real
+var _primeiraSync = true;
+db.collection('dashboard').doc('status').get().then(function(doc){
+  if(doc.exists && doc.data() && doc.data().statusMap){
+    aplicarStatusMap(doc.data().statusMap);
+  }
+  renderTudo();
+  iniciarSincronizacao();
+}).catch(function(){
+  renderTudo();
+  iniciarSincronizacao();
+});
 </script>
 </body>
 </html>
