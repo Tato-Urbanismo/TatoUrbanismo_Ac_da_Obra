@@ -92,7 +92,24 @@ tr:last-child td{border-bottom:none}
 .bar-num{font-family:'JetBrains Mono',monospace;font-size:9px;width:52px;text-align:right;flex-shrink:0}
 .bar-pct{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);width:30px;text-align:right;flex-shrink:0}
 .dn-b{font-family:'JetBrains Mono',monospace;font-size:9px;background:rgba(26,74,138,.08);color:var(--blue);border-radius:2px;padding:1px 5px}
-@media(max-width:900px){main,header,.main-nav,.sub-nav{padding-left:14px;padding-right:14px}.kpi-grid,.kpi-grid5{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:900px){
+  main,header,.main-nav,.sub-nav{padding-left:14px;padding-right:14px}
+  .kpi-grid,.kpi-grid5{grid-template-columns:repeat(2,1fr)}
+  .h-title{font-size:18px}
+  .mnav{font-size:10px;padding:10px 8px;letter-spacing:0}
+  .main-nav{flex-wrap:wrap}
+}
+@media(max-width:600px){
+  main,header,.main-nav,.sub-nav{padding-left:10px;padding-right:10px}
+  .kpi-grid,.kpi-grid5{grid-template-columns:1fr 1fr}
+  .kpi{height:auto;min-height:100px;padding:12px}
+  .kpi-val{font-size:22px}
+  .h-title{font-size:16px}
+  .mnav{font-size:9px;padding:8px 6px}
+  .g2{grid-template-columns:1fr}
+  #res-kpis{grid-template-columns:1fr !important}
+  .prog-pct{font-size:16px}
+}
 </style>
 </head>
 <body>
