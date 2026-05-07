@@ -1,7 +1,7 @@
-const CACHE = 'tato-obra-v1';
+const CACHE = 'tato-obra-v2';
 const FILES = [
-  '/dashboard-obra/',
-  '/dashboard-obra/index.html'
+  '/TatoUrbanismo_Ac_da_Obra/',
+  '/TatoUrbanismo_Ac_da_Obra/index.html'
 ];
 
 self.addEventListener('install', function(e){
@@ -14,7 +14,7 @@ self.addEventListener('fetch', function(e){
   e.respondWith(
     caches.match(e.request).then(function(r){
       return r || fetch(e.request).catch(function(){
-        return caches.match('/dashboard-obra/index.html');
+        return caches.match('/TatoUrbanismo_Ac_da_Obra/index.html');
       });
     })
   );

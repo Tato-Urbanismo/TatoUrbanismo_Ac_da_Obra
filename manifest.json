@@ -2,7 +2,7 @@
   "name": "Acompanhamento Físico da Obra",
   "short_name": "Tato Obra",
   "description": "Dashboard de acompanhamento físico da obra - Tato Urbanismo",
-  "start_url": "/dashboard-obra/",
+  "start_url": "/TatoUrbanismo_Ac_da_Obra/",
   "display": "standalone",
   "background_color": "#0d1117",
   "theme_color": "#0d1117",
