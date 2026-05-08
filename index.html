@@ -952,7 +952,7 @@ function fazerLogin(){
 
   // Login OK
   usuarioAtual = { nome: user, perfil: u.perfil };
-  sessionStorage.setItem('tato_user', JSON.stringify(usuarioAtual));
+  // sessão não salva - pede login sempre
   document.getElementById('loginOverlay').style.display = 'none';
   document.getElementById('saveInd').textContent = '✓ ' + user;
 
@@ -971,16 +971,8 @@ document.addEventListener('DOMContentLoaded', function(){
     if(el) el.addEventListener('keydown', function(e){ if(e.key==='Enter') fazerLogin(); });
   });
 
-  // Verifica sessão salva
-  try{
-    var s = sessionStorage.getItem('tato_user');
-    if(s){
-      usuarioAtual = JSON.parse(s);
-      document.getElementById('loginOverlay').style.display = 'none';
-      document.getElementById('saveInd').textContent = '✓ ' + usuarioAtual.nome;
-      if(usuarioAtual.perfil === 'viewer') window._somenteLeitura = true;
-    }
-  }catch(e){}
+  // Sempre pede login ao abrir
+  sessionStorage.removeItem('tato_user');
 });
 document.getElementById('hDate').textContent=new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'});
 
