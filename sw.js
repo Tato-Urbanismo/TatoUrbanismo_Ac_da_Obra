@@ -1,21 +1,20 @@
-const CACHE = 'tato-obra-v2';
-const FILES = [
-  '/TatoUrbanismo_Ac_da_Obra/',
-  '/TatoUrbanismo_Ac_da_Obra/index.html'
-];
-
+// Sem cache - sempre busca do servidor para garantir login
 self.addEventListener('install', function(e){
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', function(e){
   e.waitUntil(
-    caches.open(CACHE).then(function(c){ return c.addAll(FILES); })
+    caches.keys().then(function(keys){
+      return Promise.all(keys.map(function(k){ return caches.delete(k); }));
+    })
   );
+  self.clients.claim();
 });
 
 self.addEventListener('fetch', function(e){
-  e.respondWith(
-    caches.match(e.request).then(function(r){
-      return r || fetch(e.request).catch(function(){
-        return caches.match('/TatoUrbanismo_Ac_da_Obra/index.html');
-      });
-    })
-  );
+  // Sempre busca do servidor, sem cache
+  e.respondWith(fetch(e.request).catch(function(){
+    return new Response('Sem conexão', {status: 503});
+  }));
 });
