@@ -358,8 +358,12 @@ function carregarDados(){
     var s=localStorage.getItem('tato_v4');
     if(s){
       var sm=JSON.parse(s).statusMap||{};
-      ['rp','ct1','ct2','rp2','trav','adutora','dispositivos'].forEach(function(k){
+      ['rp','ct1','ct2','rp2','trav','dispositivos'].forEach(function(k){
         (BASE[k]||[]).forEach(function(t){if(sm[t.id])t.status=sm[t.id];});
+      });
+      (BASE.adutora||[]).forEach(function(t){
+        if(sm[t.id]) t.status=sm[t.id];
+        if(sm[t.id+'_r']!==undefined) t.realizado=sm[t.id+'_r'];
       });
       ['rp1','ram1','rp2','ram2'].forEach(function(k){
         ((BASE.drenagem||{})[k]||[]).forEach(function(t){if(sm[t.id])t.status=sm[t.id];});
@@ -426,6 +430,24 @@ function iniciarSincronizacao(){
   }, function(error){
     console.log('Firebase sync error:', error);
   });
+}
+
+function mudarRealizadoAdutora(input){
+  var id = input.getAttribute('data-id');
+  var val = parseFloat(input.value) || 0;
+  var ad = D.adutora || [];
+  for(var i=0; i<ad.length; i++){
+    if(ad[i].id === id){
+      ad[i].realizado = val;
+      // Atualiza saldo na mesma linha
+      var td = input.parentElement.nextElementSibling;
+      if(td) td.textContent = (ad[i].m - val).toLocaleString('pt-BR', {minimumFractionDigits:0, maximumFractionDigits:1});
+      break;
+    }
+  }
+  salvar();
+  renderAgua();
+  renderResultados();
 }
 
 function verificarSenha(){
@@ -659,7 +681,7 @@ function renderAgua(){
   renderRP2();
   var ad=D.adutora||[];
   var adP=ad.reduce(function(a,r){return a+r.m;},0);
-  var adR=ad.filter(function(r){return r.status==='Executado';}).reduce(function(a,r){return a+r.m;},0);
+  var adR=ad.reduce(function(a,r){return a+(r.realizado !== undefined ? r.realizado : (r.status==='Executado'?r.m:0));},0);
   setKpi('kpi-ad',[
     {c:'kc-blue',l:'Total Metros',v:fmt(adP),s:'m rede adutora'},
     {c:'kc-g2',l:'Executados',v:fmt(adR),s:pct(adR,adP)+' concluído'},
@@ -669,7 +691,11 @@ function renderAgua(){
   setProg('ad',adR,adP,' m');
   el=document.getElementById('td-ad');
   if(el)el.innerHTML=ad.map(function(r){
-    return '<tr><td>'+r.modulo+'</td><td><span class="dn-b">DN '+r.dn+'</span></td><td class="num">'+fmt(r.m)+'</td><td class="num" style="color:var(--green2)">'+(r.status==='Executado'?fmt(r.m):'0')+'</td><td class="num">'+(r.status==='Executado'?'0':fmt(r.m))+'</td><td>'+stSel(r,'adutora')+'</td></tr>';
+    var realizado = r.realizado !== undefined ? r.realizado : (r.status==='Executado' ? r.m : 0);
+    var saldo = r.m - realizado;
+    return '<tr><td>'+r.modulo+'</td><td><span class="dn-b">DN '+r.dn+'</span></td><td class="num">'+fmt(r.m)+'</td>'
+      +'<td class="num"><input type="number" min="0" max="'+r.m+'" value="'+realizado+'" data-id="'+r.id+'" onchange="mudarRealizadoAdutora(this)" style="width:70px;text-align:right;font-family:JetBrains Mono,monospace;font-size:12px;border:1px solid var(--border);border-radius:3px;padding:2px 6px;background:#fff;color:var(--green2);font-weight:600"></td>'
+      +'<td class="num">'+fmt(saldo)+'</td><td>'+stSel(r,'adutora')+'</td></tr>';
   }).join('');
   var tv=D.trav||[];var tvE=tv.filter(function(r){return r.status==='Executado';}).length;
   var disp=D.dispositivos||[];var dispE=disp.filter(function(r){return r.status==='Executado';}).length;
@@ -805,7 +831,7 @@ function renderResultados(){
   var aguaR=summary.reduce(function(a,s){return a+(modMap[s.modulo]||0);},0);
   var ad=D.adutora||[];
   var adP=ad.reduce(function(a,r){return a+r.m;},0);
-  var adR=ad.filter(function(r){return r.status==='Executado';}).reduce(function(a,r){return a+r.m;},0);
+  var adR=ad.reduce(function(a,r){return a+(r.realizado !== undefined ? r.realizado : (r.status==='Executado'?r.m:0));},0);
   var totAguaP=aguaP+adP, totAguaR=aguaR+adR;
   var dr=D.drenagem||{};
   var rp1Proj=2735,ram1Proj=1024,drRp2Proj=187,ram2Proj=89,pvProj=57,pvReal=54;
