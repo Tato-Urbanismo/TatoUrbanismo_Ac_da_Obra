@@ -7,11 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --ink:#0d1117;--paper:#f4f1eb;--card:#fff;--border:#e0dbd0;
-  --green:#4a9c5a;--green2:#2d7a40;--blue:#1a4a8a;--gold:#b8860a;
-  --purple:#5b4fcf;--muted:#7a7468;--text:#1a1814;--red:#c0392b;
-}
+:root{--ink:#0d1117;--paper:#f4f1eb;--card:#fff;--border:#e0dbd0;--green:#4a9c5a;--green2:#2d7a40;--blue:#1a4a8a;--gold:#b8860a;--purple:#5b4fcf;--muted:#7a7468;--text:#1a1814;--red:#c0392b}
 body{background:var(--paper);color:var(--text);font-family:'Inter',sans-serif;font-size:14px}
 header{background:var(--ink);border-bottom:3px solid var(--green);padding:0 28px;display:flex;align-items:center;min-height:80px;position:sticky;top:0;z-index:200}
 .h-logo{padding:10px 24px 10px 0;border-right:1px solid rgba(255,255,255,.1);display:flex;align-items:center;flex-shrink:0}
@@ -21,41 +17,30 @@ header{background:var(--ink);border-bottom:3px solid var(--green);padding:0 28px
 .h-date{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,.35);padding:5px 10px;border:1px solid rgba(255,255,255,.1);border-radius:3px}
 .main-nav{background:var(--card);border-bottom:1px solid var(--border);padding:0 28px;display:flex}
 .mnav{background:none;border:none;border-bottom:3px solid transparent;color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;padding:13px 18px;cursor:pointer;margin-bottom:-1px}
-.mnav.ae{color:var(--green);border-bottom-color:var(--green)}
-.mnav.aa{color:var(--blue);border-bottom-color:var(--blue)}
-.mnav.ad{color:var(--purple);border-bottom-color:var(--purple)}
-.mnav.ar{color:var(--gold);border-bottom-color:var(--gold)}
-.sub-nav{background:var(--paper);border-bottom:1px solid var(--border);padding:10px 28px;display:flex;gap:4px}
+.mnav.ae{color:var(--green);border-bottom-color:var(--green)}.mnav.aa{color:var(--blue);border-bottom-color:var(--blue)}.mnav.ad{color:var(--purple);border-bottom-color:var(--purple)}.mnav.ar{color:var(--gold);border-bottom-color:var(--gold)}
+.sub-nav{background:var(--paper);border-bottom:1px solid var(--border);padding:10px 28px;display:flex;gap:4px;flex-wrap:wrap}
 .snav{background:none;border:1px solid var(--border);color:var(--muted);font-family:'Inter',sans-serif;font-size:11px;font-weight:500;padding:5px 14px;border-radius:20px;cursor:pointer}
-.snav.ae{background:var(--green);border-color:var(--green);color:#fff;font-weight:600}
-.snav.aa{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
-.snav.ad{background:var(--purple);border-color:var(--purple);color:#fff;font-weight:600}
+.snav.ae{background:var(--green);border-color:var(--green);color:#fff;font-weight:600}.snav.aa{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}.snav.ad{background:var(--purple);border-color:var(--purple);color:#fff;font-weight:600}
 main{padding:20px 28px;max-width:1440px;margin:0 auto}
-.panel,.sub-panel{display:none}
-.panel.on,.sub-panel.on{display:block}
+.panel,.sub-panel{display:none}.panel.on,.sub-panel.on{display:block}
 .slabel{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;margin-top:4px;display:flex;align-items:center;gap:8px}
 .slabel::after{content:'';flex:1;height:1px;background:var(--border)}
 .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
 .kpi-grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
 .kpi{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:18px;position:relative;overflow:hidden;height:120px;display:flex;flex-direction:column;justify-content:space-between}
 .kpi::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px}
-.kc-green::after{background:var(--green)}.kc-g2::after{background:var(--green2)}
-.kc-blue::after{background:var(--blue)}.kc-gold::after{background:var(--gold)}.kc-purple::after{background:var(--purple)}
+.kc-green::after{background:var(--green)}.kc-g2::after{background:var(--green2)}.kc-blue::after{background:var(--blue)}.kc-gold::after{background:var(--gold)}.kc-purple::after{background:var(--purple)}
 .kpi-lbl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
 .kpi-val{font-size:30px;font-weight:800;line-height:1}
-.kc-green .kpi-val{color:var(--green)}.kc-g2 .kpi-val{color:var(--green2)}
-.kc-blue .kpi-val{color:var(--blue)}.kc-gold .kpi-val{color:var(--gold)}.kc-purple .kpi-val{color:var(--purple)}
-.kpi-grid5 .kpi-val{font-size:22px}
-.kpi-sub{font-size:11px;color:var(--muted)}
+.kc-green .kpi-val{color:var(--green)}.kc-g2 .kpi-val{color:var(--green2)}.kc-blue .kpi-val{color:var(--blue)}.kc-gold .kpi-val{color:var(--gold)}.kc-purple .kpi-val{color:var(--purple)}
+.kpi-grid5 .kpi-val{font-size:22px}.kpi-sub{font-size:11px;color:var(--muted)}
 .prog{background:var(--card);border:1px solid var(--border);border-radius:5px;padding:16px 18px;margin-bottom:16px}
 .prog-top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:8px}
 .prog-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
-.prog-pct{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;color:var(--green)}
-.prog-pct.blue{color:var(--blue)}.prog-pct.purple{color:var(--purple)}
+.prog-pct{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;color:var(--green)}.prog-pct.blue{color:var(--blue)}.prog-pct.purple{color:var(--purple)}
 .prog-detail{font-size:11px;color:var(--muted);margin-bottom:8px}
 .prog-track{height:7px;background:var(--border);border-radius:100px;overflow:hidden}
-.prog-fill{height:100%;background:var(--green);border-radius:100px;transition:width .8s}
-.prog-fill.blue{background:var(--blue)}.prog-fill.purple{background:var(--purple)}
+.prog-fill{height:100%;background:var(--green);border-radius:100px;transition:width .8s}.prog-fill.blue{background:var(--blue)}.prog-fill.purple{background:var(--purple)}
 .prog-meta{display:flex;gap:14px;margin-top:7px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
 .card{background:var(--card);border:1px solid var(--border);border-radius:5px;overflow:hidden;margin-bottom:16px}
 .card-head{padding:11px 14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
@@ -70,130 +55,83 @@ tr:last-child td{border-bottom:none}
 .trwrap{background:var(--card);border:1px solid var(--border);border-radius:5px;overflow:hidden;margin-bottom:16px}
 .tbar{display:flex;gap:5px;padding:9px 12px;border-bottom:1px solid var(--border);background:var(--paper);flex-wrap:wrap;align-items:center}
 .fbtn{background:none;border:1px solid var(--border);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;padding:3px 9px;border-radius:2px;cursor:pointer}
-.fbtn.fe{background:var(--green);border-color:var(--green);color:#fff}
-.fbtn.fa{background:var(--blue);border-color:var(--blue);color:#fff}
+.fbtn.fe{background:var(--green);border-color:var(--green);color:#fff}.fbtn.fa{background:var(--blue);border-color:var(--blue);color:#fff}
 .srch{background:#fff;border:1px solid var(--border);border-radius:2px;padding:4px 9px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text);outline:none;width:130px}
 .tcount{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-left:auto}
-.scroll-t{max-height:360px;overflow-y:auto}
-.scroll-t::-webkit-scrollbar{width:4px}
-.scroll-t::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.scroll-t{max-height:360px;overflow-y:auto}.scroll-t::-webkit-scrollbar{width:4px}.scroll-t::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 .st-sel{font-family:'JetBrains Mono',monospace;font-size:10px;border:1px solid var(--border);border-radius:3px;padding:3px 6px;cursor:pointer;outline:none;background:#fff;font-weight:500;width:160px}
-.st-sel.ok{background:rgba(74,156,90,.12);color:var(--green2);border-color:rgba(74,156,90,.3)}
-.st-sel.nd{background:rgba(122,116,104,.1);color:var(--muted);border-color:var(--border)}
-.st-sel.ex{background:rgba(26,74,138,.1);color:var(--blue);border-color:rgba(26,74,138,.3)}
+.st-sel.ok{background:rgba(74,156,90,.12);color:var(--green2);border-color:rgba(74,156,90,.3)}.st-sel.nd{background:rgba(122,116,104,.1);color:var(--muted);border-color:var(--border)}.st-sel.ex{background:rgba(26,74,138,.1);color:var(--blue);border-color:rgba(26,74,138,.3)}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
 .bars{padding:12px 14px}
-.bar-row{display:flex;align-items:center;gap:7px;margin-bottom:9px}
-.bar-row:last-child{margin-bottom:0}
+.bar-row{display:flex;align-items:center;gap:7px;margin-bottom:9px}.bar-row:last-child{margin-bottom:0}
 .bar-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;color:var(--muted);width:44px;flex-shrink:0}
 .bar-track{flex:1;height:14px;background:var(--border);border-radius:2px;overflow:hidden;position:relative}
-.bar-bg{position:absolute;inset:0;opacity:.18;border-radius:2px}
-.bar-fg{position:absolute;top:0;left:0;height:100%;border-radius:2px;transition:width .8s}
+.bar-bg{position:absolute;inset:0;opacity:.18;border-radius:2px}.bar-fg{position:absolute;top:0;left:0;height:100%;border-radius:2px;transition:width .8s}
 .bar-num{font-family:'JetBrains Mono',monospace;font-size:9px;width:52px;text-align:right;flex-shrink:0}
 .bar-pct{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);width:30px;text-align:right;flex-shrink:0}
 .dn-b{font-family:'JetBrains Mono',monospace;font-size:9px;background:rgba(26,74,138,.08);color:var(--blue);border-radius:2px;padding:1px 5px}
-@media(max-width:900px){
-  main,header,.main-nav,.sub-nav{padding-left:10px;padding-right:10px}
-  .kpi-grid,.kpi-grid5{grid-template-columns:repeat(2,1fr)}
-  .h-title{font-size:18px}
-  .main-nav{overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch}
-  .main-nav::-webkit-scrollbar{display:none}
-  .mnav{font-size:10px;padding:10px 10px;letter-spacing:0;white-space:nowrap;flex-shrink:0}
-  .g2{grid-template-columns:1fr}
-}
-@media(max-width:600px){
-  main{padding:12px 10px}
-  .kpi-grid,.kpi-grid5{grid-template-columns:1fr 1fr;gap:8px}
-  .kpi{height:auto;min-height:90px;padding:10px}
-  .kpi-val{font-size:20px}
-  .kpi-lbl{font-size:9px}
-  .kpi-sub{font-size:10px}
-  .h-title{font-size:18px;line-height:1.2}
-  .h-logo{padding-right:12px}
-  .h-logo img{height:40px !important}
-  .h-right{display:none}
-  .prog-pct{font-size:15px}
-  .prog{padding:12px}
-  .snav{font-size:10px;padding:4px 10px}
-  #res-kpis{grid-template-columns:1fr !important}
-  .bar-lbl{width:30px;font-size:8px}
-  .bar-num{font-size:8px;width:40px}
-  .bar-pct{font-size:8px;width:28px}
-  .slabel{font-size:9px}
-}
-
 .login-overlay{position:fixed;inset:0;background:#0d1117;z-index:9999;display:flex;align-items:center;justify-content:center}
 .login-box{background:#1a1f2e;border:1px solid #2a2f3e;border-radius:12px;padding:40px;width:360px;max-width:90vw;text-align:center}
-.login-logo{margin-bottom:24px}
-.login-logo img{height:80px;width:auto}
+.login-logo{margin-bottom:24px}.login-logo img{height:80px;width:auto}
 .login-title{color:#fff;font-size:18px;font-weight:700;margin-bottom:6px}
 .login-sub{color:#7a7468;font-size:13px;margin-bottom:28px;font-family:'JetBrains Mono',monospace}
 .login-field{width:100%;background:#0d1117;border:1px solid #2a2f3e;border-radius:6px;padding:11px 14px;color:#fff;font-family:'JetBrains Mono',monospace;font-size:13px;margin-bottom:12px;outline:none;box-sizing:border-box}
 .login-field:focus{border-color:var(--green)}
-.login-btn{width:100%;background:var(--green);border:none;border-radius:6px;padding:12px;color:#fff;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;cursor:pointer;margin-top:4px;letter-spacing:.3px}
+.login-btn{width:100%;background:var(--green);border:none;border-radius:6px;padding:12px;color:#fff;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;cursor:pointer;margin-top:4px}
 .login-btn:hover{background:var(--green2)}
 .login-err{color:#c0392b;font-size:12px;font-family:'JetBrains Mono',monospace;margin-top:10px;min-height:18px}
 .login-version{color:#3a3f4e;font-size:10px;font-family:'JetBrains Mono',monospace;margin-top:20px}
+@media(max-width:900px){main,header,.main-nav,.sub-nav{padding-left:10px;padding-right:10px}.kpi-grid,.kpi-grid5{grid-template-columns:repeat(2,1fr)}.h-title{font-size:18px}.main-nav{overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch}.main-nav::-webkit-scrollbar{display:none}.mnav{font-size:10px;padding:10px;white-space:nowrap;flex-shrink:0}.g2{grid-template-columns:1fr}}
+@media(max-width:600px){main{padding:12px 10px}.kpi-grid,.kpi-grid5{grid-template-columns:1fr 1fr;gap:8px}.kpi{height:auto;min-height:90px;padding:10px}.kpi-val{font-size:20px}.h-right{display:none}.snav{font-size:10px;padding:4px 10px}}
 </style>
-
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-  <script>
-    var firebaseConfig = {
-      apiKey: "AIzaSyCeCpbaXkIoSwBoeKmwgHvpXaaTOinEs1E",
-      authDomain: "acompanhamento-fisico-de-b6460.firebaseapp.com",
-      projectId: "acompanhamento-fisico-de-b6460",
-      storageBucket: "acompanhamento-fisico-de-b6460.firebasestorage.app",
-      messagingSenderId: "516728803415",
-      appId: "1:516728803415:web:cfee463f5dddc08c9b1312"
-    };
-    firebase.initializeApp(firebaseConfig);
-    var db = firebase.firestore();
-  </script>
-
-  <!-- PWA -->
-  <meta name="theme-color" content="#0d1117">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Tato Obra">
-  <meta name="mobile-web-app-capable" content="yes">
-  <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="icon.png">
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script>
+firebase.initializeApp({apiKey:"AIzaSyCeCpbaXkIoSwBoeKmwgHvpXaaTOinEs1E",authDomain:"acompanhamento-fisico-de-b6460.firebaseapp.com",projectId:"acompanhamento-fisico-de-b6460",storageBucket:"acompanhamento-fisico-de-b6460.firebasestorage.app",messagingSenderId:"516728803415",appId:"1:516728803415:web:cfee463f5dddc08c9b1312"});
+var db=firebase.firestore();
+</script>
+<meta name="theme-color" content="#0d1117">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.png">
 </head>
 <body>
 
-<!-- TELA DE LOGIN -->
+<!-- LOGIN -->
 <div class="login-overlay" id="loginOverlay">
   <div class="login-box">
-    <div class="login-logo"><img src="data:image/png;base64,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"></div>
+    <div class="login-logo"><img src="data:image/png;base64,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"></div>
     <div class="login-title">Acompanhamento Físico da Obra</div>
     <div class="login-sub">Tato Urbanismo</div>
     <input class="login-field" id="loginUser" type="text" placeholder="Usuário" autocomplete="username">
     <input class="login-field" id="loginPass" type="password" placeholder="Senha" autocomplete="current-password">
     <button class="login-btn" onclick="fazerLogin()">Entrar</button>
     <div class="login-err" id="loginErr"></div>
-    <div class="login-version">v1.0 &mdash; 2026</div>
+    <div class="login-version">v2.0 &mdash; 2026</div>
   </div>
 </div>
+
 <header>
-  <div class="h-logo"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADkAAAA8CAYAAADc1RI2AAAQm0lEQVR42u1afXAd1XX/nXvv7r6nT/wlGwUb7LTFWNCB2nyYEEtqSnGcCeDQJz6K3TYU0UwLiUNmMpmhs3qdNsNMkgE3TZqSFBhqQNELCXFi40BSPScTx2JsYxtLHhIDtmRkW5IlWe/pfezevad/vF37IdtEEjJNOr0zO7vv3bP3nN+9556vvYSZaQSAExsS8YuWVzUpm4QxxCyYpjSIIRYxSSOHx3a1f679BBgEAr9f4dRMIHRdUDIJHrMH5ldZ9lZRYYEDLkGfQjPMkHGCx/m1AF5MpBIihVTwOwEyalIJNmyK2tc2G2ZMFSYhIM+XDDYzKdeMgizJSUREFP2YzsszLdOMghRKMgOamQWDGVwCGQouJ9Iz2IBRvmoBMzOBhNvZqLryGel2NhIA9AzWcapleqo7oyBJk7RjqsKutsH6zJ40xsDP+e8GyAwrZglpSVH2n7LiFoKiziebt2sAetsMWcUZs66rH1xdU7d89n3KUZKZGYYlAybQwWVOrfp75tI+ZWZjxSxRGPVeIRYvk4BgU1pRyxLw8/4fWbW20kWfGcTKFiLI8bGn7t30CIBor/MHDfI9283uzVdees2C15nZgCGYWcdq4upUb+ZLz9733Ucn0t/3/XWvVtVVXutliwABVsxCdmD8+JOJZ+unA3KmDQ+5nY0SaAIADOeH5ez47GDva7tmnUXJDCFQ6Xa6CjisgMs0BnsE5i0zR4ffzBXGCtrP6wAECnwjABqetq2YYZCcbN6uk81JnWxO6uPZ4zrZnNQwfE6DwcQm2ZzUwGUluu5lpTtIEJEiggJYEUHxOQzXhV9JPo+qz0CE8rvjQn4HwcwYSGYmIuJ7//OuZyrr4g1ezjMgkGVJ8jL62Osb31i7e/du/4Myahd0Jcniq+0qdRWTKVlAR8Er+IP5fJ7+76grMO7lfaOLOgBAbFgAlJkREz3DW2HK1rUl1SIAQFkqR4IEEQkQBIEESXIabmmQ5zFUTCAGg8OA5ywgybYkA0DgcxxgMPMZuIH54ECeTosCMyyISsIzkQkMQDTPqrfqSumXe1ptjWASShAJkkIJIiIlLUFEJN4dnoMb/6oxxsbUmzBVIyIGEZiRLU3V1AKBaYFcNm8ZAQAbfgNEpQUhkDEcxKpsW80215cESZ8emwqk/Zw/7uV1xs/547oYjHnj/rjxTCGiSXQkBBj0oWvrlipH1gdewAQSYLCQAmzMEQBIICEu+J7sGexhANAF3hlo8+7USACw8WkQOtAJpJpLWcM7h0/sOTU8/gfl41QCGM8hCwDJ5qR2O10FAqsn1b12lU2FTEETkWIwiAgI0AUAy9IDdMFBphIpAwCn3sr+0qlVIyouZxnfMBGkN140sVrnlnu+0dKcbO7odDtdlWxO6t1P7PYBHD/fmImOhEw2J/XaR9deYtWq+728xwSSYZomvXGf86eKPwUApJsMsP0C70kCJzghtzy6ZYQL5odWzAKjFLYxAxBgZ6791OoHV89LNid163+0WmHocPYFUKPbqFJ3pgIAsnZhxTN2parhgE2YcAdWTMHP+a91PPiDva7rimQyaT4YF5Iq3XJDhcdVjbVeSEFsmIlI6II2To196Yc+Om/LbTV/fscTDzzRBwLcdKNKp4G6hjoe6B6gpiagjdMBEekbEjfEL7/1w5vic51mL1sMQKVVZGYWQhAX+KsATBppBcBMfV2m2RIdCZlqSQXrn77ziepLqu7PjxY0CVLhigZ2hSX9rO4vjPlfPHrfsfbt2K7PNc66J1pusWc5j9o11tXeuBdEFQRmDuxKW+YH87sPf+fYDU3pJpOk5LT8yPSjEwa5cGnXl3bV1l1du9eusRf5eT+gM6tglK2EkALFjN8Nj1/ytdlbPDWes6srYpYlGihGN1sxdR0pgp/XAdFpgEZakhEgyPcVrtv0UMc+l10xXZDvL0Bn0JZHt4zc9fU77pCO+rmyVVx7OiAiSURCe5oBsF1lNUhLNsQMo7IuBhKAkAKBNvDzHsMHl0+OkIKVpWTmePbTmx7q2JfoSMgkJYPpi/o+W6S2LY996pbay6pfEDGq9HO+TyAVVeuY2QAwRESRK+cw0i8vcLFhLW2phJQY681+7vnPpDa6nY0qrPf879Z4Gt1GtT25Xbc8vvba6oVVz8Rq7aWFjAc2Rkch3/m1vlSxIyLpVNlUzPgjhQG/9dnPtH8vwQmZovdfXJYzAfLI9iMm0ZGQqfteODrnorpN8bqYIyVd49Q4NgFkAg7LjTAAG4BMGIQLZSmyK2zBPpOX8dv79w3d/YMvvvjLRrdRbW3eGsyEfDOaFpX7scRjicur5zt/DYXbIbHUqbBB8gw7Ngw/78NoPsw+flIYKj75/EOpV8u3wMwVvGe6MSiRSogzQjaqux6fu8yutpaSjXpjqJIk5aDpuM55v36rs69nZ2pnHgBcdgXakkgmYfD70FzXFY2djZOy3glOSNd1xYWS5YPI4sl1XUojLZqagFK5Mo10GmhqazJJSvJUU6cpC8DMNI0Y1hART6j9yHdn9xScg9f75hPyEueQmc9H/3vVOjo6ZLgo71VokxM1VHV1dc257rrrGqbIbw8RZaPKHQB4nne9ZVkOAOTzeV1RUbETgIloDh48WL106dJrJm2+ABodHd0/a9as0UjbIu04dOjQ8osuumilEGKJMSYmhDh+6tSp17u7u9NENFJeVQQA7N+//3aeers2HMhiZvrNb37zJxMJ3nzzzY8yMx04cMAGgK6urpVTZTI6OnpzyMcGgN7e3sZsNrs9CIJz0hcKhf7h4eFHWltbrQgoAOD111//ZEhjyuiDCRdPoFleznxkZOTfwr5ieJnR0dGny2l27dp1/RT4BMzMIyMjH4sEHR4e/getdXl/IeTlhc9e1JnNZre/8sorc5iZXNcVIowrC9FljCmGOh1tbirvD6/Ij/lbt26ticfjLSGdioL+eDx+W1dX1xwAPgAIISbDp1hOU/pmTXzs2LG7Zs2a9XUppTHG6JDeAWADsMJnyxgTAPAqKytXrVy5sqOlpUU0NDQQduzYEWfmhcy8iJkX7tu376pcLjcazYrv+70jIyOLmXlhLpdbFNLanZ2dCgD6+/vXhaS6bCU0M/Pg4OAD4WqqAwcO2OV8jhw58uFCofDO6Re0Pjk0NLQspInoYjt27Jidz+eHmNkEQaCZmYvFYm5kZOTL/f39jf39/SuGh4fX5XK5nWWr7DEzDwwM3H/uYLuxsSqbzQ6XgXzzPFZMAEAmk9keqWEmk+nKZDK/iFQym82++l6uI5/PHynjM/DUU0/FJtIMDQ09FJJ4zGw8zxt7++23V54rDh8dHX2xjDbI5XIHOjs7lYgEZmbJzOKee+6JTTibQFu3bnXKaTo6OiQRmZ6enivj8fhHAGgAlM/nvzM+Pv7NUPV0LBZbcejQoeVEZKJ3o/vXvva1+ARTT8uXL4+X0URq/4nIBwKgsbGxryxevPhXzOyELkWExi3Yv3///b7vnwq3DFmWtfTSSy9tEKHjjvI9k81mz4ob+/r6TDlNIpEgAKivr18vpZQASGvtnzhxYtvRo0df8X2/AICklDRnzpxPn4kPzoxx+PDhs/h4nmeIyLS1tTER6UQiIYloSTgZVhAEPDQ09ENmFqlUSre0tAREZK688kqPmeWqVasGfd/fEU2yUkrG4/GlU44XmZmEEHrz5s0V8Xj87nCWped5v7jqqqv6VqxYMeT7/n+HaRxXVFTcsXPnzhoi0r/NkUetra0NALBo0aJYWKIFAOH7vunr68uGE83niqiMMSfOiMqIxWKV0wmKJQCsWLFijW3bl0TWc3x8/PmIIJPJRM+ebdt1ixcvvm0q+WsEsre3t0BE2SjEs21bLFmypOo8e5xDTbm4THNQKBTGpwPSMDOqq6v/NoqafN/PHTp06KWI4ODBg9s8zzsVmnhUVlZGtGaSIJmZZSqVCrTWbwFgY4wvhKDq6uq1IRgr2t8HDhywiSjo7Oxc4DjOjaF2Ka11kMvlDk4JZCqVEkRkuru7/zAWi/0pgACAKBaLP73xxhvfCZnK5ubmoUKhsK3MAH2kp6fnylC4yfIkACgWiz8GQEIIAYBra2u/cPTo0ZVEVCSi03uytbXVWrFixbcty6oODSF7ntfzzDPP9EypWpdIJASAYMGCBeuVUlbovGU2m93EzJROp6M9R5lM5tmampo7AQRSSmfevHl/A+DhEORksv6AmWnv3r2bqqqqHnEcpw5AYNt2VV1d3c+Ghob+XWv9ktY6Z9v2surq6gdisdiKMm0RY2NjjyeTST3VkqTeuHGjE4/H7w1Vwi4WiwOvvfbaT9asWcPMpc8FRMR79uz52dy5c/sdx6kHwNXV1Xfu2LHjkTCamcSHWGJmltdcc83o8ePHW+fPn/9DANIYoy3Lis+ZM+fzAD4/Ub5QLmt0dPTliy+++GlmFuI8DEw4I5HrADMLIuKWlpY/i8fjl0XCFovFF9esWTPGzIqImIjYGKNuvfXWXLFY/EHItOA4zoeWLFmyOhSezsdnYk7KzHLBggWbBwcHW7XWgRBChWMWAXih4SuEdwXAGhsbe6W7u/svwhNg545EfN+vjGLK8Pk0X9u2N4TPcQB08uTJZ3H2CSkOrexzYV8cABzH2RABHBsbo4l8MpkMnQ9oXV3dt/v6+m7KZrM/8X3fTIhdYwCsQqFwZGho6Au1tbWrb7rppkykEapcPULmYz09PTfHYjELAIIgyLe2tmoiYtd1xdtvv93W29v7L2Gf/tGPfvTL0HwHE6sCGzZs6Hr44YdXOY6jyugpmUwa13W9np6eW23bjoV9PlD6Xjkxu4+AElEXgNXd3d0N9fX11wJYQkQ2Mw8Ui8X9L7/88q/Wr18/TkQwxtDvZZUgDPnEJCoDky4zSGaWHR0dcrJ9F3qsCWDVhEtONqL6/3b6PN2Zc3XhB50J/5edu3tXPZVB4W96jzGjMqZ41/vhl+mzxvwg2vLW5dZ7/J6S+jy4cbVzzkmdkCBckOJyVPm67Z8+sSYIKM3QTVuS215a9811V1Ogl3taD7RvSG2+/Z8//vGqupp6nTHvtD+c2gYAdz+29gEh8s8/+9ltYy1f+dQqSGVLo4+i2hma5dsqw8VL/uvB9l33/Oud9xmPBtu/0L75zsduvwKQV3x3wwvfv+frd/2dPz/4No5hNtjcYZGQJpDp9s+3d0/2DMGklr2trY0AQDl0+Y+TP86TosUAqGp2/KL4vLgthFkIACKmFipbkbCoAQDWPZ5YBGUt97j6jwHArpKOJfFJsuVHK2ZVGNSoKrsmVgcALIxNVnDKdV1BQsaEI9fc8eVbr1c2NaVaUkHgeauLvv/z5z6b+oawg48BZ05wzQjI00VaaY/c/Y27V8UrYhIAS02en/elVzQD4ZcqKuQ83wQmAIBc4N9Cjtgj2HwEAJmAisrC85B0g7a0KcUsbABQPuunifGJNyreWCAkD4sAB2TMXqtse4vrusJSqq/Sil3xlxtbbiCDYQBw21yaMZDJZGnGlBX/vlSYC6itAHj8pPfrfb/q+ZYp0qslp21vq6mo7hVsNgMAe/7Pnmtt/xay6jnXdUmy033ZiSv2xBzxj7m3ckVtZL/Jid0AYIEuYWDz5bnLj8fG9XAQiOdFvvgYnSq+nEZafHfDC2nPL57UCOarkwPfK5frt7X/AZrXkuIXMsLiAAAAAElFTkSuQmCC" height="60" style="width:auto;display:block"></div>
+  <div class="h-logo"><img src="data:image/png;base64,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" height="60" style="width:auto;display:block"></div>
   <div class="h-title">Acompanhamento Físico da Obra</div>
   <div class="h-right">
     <span class="save-ind" id="saveInd">&#10003; Salvo</span>
     <div class="h-date" id="hDate"></div>
   </div>
 </header>
+
 <div class="main-nav">
   <button class="mnav ar" onclick="mainTab('resultados',this)">Apresentação de Resultados</button>
   <button class="mnav" onclick="mainTab('esgoto',this)">Rede de Esgoto</button>
   <button class="mnav" onclick="mainTab('agua',this)">Rede de Água</button>
   <button class="mnav" onclick="mainTab('drenagem',this)">Drenagem Pluvial</button>
 </div>
+
 <div class="sub-nav" id="snav-esgoto" style="display:none">
   <button class="snav ae" onclick="subTab('esgoto','rp',this)">Rede Principal</button>
   <button class="snav" onclick="subTab('esgoto','ct1',this)">Coletor Tronco 1</button>
   <button class="snav" onclick="subTab('esgoto','ct2',this)">Coletor Tronco 2</button>
+  <button class="snav" onclick="subTab('esgoto','pvs',this)">&#9679; Poços de Inspeção</button>
 </div>
 <div class="sub-nav" id="snav-agua" style="display:none">
   <button class="snav aa" onclick="subTab('agua','agua-rp2',this)">Rede Principal</button>
@@ -208,8 +146,10 @@ tr:last-child td{border-bottom:none}
   <button class="snav" onclick="subTab('drenagem','dr-rp2',this)">Rede Principal 02</button>
   <button class="snav" onclick="subTab('drenagem','dr-ram2',this)">Ramal Rede 02</button>
 </div>
+
 <main>
-<!-- ESGOTO -->
+
+<!-- ===== ESGOTO ===== -->
 <div class="panel" id="p-esgoto">
   <div class="sub-panel on" id="sp-esgoto-rp">
     <div class="slabel">Indicadores &mdash; Rede Principal</div>
@@ -247,8 +187,39 @@ tr:last-child td{border-bottom:none}
     <div class="slabel">Trechos &mdash; clique no status para editar</div>
     <div class="trwrap"><div class="tbar"><input class="srch" placeholder="Buscar PV..." id="s-ct2" oninput="renderSimple('ct2')"><div class="tcount" id="c-ct2"></div></div><div class="scroll-t"><table><thead><tr><th>PV</th><th>PV2</th><th class="num">Metros</th><th>DN</th><th>Status &#9998;</th></tr></thead><tbody id="td-ct2"></tbody></table></div></div>
   </div>
+
+  <!-- ===== NOVA SUB-ABA: POÇOS DE INSPEÇÃO ===== -->
+  <div class="sub-panel" id="sp-esgoto-pvs">
+    <div class="slabel">Indicadores &mdash; Poços de Inspeção</div>
+    <div class="kpi-grid" id="kpi-pvs"></div>
+    <div class="prog"><div class="prog-top"><div><div class="prog-title">Execução &mdash; Poços de Inspeção</div><div class="prog-detail" id="pd-pvs"></div></div><div class="prog-pct" id="pp-pvs">0%</div></div><div class="prog-track"><div class="prog-fill" id="pf-pvs" style="width:0%"></div></div><div class="prog-meta" id="pm-pvs"></div></div>
+    <div class="slabel">Resumo por Bacia</div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-head"><div class="card-title">PVs por Bacia</div><div class="card-badge" id="badge-pvs-resumo"></div></div>
+      <table><thead><tr><th>Bacia</th><th class="num">Total</th><th class="num">Executado</th><th class="num">Em Execução</th><th class="num">Não Executado</th><th class="num">%</th></tr></thead>
+      <tbody id="td-pvs-resumo"></tbody></table>
+    </div>
+    <div class="slabel">Lista de PVs &mdash; clique no status para editar</div>
+    <div class="trwrap">
+      <div class="tbar" id="bar-pvs">
+        <button class="fbtn fe" onclick="filtPVs('all',this)">Todos</button>
+        <button class="fbtn" onclick="filtPVs('B4',this)">B4</button>
+        <button class="fbtn" onclick="filtPVs('B5',this)">B5</button>
+        <button class="fbtn" onclick="filtPVs('B6',this)">B6</button>
+        <button class="fbtn" onclick="filtPVs('B7',this)">B7</button>
+        <button class="fbtn" onclick="filtPVs('B8',this)">B8</button>
+        <button class="fbtn" onclick="filtPVs('B9',this)">B9</button>
+        <button class="fbtn" onclick="filtPVs('CT1',this)">CT1</button>
+        <button class="fbtn" onclick="filtPVs('CT2',this)">CT2</button>
+        <input class="srch" placeholder="Buscar PV..." id="s-pvs" oninput="renderPVs()">
+        <div class="tcount" id="c-pvs"></div>
+      </div>
+      <div class="scroll-t"><table><thead><tr><th>Bacia</th><th>Poço de Inspeção</th><th>Status &#9998;</th></tr></thead><tbody id="td-pvs"></tbody></table></div>
+    </div>
+  </div>
 </div>
-<!-- ÁGUA -->
+
+<!-- ===== ÁGUA ===== -->
 <div class="panel" id="p-agua">
   <div class="sub-panel on" id="sp-agua-agua-rp2">
     <div class="slabel">Indicadores &mdash; Rede Principal</div>
@@ -288,7 +259,8 @@ tr:last-child td{border-bottom:none}
     <div id="disp-container"></div>
   </div>
 </div>
-<!-- DRENAGEM -->
+
+<!-- ===== DRENAGEM ===== -->
 <div class="panel" id="p-drenagem">
   <div class="sub-panel on" id="sp-drenagem-dr-resumo">
     <div class="slabel">Resumo Geral &mdash; Drenagem Pluvial</div>
@@ -326,34 +298,99 @@ tr:last-child td{border-bottom:none}
     <div class="trwrap"><div class="tbar"><input class="srch" placeholder="Buscar PV..." id="s-dr-ram2" oninput="renderDrR('ram2')"><div class="tcount" id="c-dr-ram2"></div></div><div class="scroll-t"><table><thead><tr><th>PV</th><th>Bocas de Lobo</th><th class="num">Qtd (m)</th><th>DN</th><th>Status &#9998;</th></tr></thead><tbody id="td-dr-ram2"></tbody></table></div></div>
   </div>
 </div>
-<!-- RESULTADOS -->
+
+<!-- ===== RESULTADOS ===== -->
 <div class="panel on" id="p-resultados">
   <div class="slabel">Visão Geral do Projeto</div>
-  <div id="res-kpis" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px"></div>
-
+  <div id="res-kpis" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px"></div>
   <div class="slabel">Progresso por Rede</div>
   <div id="res-progs" style="margin-bottom:20px"></div>
-
   <div class="slabel">Resumo Executivo</div>
   <div id="res-tabela" style="background:var(--card);border:1px solid var(--border);border-radius:5px;overflow:hidden;margin-bottom:20px">
-    <table style="width:100%;border-collapse:collapse">
-      <thead><tr>
-        <th style="font-family:JetBrains Mono,monospace;font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);padding:8px 14px;text-align:left;border-bottom:1px solid var(--border);background:var(--paper)">Rede</th>
-        <th style="font-family:JetBrains Mono,monospace;font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);padding:8px 14px;text-align:right;border-bottom:1px solid var(--border);background:var(--paper)">%</th>
-      </tr></thead>
-      <tbody id="td-res-tabela"></tbody>
-    </table>
+    <table><thead><tr>
+      <th style="font-family:JetBrains Mono,monospace;font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);padding:8px 14px;text-align:left;border-bottom:1px solid var(--border);background:var(--paper)">Rede</th>
+      <th style="font-family:JetBrains Mono,monospace;font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);padding:8px 14px;text-align:right;border-bottom:1px solid var(--border);background:var(--paper)">%</th>
+    </tr></thead><tbody id="td-res-tabela"></tbody></table>
   </div>
 </div>
-
 </main>
 <script>
+
+// ============================================================
+// POÇOS DE INSPEÇÃO — dados da planilha PVs_por_Bacia.xlsx
+// ============================================================
+var PVS_ALL=[{"id":"pv_B4_0","bacia":"B4","nome":"B4-PV001","status":"Não Executado"},{"id":"pv_B4_1","bacia":"B4","nome":"B4-PV002","status":"Não Executado"},{"id":"pv_B4_2","bacia":"B4","nome":"B4-PV003","status":"Não Executado"},{"id":"pv_B4_3","bacia":"B4","nome":"B4-PV004","status":"Não Executado"},{"id":"pv_B4_4","bacia":"B4","nome":"B4-PV005","status":"Não Executado"},{"id":"pv_B4_5","bacia":"B4","nome":"B4-PV006","status":"Não Executado"},{"id":"pv_B4_6","bacia":"B4","nome":"B4-PV007","status":"Não Executado"},{"id":"pv_B4_7","bacia":"B4","nome":"B4-PV008","status":"Não Executado"},{"id":"pv_B4_8","bacia":"B4","nome":"B4-PV009","status":"Não Executado"},{"id":"pv_B4_9","bacia":"B4","nome":"B4-PV010","status":"Não Executado"},{"id":"pv_B4_10","bacia":"B4","nome":"B4-PV011","status":"Não Executado"},{"id":"pv_B4_11","bacia":"B4","nome":"B4-PV012","status":"Não Executado"},{"id":"pv_B5_0","bacia":"B5","nome":"B5-PV001","status":"Não Executado"},{"id":"pv_B5_1","bacia":"B5","nome":"B5-PV002","status":"Não Executado"},{"id":"pv_B5_2","bacia":"B5","nome":"B5-PV003","status":"Não Executado"},{"id":"pv_B5_3","bacia":"B5","nome":"B5-PV003A","status":"Não Executado"},{"id":"pv_B5_4","bacia":"B5","nome":"B5-PV004","status":"Não Executado"},{"id":"pv_B5_5","bacia":"B5","nome":"B5-PV005","status":"Não Executado"},{"id":"pv_B5_6","bacia":"B5","nome":"B5-PV006","status":"Não Executado"},{"id":"pv_B5_7","bacia":"B5","nome":"B5-PV007","status":"Não Executado"},{"id":"pv_B5_8","bacia":"B5","nome":"B5-PV008","status":"Não Executado"},{"id":"pv_B5_9","bacia":"B5","nome":"B5-PV009","status":"Não Executado"},{"id":"pv_B5_10","bacia":"B5","nome":"B5-PV010","status":"Não Executado"},{"id":"pv_B5_11","bacia":"B5","nome":"B5-PV011","status":"Não Executado"},{"id":"pv_B5_12","bacia":"B5","nome":"B5-PV012","status":"Não Executado"},{"id":"pv_B5_13","bacia":"B5","nome":"B5-PV013","status":"Não Executado"},{"id":"pv_B5_14","bacia":"B5","nome":"B5-PV014","status":"Não Executado"},{"id":"pv_B5_15","bacia":"B5","nome":"B5-PV015","status":"Não Executado"},{"id":"pv_B5_16","bacia":"B5","nome":"B5-PV016","status":"Não Executado"},{"id":"pv_B5_17","bacia":"B5","nome":"B5-PV017","status":"Não Executado"},{"id":"pv_B5_18","bacia":"B5","nome":"B5-PV018","status":"Não Executado"},{"id":"pv_B5_19","bacia":"B5","nome":"B5-PV019","status":"Não Executado"},{"id":"pv_B5_20","bacia":"B5","nome":"B5-PV020","status":"Não Executado"},{"id":"pv_B5_21","bacia":"B5","nome":"B5-PV020A","status":"Não Executado"},{"id":"pv_B5_22","bacia":"B5","nome":"B5-PV021","status":"Não Executado"},{"id":"pv_B5_23","bacia":"B5","nome":"B5-PV022","status":"Não Executado"},{"id":"pv_B5_24","bacia":"B5","nome":"B5-PV023","status":"Não Executado"},{"id":"pv_B5_25","bacia":"B5","nome":"B5-PV024","status":"Não Executado"},{"id":"pv_B5_26","bacia":"B5","nome":"B5-PV025","status":"Não Executado"},{"id":"pv_B5_27","bacia":"B5","nome":"B5-PV026","status":"Não Executado"},{"id":"pv_B5_28","bacia":"B5","nome":"B5-PV027","status":"Não Executado"},{"id":"pv_B5_29","bacia":"B5","nome":"B5-PV028","status":"Não Executado"},{"id":"pv_B5_30","bacia":"B5","nome":"B5-PV029","status":"Não Executado"},{"id":"pv_B5_31","bacia":"B5","nome":"B5-PV030","status":"Não Executado"},{"id":"pv_B5_32","bacia":"B5","nome":"B5-PV031","status":"Não Executado"},{"id":"pv_B5_33","bacia":"B5","nome":"B5-PV032","status":"Não Executado"},{"id":"pv_B5_34","bacia":"B5","nome":"B5-PV033","status":"Não Executado"},{"id":"pv_B5_35","bacia":"B5","nome":"B5-PV034","status":"Não Executado"},{"id":"pv_B5_36","bacia":"B5","nome":"B5-PV035","status":"Não Executado"},{"id":"pv_B5_37","bacia":"B5","nome":"B5-PV036","status":"Não Executado"},{"id":"pv_B5_38","bacia":"B5","nome":"B5-PV037","status":"Não Executado"},{"id":"pv_B5_39","bacia":"B5","nome":"B5-PV038","status":"Não Executado"},{"id":"pv_B5_40","bacia":"B5","nome":"B5-PV038A","status":"Não Executado"},{"id":"pv_B5_41","bacia":"B5","nome":"B5-PV039","status":"Não Executado"},{"id":"pv_B5_42","bacia":"B5","nome":"B5-PV040","status":"Não Executado"},{"id":"pv_B5_43","bacia":"B5","nome":"B5PV-041","status":"Não Executado"},{"id":"pv_B5_44","bacia":"B5","nome":"B5-PV042","status":"Não Executado"},{"id":"pv_B5_45","bacia":"B5","nome":"B5-PV043","status":"Não Executado"},{"id":"pv_B5_46","bacia":"B5","nome":"B5-PV044","status":"Não Executado"},{"id":"pv_B5_47","bacia":"B5","nome":"B5-PV045","status":"Não Executado"},{"id":"pv_B5_48","bacia":"B5","nome":"B5-PV046","status":"Não Executado"},{"id":"pv_B5_49","bacia":"B5","nome":"B5-PV047","status":"Não Executado"},{"id":"pv_B5_50","bacia":"B5","nome":"B5-PV048","status":"Não Executado"},{"id":"pv_B5_51","bacia":"B5","nome":"B5-PV049","status":"Não Executado"},{"id":"pv_B5_52","bacia":"B5","nome":"B5-PV050","status":"Não Executado"},{"id":"pv_B5_53","bacia":"B5","nome":"B5-PV051","status":"Não Executado"},{"id":"pv_B5_54","bacia":"B5","nome":"B5-PV051A","status":"Não Executado"},{"id":"pv_B5_55","bacia":"B5","nome":"B5-PV051B","status":"Não Executado"},{"id":"pv_B5_56","bacia":"B5","nome":"B5-PV052","status":"Não Executado"},{"id":"pv_B5_57","bacia":"B5","nome":"B5-PV053","status":"Não Executado"},{"id":"pv_B5_58","bacia":"B5","nome":"B5-PV054","status":"Não Executado"},{"id":"pv_B5_59","bacia":"B5","nome":"B5-PV055A","status":"Não Executado"},{"id":"pv_B5_60","bacia":"B5","nome":"B5-PV055B","status":"Não Executado"},{"id":"pv_B5_61","bacia":"B5","nome":"B5-PV056","status":"Não Executado"},{"id":"pv_B5_62","bacia":"B5","nome":"B5-PV057","status":"Não Executado"},{"id":"pv_B5_63","bacia":"B5","nome":"B5-PV058","status":"Não Executado"},{"id":"pv_B5_64","bacia":"B5","nome":"B5-PV058A","status":"Não Executado"},{"id":"pv_B5_65","bacia":"B5","nome":"B5-PV059","status":"Não Executado"},{"id":"pv_B5_66","bacia":"B5","nome":"B5-PV060","status":"Não Executado"},{"id":"pv_B5_67","bacia":"B5","nome":"B5-PV061A","status":"Não Executado"},{"id":"pv_B5_68","bacia":"B5","nome":"B5-PV061B","status":"Não Executado"},{"id":"pv_B5_69","bacia":"B5","nome":"B5-PV062","status":"Não Executado"},{"id":"pv_B6_0","bacia":"B6","nome":"B6-PV001","status":"Não Executado"},{"id":"pv_B6_1","bacia":"B6","nome":"B6-PV002","status":"Não Executado"},{"id":"pv_B6_2","bacia":"B6","nome":"B6-PV002A","status":"Não Executado"},{"id":"pv_B6_3","bacia":"B6","nome":"B6-PV003","status":"Não Executado"},{"id":"pv_B6_4","bacia":"B6","nome":"B6-PV004","status":"Não Executado"},{"id":"pv_B6_5","bacia":"B6","nome":"B6-PV005","status":"Não Executado"},{"id":"pv_B6_6","bacia":"B6","nome":"B6-PV006","status":"Não Executado"},{"id":"pv_B6_7","bacia":"B6","nome":"B6-PV006A","status":"Não Executado"},{"id":"pv_B6_8","bacia":"B6","nome":"B6-PV007","status":"Não Executado"},{"id":"pv_B6_9","bacia":"B6","nome":"B6-PV008","status":"Não Executado"},{"id":"pv_B6_10","bacia":"B6","nome":"B6-PV009","status":"Não Executado"},{"id":"pv_B6_11","bacia":"B6","nome":"B6-PV010","status":"Não Executado"},{"id":"pv_B6_12","bacia":"B6","nome":"B6-PV011","status":"Não Executado"},{"id":"pv_B6_13","bacia":"B6","nome":"B6-PV012","status":"Não Executado"},{"id":"pv_B6_14","bacia":"B6","nome":"B6-PV012A","status":"Não Executado"},{"id":"pv_B6_15","bacia":"B6","nome":"B6-PV013","status":"Não Executado"},{"id":"pv_B6_16","bacia":"B6","nome":"B6-PV014","status":"Não Executado"},{"id":"pv_B6_17","bacia":"B6","nome":"B6-PV015","status":"Não Executado"},{"id":"pv_B6_18","bacia":"B6","nome":"B6-PV016","status":"Não Executado"},{"id":"pv_B6_19","bacia":"B6","nome":"B6-PV017","status":"Não Executado"},{"id":"pv_B6_20","bacia":"B6","nome":"B6-PV018","status":"Não Executado"},{"id":"pv_B6_21","bacia":"B6","nome":"B6-PV019","status":"Não Executado"},{"id":"pv_B6_22","bacia":"B6","nome":"B6-PV020","status":"Não Executado"},{"id":"pv_B6_23","bacia":"B6","nome":"B6-PV021","status":"Não Executado"},{"id":"pv_B6_24","bacia":"B6","nome":"B6-PV022","status":"Não Executado"},{"id":"pv_B6_25","bacia":"B6","nome":"B6-PV023","status":"Não Executado"},{"id":"pv_B6_26","bacia":"B6","nome":"B6-PV024","status":"Não Executado"},{"id":"pv_B6_27","bacia":"B6","nome":"B6-PV025","status":"Não Executado"},{"id":"pv_B6_28","bacia":"B6","nome":"B6-PV026","status":"Não Executado"},{"id":"pv_B6_29","bacia":"B6","nome":"B6-PV027","status":"Não Executado"},{"id":"pv_B6_30","bacia":"B6","nome":"B6-PV028","status":"Não Executado"},{"id":"pv_B6_31","bacia":"B6","nome":"B6-PV029","status":"Não Executado"},{"id":"pv_B6_32","bacia":"B6","nome":"B6-PV030","status":"Não Executado"},{"id":"pv_B6_33","bacia":"B6","nome":"B6-PV032","status":"Não Executado"},{"id":"pv_B6_34","bacia":"B6","nome":"B6-PV033","status":"Não Executado"},{"id":"pv_B6_35","bacia":"B6","nome":"B6-PV034","status":"Não Executado"},{"id":"pv_B6_36","bacia":"B6","nome":"B6-PV034A","status":"Não Executado"},{"id":"pv_B6_37","bacia":"B6","nome":"B6-PV035","status":"Não Executado"},{"id":"pv_B6_38","bacia":"B6","nome":"B6-PV036","status":"Não Executado"},{"id":"pv_B6_39","bacia":"B6","nome":"B6-PV037","status":"Não Executado"},{"id":"pv_B6_40","bacia":"B6","nome":"B6-PV038","status":"Não Executado"},{"id":"pv_B6_41","bacia":"B6","nome":"B6-PV039","status":"Não Executado"},{"id":"pv_B6_42","bacia":"B6","nome":"B6-PV040","status":"Não Executado"},{"id":"pv_B6_43","bacia":"B6","nome":"B6-PV041","status":"Não Executado"},{"id":"pv_B6_44","bacia":"B6","nome":"B6-PV042","status":"Não Executado"},{"id":"pv_B6_45","bacia":"B6","nome":"B6-PV043","status":"Não Executado"},{"id":"pv_B6_46","bacia":"B6","nome":"B6-PV044","status":"Não Executado"},{"id":"pv_B6_47","bacia":"B6","nome":"B6-PV045","status":"Não Executado"},{"id":"pv_B6_48","bacia":"B6","nome":"B6-PV046","status":"Não Executado"},{"id":"pv_B6_49","bacia":"B6","nome":"B6-PV047","status":"Não Executado"},{"id":"pv_B6_50","bacia":"B6","nome":"B6-PV048","status":"Não Executado"},{"id":"pv_B6_51","bacia":"B6","nome":"B6-PV049","status":"Não Executado"},{"id":"pv_B7_0","bacia":"B7","nome":"B7-PV001","status":"Não Executado"},{"id":"pv_B7_1","bacia":"B7","nome":"B7-PV002","status":"Não Executado"},{"id":"pv_B7_2","bacia":"B7","nome":"B7-PV003","status":"Não Executado"},{"id":"pv_B7_3","bacia":"B7","nome":"B7-PV004","status":"Não Executado"},{"id":"pv_B7_4","bacia":"B7","nome":"B7-PV005","status":"Não Executado"},{"id":"pv_B7_5","bacia":"B7","nome":"B7-PV006","status":"Não Executado"},{"id":"pv_B7_6","bacia":"B7","nome":"B7-PV007","status":"Não Executado"},{"id":"pv_B7_7","bacia":"B7","nome":"B7-PV008","status":"Não Executado"},{"id":"pv_B7_8","bacia":"B7","nome":"B7-PV009","status":"Não Executado"},{"id":"pv_B7_9","bacia":"B7","nome":"B7-PV010","status":"Não Executado"},{"id":"pv_B7_10","bacia":"B7","nome":"B7-PV011","status":"Não Executado"},{"id":"pv_B7_11","bacia":"B7","nome":"B7-PV012","status":"Não Executado"},{"id":"pv_B7_12","bacia":"B7","nome":"B7-PV013","status":"Não Executado"},{"id":"pv_B7_13","bacia":"B7","nome":"B7-PV014","status":"Não Executado"},{"id":"pv_B7_14","bacia":"B7","nome":"B7-PV015","status":"Não Executado"},{"id":"pv_B7_15","bacia":"B7","nome":"B7-PV016","status":"Não Executado"},{"id":"pv_B7_16","bacia":"B7","nome":"B7-PV017","status":"Não Executado"},{"id":"pv_B7_17","bacia":"B7","nome":"B7-PV018","status":"Não Executado"},{"id":"pv_B7_18","bacia":"B7","nome":"B7-PV019","status":"Não Executado"},{"id":"pv_B7_19","bacia":"B7","nome":"B7-PV020","status":"Não Executado"},{"id":"pv_B7_20","bacia":"B7","nome":"B7-PV021","status":"Não Executado"},{"id":"pv_B7_21","bacia":"B7","nome":"B7-PV022","status":"Não Executado"},{"id":"pv_B7_22","bacia":"B7","nome":"B7-PV023","status":"Não Executado"},{"id":"pv_B7_23","bacia":"B7","nome":"B7-PV024","status":"Não Executado"},{"id":"pv_B7_24","bacia":"B7","nome":"B7-PV025","status":"Não Executado"},{"id":"pv_B7_25","bacia":"B7","nome":"B7-PV026","status":"Não Executado"},{"id":"pv_B7_26","bacia":"B7","nome":"B7-PV027","status":"Não Executado"},{"id":"pv_B7_27","bacia":"B7","nome":"B7-PV027A","status":"Não Executado"},{"id":"pv_B7_28","bacia":"B7","nome":"B7-PV028","status":"Não Executado"},{"id":"pv_B7_29","bacia":"B7","nome":"B7-PV029","status":"Não Executado"},{"id":"pv_B7_30","bacia":"B7","nome":"B7-PV030","status":"Não Executado"},{"id":"pv_B7_31","bacia":"B7","nome":"B7-PV031","status":"Não Executado"},{"id":"pv_B7_32","bacia":"B7","nome":"B7-PV032","status":"Não Executado"},{"id":"pv_B7_33","bacia":"B7","nome":"B7-PV032A","status":"Não Executado"},{"id":"pv_B7_34","bacia":"B7","nome":"B7-PV033","status":"Não Executado"},{"id":"pv_B7_35","bacia":"B7","nome":"B7-PV034","status":"Não Executado"},{"id":"pv_B7_36","bacia":"B7","nome":"B7-PV035","status":"Não Executado"},{"id":"pv_B7_37","bacia":"B7","nome":"B7-PV036","status":"Não Executado"},{"id":"pv_B7_38","bacia":"B7","nome":"B7-PV037","status":"Não Executado"},{"id":"pv_B7_39","bacia":"B7","nome":"B7-PV038","status":"Não Executado"},{"id":"pv_B8_0","bacia":"B8","nome":"B8-PV001","status":"Não Executado"},{"id":"pv_B8_1","bacia":"B8","nome":"B8-PV002","status":"Não Executado"},{"id":"pv_B8_2","bacia":"B8","nome":"B8-PV003","status":"Não Executado"},{"id":"pv_B8_3","bacia":"B8","nome":"B8-PV004","status":"Não Executado"},{"id":"pv_B8_4","bacia":"B8","nome":"B8-PV005","status":"Não Executado"},{"id":"pv_B8_5","bacia":"B8","nome":"B8-PV006","status":"Não Executado"},{"id":"pv_B8_6","bacia":"B8","nome":"B8-PV007","status":"Não Executado"},{"id":"pv_B8_7","bacia":"B8","nome":"B8-PV008","status":"Não Executado"},{"id":"pv_B8_8","bacia":"B8","nome":"B8-PV009","status":"Não Executado"},{"id":"pv_B8_9","bacia":"B8","nome":"B8-PV010","status":"Não Executado"},{"id":"pv_B8_10","bacia":"B8","nome":"B8-PV011","status":"Não Executado"},{"id":"pv_B8_11","bacia":"B8","nome":"B8-PV012","status":"Não Executado"},{"id":"pv_B8_12","bacia":"B8","nome":"B8-PV013","status":"Não Executado"},{"id":"pv_B8_13","bacia":"B8","nome":"B8-PV014","status":"Não Executado"},{"id":"pv_B8_14","bacia":"B8","nome":"B8-PV015","status":"Não Executado"},{"id":"pv_B8_15","bacia":"B8","nome":"B8-PV016","status":"Não Executado"},{"id":"pv_B8_16","bacia":"B8","nome":"B8-PV017","status":"Não Executado"},{"id":"pv_B8_17","bacia":"B8","nome":"B8-PV018","status":"Não Executado"},{"id":"pv_B8_18","bacia":"B8","nome":"B8-PV019","status":"Não Executado"},{"id":"pv_B8_19","bacia":"B8","nome":"B8-PV020","status":"Não Executado"},{"id":"pv_B8_20","bacia":"B8","nome":"B8-PV021","status":"Não Executado"},{"id":"pv_B8_21","bacia":"B8","nome":"B8-PV022","status":"Não Executado"},{"id":"pv_B8_22","bacia":"B8","nome":"B8-PV023","status":"Não Executado"},{"id":"pv_B8_23","bacia":"B8","nome":"B8-PV024","status":"Não Executado"},{"id":"pv_B8_24","bacia":"B8","nome":"B8-PV025","status":"Não Executado"},{"id":"pv_B8_25","bacia":"B8","nome":"B8-PV026","status":"Não Executado"},{"id":"pv_B8_26","bacia":"B8","nome":"B8-PV027","status":"Não Executado"},{"id":"pv_B8_27","bacia":"B8","nome":"B8-PV028","status":"Não Executado"},{"id":"pv_B8_28","bacia":"B8","nome":"B8-PV029","status":"Não Executado"},{"id":"pv_B8_29","bacia":"B8","nome":"B8-PV030","status":"Não Executado"},{"id":"pv_B8_30","bacia":"B8","nome":"B8-PV031","status":"Não Executado"},{"id":"pv_B8_31","bacia":"B8","nome":"B8-PV032","status":"Não Executado"},{"id":"pv_B8_32","bacia":"B8","nome":"B8-PV033","status":"Não Executado"},{"id":"pv_B8_33","bacia":"B8","nome":"B8-PV034","status":"Não Executado"},{"id":"pv_B8_34","bacia":"B8","nome":"B8-PV035","status":"Não Executado"},{"id":"pv_B8_35","bacia":"B8","nome":"B8-PV036","status":"Não Executado"},{"id":"pv_B8_36","bacia":"B8","nome":"B8-PV037","status":"Não Executado"},{"id":"pv_B8_37","bacia":"B8","nome":"B8-PV038","status":"Não Executado"},{"id":"pv_B8_38","bacia":"B8","nome":"B8-PV039","status":"Não Executado"},{"id":"pv_B8_39","bacia":"B8","nome":"B8-PV040","status":"Não Executado"},{"id":"pv_B8_40","bacia":"B8","nome":"B8-PV041","status":"Não Executado"},{"id":"pv_B8_41","bacia":"B8","nome":"B8-PV042","status":"Não Executado"},{"id":"pv_B8_42","bacia":"B8","nome":"B8-PV042A","status":"Não Executado"},{"id":"pv_B8_43","bacia":"B8","nome":"B8-PV043","status":"Não Executado"},{"id":"pv_B8_44","bacia":"B8","nome":"B8-PV044","status":"Não Executado"},{"id":"pv_B8_45","bacia":"B8","nome":"B8-PV045","status":"Não Executado"},{"id":"pv_B8_46","bacia":"B8","nome":"B8-PV046","status":"Não Executado"},{"id":"pv_B8_47","bacia":"B8","nome":"B8-PV047","status":"Não Executado"},{"id":"pv_B8_48","bacia":"B8","nome":"B8-PV048","status":"Não Executado"},{"id":"pv_B8_49","bacia":"B8","nome":"B8-PV049","status":"Não Executado"},{"id":"pv_B8_50","bacia":"B8","nome":"B8-PV050","status":"Não Executado"},{"id":"pv_B8_51","bacia":"B8","nome":"B8-PV051","status":"Não Executado"},{"id":"pv_B8_52","bacia":"B8","nome":"B8-PV052","status":"Não Executado"},{"id":"pv_B8_53","bacia":"B8","nome":"B8-PV053","status":"Não Executado"},{"id":"pv_B8_54","bacia":"B8","nome":"B8-PV054","status":"Não Executado"},{"id":"pv_B8_55","bacia":"B8","nome":"B8-PV055","status":"Não Executado"},{"id":"pv_B8_56","bacia":"B8","nome":"B8-PV056","status":"Não Executado"},{"id":"pv_B8_57","bacia":"B8","nome":"B8-PV057","status":"Não Executado"},{"id":"pv_B8_58","bacia":"B8","nome":"B8-PV058","status":"Não Executado"},{"id":"pv_B8_59","bacia":"B8","nome":"B8-PV059","status":"Não Executado"},{"id":"pv_B8_60","bacia":"B8","nome":"B8-PV060","status":"Não Executado"},{"id":"pv_B8_61","bacia":"B8","nome":"B8-PV060A","status":"Não Executado"},{"id":"pv_B8_62","bacia":"B8","nome":"B8-PV061","status":"Não Executado"},{"id":"pv_B8_63","bacia":"B8","nome":"B8-PV062","status":"Não Executado"},{"id":"pv_B8_64","bacia":"B8","nome":"B8-PV063","status":"Não Executado"},{"id":"pv_B8_65","bacia":"B8","nome":"B8-PV063A","status":"Não Executado"},{"id":"pv_B8_66","bacia":"B8","nome":"B8-PV064","status":"Não Executado"},{"id":"pv_B8_67","bacia":"B8","nome":"B8-PV065","status":"Não Executado"},{"id":"pv_B8_68","bacia":"B8","nome":"B8-PV066","status":"Não Executado"},{"id":"pv_B8_69","bacia":"B8","nome":"B8-PV067","status":"Não Executado"},{"id":"pv_B8_70","bacia":"B8","nome":"B8-PV068","status":"Não Executado"},{"id":"pv_B9_0","bacia":"B9","nome":"B9-PV001","status":"Não Executado"},{"id":"pv_B9_1","bacia":"B9","nome":"B9-PV002","status":"Não Executado"},{"id":"pv_B9_2","bacia":"B9","nome":"B9-PV003","status":"Não Executado"},{"id":"pv_B9_3","bacia":"B9","nome":"B9-PV004","status":"Não Executado"},{"id":"pv_B9_4","bacia":"B9","nome":"B9-PV005","status":"Não Executado"},{"id":"pv_B9_5","bacia":"B9","nome":"B9-PV006","status":"Não Executado"},{"id":"pv_B9_6","bacia":"B9","nome":"B9-PV007","status":"Não Executado"},{"id":"pv_B9_7","bacia":"B9","nome":"B9-PV008","status":"Não Executado"},{"id":"pv_B9_8","bacia":"B9","nome":"B9-PV009","status":"Não Executado"},{"id":"pv_B9_9","bacia":"B9","nome":"B9-PV010","status":"Não Executado"},{"id":"pv_B9_10","bacia":"B9","nome":"B9-PV011","status":"Não Executado"},{"id":"pv_B9_11","bacia":"B9","nome":"B9-PV012","status":"Não Executado"},{"id":"pv_B9_12","bacia":"B9","nome":"B9-PV013","status":"Não Executado"},{"id":"pv_B9_13","bacia":"B9","nome":"B9-PV014","status":"Não Executado"},{"id":"pv_B9_14","bacia":"B9","nome":"B9-PV015","status":"Não Executado"},{"id":"pv_B9_15","bacia":"B9","nome":"B9-PV016","status":"Não Executado"},{"id":"pv_B9_16","bacia":"B9","nome":"B9-PV017","status":"Não Executado"},{"id":"pv_B9_17","bacia":"B9","nome":"B9-PV018","status":"Não Executado"},{"id":"pv_B9_18","bacia":"B9","nome":"B9-PV019","status":"Não Executado"},{"id":"pv_B9_19","bacia":"B9","nome":"B9-PV020","status":"Não Executado"},{"id":"pv_B9_20","bacia":"B9","nome":"B9-PV021","status":"Não Executado"},{"id":"pv_B9_21","bacia":"B9","nome":"B9-PV022","status":"Não Executado"},{"id":"pv_B9_22","bacia":"B9","nome":"B9-PV023","status":"Não Executado"},{"id":"pv_B9_23","bacia":"B9","nome":"B9-PV024","status":"Não Executado"},{"id":"pv_B9_24","bacia":"B9","nome":"B9-PV026","status":"Não Executado"},{"id":"pv_B9_25","bacia":"B9","nome":"B9-PV027","status":"Não Executado"},{"id":"pv_B9_26","bacia":"B9","nome":"B9-PV028","status":"Não Executado"},{"id":"pv_B9_27","bacia":"B9","nome":"B9-PV029","status":"Não Executado"},{"id":"pv_B9_28","bacia":"B9","nome":"B9-PV030","status":"Não Executado"},{"id":"pv_B9_29","bacia":"B9","nome":"B9-PV031","status":"Não Executado"},{"id":"pv_B9_30","bacia":"B9","nome":"B9-PV032","status":"Não Executado"},{"id":"pv_CT1_0","bacia":"CT1","nome":"CT1-PV001","status":"Não Executado"},{"id":"pv_CT1_1","bacia":"CT1","nome":"CT1-PV002","status":"Não Executado"},{"id":"pv_CT1_2","bacia":"CT1","nome":"CT1-PV003","status":"Não Executado"},{"id":"pv_CT1_3","bacia":"CT1","nome":"CT1-PV004","status":"Não Executado"},{"id":"pv_CT1_4","bacia":"CT1","nome":"CT1-PV005","status":"Não Executado"},{"id":"pv_CT1_5","bacia":"CT1","nome":"CT1-PV006","status":"Não Executado"},{"id":"pv_CT1_6","bacia":"CT1","nome":"CT1-PV007","status":"Não Executado"},{"id":"pv_CT1_7","bacia":"CT1","nome":"CT1-PV008","status":"Não Executado"},{"id":"pv_CT1_8","bacia":"CT1","nome":"CT1-PV009","status":"Não Executado"},{"id":"pv_CT1_9","bacia":"CT1","nome":"CT1-PV010","status":"Não Executado"},{"id":"pv_CT1_10","bacia":"CT1","nome":"CT1-PV011","status":"Não Executado"},{"id":"pv_CT1_11","bacia":"CT1","nome":"CT1-PV012","status":"Não Executado"},{"id":"pv_CT1_12","bacia":"CT1","nome":"CT1-PV013","status":"Não Executado"},{"id":"pv_CT1_13","bacia":"CT1","nome":"CT1-PV014","status":"Não Executado"},{"id":"pv_CT1_14","bacia":"CT1","nome":"CT1-PV015","status":"Não Executado"},{"id":"pv_CT2_0","bacia":"CT2","nome":"CT2-PV001","status":"Não Executado"},{"id":"pv_CT2_1","bacia":"CT2","nome":"CT2-PV002","status":"Não Executado"},{"id":"pv_CT2_2","bacia":"CT2","nome":"CT2-PV003","status":"Não Executado"},{"id":"pv_CT2_3","bacia":"CT2","nome":"CT2-PV004","status":"Não Executado"},{"id":"pv_CT2_4","bacia":"CT2","nome":"CT2-PV005","status":"Não Executado"},{"id":"pv_CT2_5","bacia":"CT2","nome":"CT2-PV006","status":"Não Executado"},{"id":"pv_CT2_6","bacia":"CT2","nome":"CT2-PV007","status":"Não Executado"},{"id":"pv_CT2_7","bacia":"CT2","nome":"CT2-PV008","status":"Não Executado"},{"id":"pv_CT2_8","bacia":"CT2","nome":"CT2-PV009","status":"Não Executado"},{"id":"pv_CT2_9","bacia":"CT2","nome":"CT2-PV010","status":"Não Executado"},{"id":"pv_CT2_10","bacia":"CT2","nome":"CT2-PV011","status":"Não Executado"},{"id":"pv_CT2_11","bacia":"CT2","nome":"CT2-PV012","status":"Não Executado"},{"id":"pv_CT2_12","bacia":"CT2","nome":"CT2-PV013","status":"Não Executado"},{"id":"pv_CT2_13","bacia":"CT2","nome":"INT-PV036","status":"Não Executado"}];
+
+function initPVs(){
+  D.pvs = PVS_ALL;
+}
+
+var filtPVBacia='all';
+
+function filtPVs(b,btn){
+  filtPVBacia=b;
+  document.getElementById('bar-pvs').querySelectorAll('.fbtn').forEach(function(x){x.classList.remove('fe');});
+  btn.classList.add('fe');
+  renderPVs();
+}
+
+function renderPVs(){
+  var pvs=D.pvs||[];
+  var srch=(document.getElementById('s-pvs')||{value:''}).value.toLowerCase();
+  var rows=pvs.filter(function(p){
+    if(filtPVBacia!=='all'&&p.bacia!==filtPVBacia)return false;
+    if(srch&&p.nome.toLowerCase().indexOf(srch)<0)return false;
+    return true;
+  });
+  var totExec=pvs.filter(function(p){return p.status==='Executado';}).length;
+  var totExe=pvs.filter(function(p){return p.status==='Em Execução';}).length;
+  var totNao=pvs.filter(function(p){return p.status==='Não Executado';}).length;
+  var totAll=pvs.length;
+  setKpi('kpi-pvs',[
+    {c:'kc-green',l:'Total de PVs',v:totAll,s:'poços de inspeção'},
+    {c:'kc-g2',l:'Executados',v:totExec,s:pct(totExec,totAll)+' concluído'},
+    {c:'kc-blue',l:'Em Execução',v:totExe,s:'em andamento'},
+    {c:'kc-gold',l:'Não Executados',v:totNao,s:'pendentes'}
+  ]);
+  setProg('pvs',totExec,totAll,' PVs');
+  var bacias=['B4','B5','B6','B7','B8','B9','CT1','CT2'];
+  var rh=bacias.map(function(b){
+    var bp=pvs.filter(function(p){return p.bacia===b;});
+    if(!bp.length)return '';
+    var be=bp.filter(function(p){return p.status==='Executado';}).length;
+    var bx=bp.filter(function(p){return p.status==='Em Execução';}).length;
+    var bn=bp.filter(function(p){return p.status==='Não Executado';}).length;
+    return '<tr><td><strong>Bacia '+b+'</strong></td><td class="num">'+bp.length+'</td>'
+      +'<td class="num" style="color:var(--green2)">'+be+'</td>'
+      +'<td class="num" style="color:var(--blue)">'+bx+'</td>'
+      +'<td class="num" style="color:var(--muted)">'+bn+'</td>'
+      +'<td class="num">'+pct(be,bp.length)+'</td></tr>';
+  }).join('');
+  rh+='<tr class="tr-tot"><td>TOTAL</td><td class="num">'+totAll+'</td>'
+    +'<td class="num" style="color:var(--green2)">'+totExec+'</td>'
+    +'<td class="num" style="color:var(--blue)">'+totExe+'</td>'
+    +'<td class="num" style="color:var(--muted)">'+totNao+'</td>'
+    +'<td class="num">'+pct(totExec,totAll)+'</td></tr>';
+  var el=document.getElementById('td-pvs-resumo');if(el)el.innerHTML=rh;
+  var bg=document.getElementById('badge-pvs-resumo');if(bg)bg.textContent=totExec+'/'+totAll+' executados';
+  var cnt=document.getElementById('c-pvs');if(cnt)cnt.textContent=rows.length+' PVs';
+  var tb=document.getElementById('td-pvs');
+  if(tb)tb.innerHTML=rows.map(function(p){
+    return '<tr><td><strong>'+p.bacia+'</strong></td>'
+      +'<td style="font-family:JetBrains Mono,monospace;font-size:12px">'+p.nome+'</td>'
+      +'<td>'+stSel(p,'pvs')+'</td></tr>';
+  }).join('');
+}
+
+
 var BASE={"rp":[{"sheet":"RP","bacia":4,"qd":"27","pv":"1","pv2":"2","m":37.0,"dn":100,"status":"Executado","id":"rp_0"},{"sheet":"RP","bacia":4,"qd":"27","pv":"2","pv2":"3","m":44.0,"dn":100,"status":"Executado","id":"rp_1"},{"sheet":"RP","bacia":4,"qd":"27","pv":"3","pv2":"4","m":20.0,"dn":100,"status":"Executado","id":"rp_2"},{"sheet":"RP","bacia":4,"qd":"27","pv":"4","pv2":"5","m":7.0,"dn":100,"status":"Executado","id":"rp_3"},{"sheet":"RP","bacia":4,"qd":"27","pv":"5","pv2":"6","m":8.0,"dn":100,"status":"Executado","id":"rp_4"},{"sheet":"RP","bacia":4,"qd":"27","pv":"6","pv2":"7","m":30.0,"dn":100,"status":"Executado","id":"rp_5"},{"sheet":"RP","bacia":4,"qd":"27","pv":"7","pv2":"8","m":9.0,"dn":100,"status":"Executado","id":"rp_6"},{"sheet":"RP","bacia":4,"qd":"27","pv":"8","pv2":"RC","m":13.0,"dn":100,"status":"Executado","id":"rp_7"},{"sheet":"RP","bacia":4,"qd":"27","pv":"8","pv2":"12","m":9.0,"dn":100,"status":"Executado","id":"rp_8"},{"sheet":"RP","bacia":4,"qd":"27","pv":"12","pv2":"11","m":29.0,"dn":100,"status":"Executado","id":"rp_9"},{"sheet":"RP","bacia":4,"qd":"27","pv":"11","pv2":"10","m":30.0,"dn":100,"status":"Executado","id":"rp_10"},{"sheet":"RP","bacia":4,"qd":"27","pv":"10","pv2":"9","m":22.0,"dn":100,"status":"Executado","id":"rp_11"},{"sheet":"RP","bacia":4,"qd":"27","pv":"5","pv2":"RC","m":8.0,"dn":100,"status":"Executado","id":"rp_12"},{"sheet":"RP","bacia":5,"qd":"26","pv":"43","pv2":"44","m":72.0,"dn":100,"status":"Executado","id":"rp_13"},{"sheet":"RP","bacia":5,"qd":"26","pv":"44","pv2":"45","m":51.0,"dn":100,"status":"Executado","id":"rp_14"},{"sheet":"RP","bacia":5,"qd":"26","pv":"45","pv2":"24","m":5.0,"dn":100,"status":"Executado","id":"rp_15"},{"sheet":"RP","bacia":5,"qd":"26","pv":"24","pv2":"25","m":5.0,"dn":100,"status":"Executado","id":"rp_16"},{"sheet":"RP","bacia":5,"qd":"26","pv":"25","pv2":"26","m":40.0,"dn":100,"status":"Executado","id":"rp_17"},{"sheet":"RP","bacia":5,"qd":"26","pv":"26","pv2":"27","m":4.0,"dn":100,"status":"Executado","id":"rp_18"},{"sheet":"RP","bacia":5,"qd":"26","pv":"27","pv2":"RC","m":17.0,"dn":100,"status":"Executado","id":"rp_19"},{"sheet":"RP","bacia":5,"qd":"26","pv":"27","pv2":"48","m":6.0,"dn":100,"status":"Executado","id":"rp_20"},{"sheet":"RP","bacia":5,"qd":"26","pv":"48","pv2":"47","m":44.0,"dn":100,"status":"Executado","id":"rp_21"},{"sheet":"RP","bacia":5,"qd":"26","pv":"47","pv2":"46","m":73.0,"dn":100,"status":"Executado","id":"rp_22"},{"sheet":"RP","bacia":5,"qd":"26","pv":"3","pv2":"RC","m":15.0,"dn":100,"status":"Executado","id":"rp_23"},{"sheet":"RP","bacia":5,"qd":"25","pv":"49","pv2":"50","m":42.0,"dn":100,"status":"Executado","id":"rp_24"},{"sheet":"RP","bacia":5,"qd":"25","pv":"50","pv2":"51","m":39.0,"dn":100,"status":"Executado","id":"rp_25"},{"sheet":"RP","bacia":5,"qd":"25","pv":"51","pv2":"52","m":44.0,"dn":100,"status":"Executado","id":"rp_26"},{"sheet":"RP","bacia":5,"qd":"25","pv":"52","pv2":"53","m":12.0,"dn":100,"status":"Executado","id":"rp_27"},{"sheet":"RP","bacia":5,"qd":"25","pv":"53","pv2":"23","m":6.0,"dn":100,"status":"Executado","id":"rp_28"},{"sheet":"RP","bacia":5,"qd":"25","pv":"23","pv2":"22","m":7.0,"dn":100,"status":"Executado","id":"rp_29"},{"sheet":"RP","bacia":5,"qd":"25","pv":"22","pv2":"21","m":68.0,"dn":100,"status":"Executado","id":"rp_30"},{"sheet":"RP","bacia":5,"qd":"25","pv":"21","pv2":"20","m":80.0,"dn":100,"status":"Executado","id":"rp_31"},{"sheet":"RP","bacia":5,"qd":"24","pv":"58","pv2":"59","m":76.0,"dn":100,"status":"Não Executado","id":"rp_32"},{"sheet":"RP","bacia":5,"qd":"24","pv":"59","pv2":"17","m":7.0,"dn":100,"status":"Não Executado","id":"rp_33"},{"sheet":"RP","bacia":5,"qd":"24","pv":"17","pv2":"18","m":5.0,"dn":100,"status":"Não Executado","id":"rp_34"},{"sheet":"RP","bacia":5,"qd":"24","pv":"18","pv2":"19","m":36.0,"dn":100,"status":"Não Executado","id":"rp_35"},{"sheet":"RP","bacia":5,"qd":"24","pv":"19","pv2":"20","m":7.0,"dn":100,"status":"Não Executado","id":"rp_36"},{"sheet":"RP","bacia":5,"qd":"24","pv":"20","pv2":"42","m":7.0,"dn":100,"status":"Não Executado","id":"rp_37"},{"sheet":"RP","bacia":5,"qd":"24","pv":"42","pv2":"41","m":55.0,"dn":100,"status":"Não Executado","id":"rp_38"},{"sheet":"RP","bacia":5,"qd":"23","pv":"60","pv2":"61","m":80.0,"dn":100,"status":"Executado","id":"rp_39"},{"sheet":"RP","bacia":5,"qd":"23","pv":"61","pv2":"62","m":31.0,"dn":100,"status":"Executado","id":"rp_40"},{"sheet":"RP","bacia":5,"qd":"23","pv":"62","pv2":"13","m":6.0,"dn":100,"status":"Executado","id":"rp_41"},{"sheet":"RP","bacia":5,"qd":"23","pv":"13","pv2":"14","m":7.0,"dn":100,"status":"Executado","id":"rp_42"},{"sheet":"RP","bacia":5,"qd":"23","pv":"14","pv2":"15","m":35.0,"dn":100,"status":"Executado","id":"rp_43"},{"sheet":"RP","bacia":5,"qd":"23","pv":"15","pv2":"16","m":5.0,"dn":100,"status":"Executado","id":"rp_44"},{"sheet":"RP","bacia":5,"qd":"23","pv":"16","pv2":"17","m":17.0,"dn":100,"status":"Executado","id":"rp_45"},{"sheet":"RP","bacia":5,"qd":"23","pv":"16","pv2":"40","m":4.0,"dn":100,"status":"Executado","id":"rp_46"},{"sheet":"RP","bacia":5,"qd":"23","pv":"40","pv2":"39","m":12.0,"dn":100,"status":"Executado","id":"rp_47"},{"sheet":"RP","bacia":5,"qd":"23","pv":"39","pv2":"38","m":80.0,"dn":100,"status":"Executado","id":"rp_48"},{"sheet":"RP","bacia":5,"qd":"21","pv":"54","pv2":"55","m":80.0,"dn":100,"status":"Executado","id":"rp_49"},{"sheet":"RP","bacia":5,"qd":"21","pv":"55","pv2":"56","m":77.0,"dn":100,"status":"Executado","id":"rp_50"},{"sheet":"RP","bacia":5,"qd":"21","pv":"56","pv2":"9","m":7.0,"dn":100,"status":"Executado","id":"rp_51"},{"sheet":"RP","bacia":5,"qd":"21","pv":"9","pv2":"10","m":7.0,"dn":100,"status":"Executado","id":"rp_52"},{"sheet":"RP","bacia":5,"qd":"21","pv":"10","pv2":"11","m":36.0,"dn":100,"status":"Executado","id":"rp_53"},{"sheet":"RP","bacia":5,"qd":"21","pv":"11","pv2":"12","m":4.0,"dn":100,"status":"Executado","id":"rp_54"},{"sheet":"RP","bacia":5,"qd":"21","pv":"12","pv2":"13","m":17.0,"dn":100,"status":"Executado","id":"rp_55"},{"sheet":"RP","bacia":5,"qd":"21","pv":"12","pv2":"37","m":5.0,"dn":100,"status":"Executado","id":"rp_56"},{"sheet":"RP","bacia":5,"qd":"21","pv":"37","pv2":"36","m":19.0,"dn":100,"status":"Executado","id":"rp_57"},{"sheet":"RP","bacia":5,"qd":"21","pv":"36","pv2":"35","m":60.0,"dn":100,"status":"Executado","id":"rp_58"},{"sheet":"RP","bacia":5,"qd":"21","pv":"35","pv2":"34","m":30.0,"dn":100,"status":"Executado","id":"rp_59"},{"sheet":"RP","bacia":5,"qd":"21","pv":"34","pv2":"33","m":22.0,"dn":100,"status":"Executado","id":"rp_60"},{"sheet":"RP","bacia":5,"qd":"18","pv":"28","pv2":"29","m":31.0,"dn":100,"status":"Executado","id":"rp_61"},{"sheet":"RP","bacia":5,"qd":"18","pv":"29","pv2":"30","m":30.0,"dn":100,"status":"Executado","id":"rp_62"},{"sheet":"RP","bacia":5,"qd":"18","pv":"30","pv2":"31","m":40.0,"dn":100,"status":"Executado","id":"rp_63"},{"sheet":"RP","bacia":5,"qd":"18","pv":"31","pv2":"32","m":53.0,"dn":100,"status":"Executado","id":"rp_64"},{"sheet":"RP","bacia":5,"qd":"18","pv":"32","pv2":"8","m":5.0,"dn":100,"status":"Executado","id":"rp_65"},{"sheet":"RP","bacia":5,"qd":"18","pv":"8","pv2":"9","m":17.0,"dn":100,"status":"Executado","id":"rp_66"},{"sheet":"RP","bacia":5,"qd":"18","pv":"8","pv2":"7","m":4.0,"dn":100,"status":"Executado","id":"rp_67"},{"sheet":"RP","bacia":5,"qd":"18","pv":"7","pv2":"6","m":36.0,"dn":100,"status":"Executado","id":"rp_68"},{"sheet":"RP","bacia":5,"qd":"18","pv":"6","pv2":"5","m":7.0,"dn":100,"status":"Executado","id":"rp_69"},{"sheet":"RP","bacia":5,"qd":"18","pv":"5","pv2":"4","m":5.0,"dn":100,"status":"Executado","id":"rp_70"},{"sheet":"RP","bacia":5,"qd":"18","pv":"4","pv2":"3","m":78.0,"dn":100,"status":"Executado","id":"rp_71"},{"sheet":"RP","bacia":5,"qd":"18","pv":"3","pv2":"2","m":80.0,"dn":100,"status":"Executado","id":"rp_72"},{"sheet":"RP","bacia":5,"qd":"18","pv":"2","pv2":"57","m":25.0,"dn":100,"status":"Executado","id":"rp_73"},{"sheet":"RP","bacia":5,"qd":"18","pv":"2","pv2":"1","m":12.0,"dn":100,"status":"Não Executado","id":"rp_74"},{"sheet":"RP","bacia":6,"qd":"22","pv":"37","pv2":"38","m":62.0,"dn":100,"status":"Não Executado","id":"rp_75"},{"sheet":"RP","bacia":6,"qd":"22","pv":"38","pv2":"39","m":40.0,"dn":100,"status":"Não Executado","id":"rp_76"},{"sheet":"RP","bacia":6,"qd":"22","pv":"39","pv2":"40","m":8.0,"dn":100,"status":"Não Executado","id":"rp_77"},{"sheet":"RP","bacia":6,"qd":"22","pv":"40","pv2":"49","m":6.0,"dn":100,"status":"Não Executado","id":"rp_78"},{"sheet":"RP","bacia":6,"qd":"22","pv":"49","pv2":"48","m":35.0,"dn":100,"status":"Não Executado","id":"rp_79"},{"sheet":"RP","bacia":6,"qd":"22","pv":"48","pv2":"47","m":9.0,"dn":100,"status":"Não Executado","id":"rp_80"},{"sheet":"RP","bacia":6,"qd":"22","pv":"47","pv2":"46","m":9.0,"dn":100,"status":"Não Executado","id":"rp_81"},{"sheet":"RP","bacia":6,"qd":"22","pv":"46","pv2":"45","m":23.0,"dn":100,"status":"Não Executado","id":"rp_82"},{"sheet":"RP","bacia":6,"qd":"22","pv":"45","pv2":"44","m":80.0,"dn":100,"status":"Não Executado","id":"rp_83"},{"sheet":"RP","bacia":6,"qd":"22","pv":"44","pv2":"43","m":5.0,"dn":100,"status":"Não Executado","id":"rp_84"},{"sheet":"RP","bacia":6,"qd":"22","pv":"43","pv2":"42","m":5.0,"dn":100,"status":"Não Executado","id":"rp_85"},{"sheet":"RP","bacia":6,"qd":"22","pv":"42","pv2":"41","m":22.0,"dn":100,"status":"Não Executado","id":"rp_86"},{"sheet":"RP","bacia":6,"qd":"20","pv":"31","pv2":"32","m":80.0,"dn":100,"status":"Não Executado","id":"rp_87"},{"sheet":"RP","bacia":6,"qd":"20","pv":"32","pv2":"33","m":64.0,"dn":100,"status":"Não Executado","id":"rp_88"},{"sheet":"RP","bacia":6,"qd":"20","pv":"21","pv2":"22","m":80.0,"dn":100,"status":"Não Executado","id":"rp_89"},{"sheet":"RP","bacia":6,"qd":"20","pv":"22","pv2":"23","m":66.0,"dn":100,"status":"Não Executado","id":"rp_90"},{"sheet":"RP","bacia":6,"qd":"19","pv":"33","pv2":"34","m":80.0,"dn":100,"status":"Não Executado","id":"rp_91"},{"sheet":"RP","bacia":6,"qd":"19","pv":"34","pv2":"35","m":80.0,"dn":100,"status":"Não Executado","id":"rp_92"},{"sheet":"RP","bacia":6,"qd":"19","pv":"35","pv2":"36","m":29.0,"dn":100,"status":"Não Executado","id":"rp_93"},{"sheet":"RP","bacia":6,"qd":"19","pv":"36","pv2":"30","m":7.0,"dn":100,"status":"Não Executado","id":"rp_94"},{"sheet":"RP","bacia":6,"qd":"19","pv":"30","pv2":"18","m":20.0,"dn":100,"status":"Não Executado","id":"rp_95"},{"sheet":"RP","bacia":6,"qd":"19","pv":"30","pv2":"29","m":6.0,"dn":100,"status":"Não Executado","id":"rp_96"},{"sheet":"RP","bacia":6,"qd":"19","pv":"29","pv2":"28","m":37.0,"dn":100,"status":"Não Executado","id":"rp_97"},{"sheet":"RP","bacia":6,"qd":"19","pv":"28","pv2":"27","m":3.0,"dn":100,"status":"Não Executado","id":"rp_98"},{"sheet":"RP","bacia":6,"qd":"19","pv":"27","pv2":"26","m":3.0,"dn":100,"status":"Não Executado","id":"rp_99"},{"sheet":"RP","bacia":6,"qd":"19","pv":"26","pv2":"25","m":20.0,"dn":100,"status":"Não Executado","id":"rp_100"},{"sheet":"RP","bacia":6,"qd":"19","pv":"25","pv2":"24","m":61.0,"dn":100,"status":"Não Executado","id":"rp_101"},{"sheet":"RP","bacia":6,"qd":"19","pv":"24","pv2":"23","m":80.0,"dn":100,"status":"Não Executado","id":"rp_102"},{"sheet":"RP","bacia":6,"qd":"17","pv":"1","pv2":"2","m":80.0,"dn":100,"status":"Não Executado","id":"rp_103"},{"sheet":"RP","bacia":6,"qd":"17","pv":"2","pv2":"3","m":80.0,"dn":100,"status":"Não Executado","id":"rp_104"},{"sheet":"RP","bacia":6,"qd":"17","pv":"3","pv2":"4","m":58.0,"dn":100,"status":"Não Executado","id":"rp_105"},{"sheet":"RP","bacia":6,"qd":"17","pv":"11","pv2":"12","m":80.0,"dn":100,"status":"Não Executado","id":"rp_106"},{"sheet":"RP","bacia":6,"qd":"17","pv":"12","pv2":"13","m":80.0,"dn":100,"status":"Não Executado","id":"rp_107"},{"sheet":"RP","bacia":6,"qd":"17","pv":"13","pv2":"14","m":57.0,"dn":100,"status":"Não Executado","id":"rp_108"},{"sheet":"RP","bacia":6,"qd":"16","pv":"4","pv2":"5","m":80.0,"dn":100,"status":"Não Executado","id":"rp_109"},{"sheet":"RP","bacia":6,"qd":"16","pv":"5","pv2":"6","m":80.0,"dn":100,"status":"Não Executado","id":"rp_110"},{"sheet":"RP","bacia":6,"qd":"16","pv":"6","pv2":"7","m":34.0,"dn":100,"status":"Não Executado","id":"rp_111"},{"sheet":"RP","bacia":6,"qd":"16","pv":"7","pv2":"8","m":51.0,"dn":100,"status":"Não Executado","id":"rp_112"},{"sheet":"RP","bacia":6,"qd":"16","pv":"8","pv2":"9","m":7.0,"dn":100,"status":"Não Executado","id":"rp_113"},{"sheet":"RP","bacia":6,"qd":"16","pv":"9","pv2":"10","m":4.0,"dn":100,"status":"Não Executado","id":"rp_114"},{"sheet":"RP","bacia":6,"qd":"16","pv":"10","pv2":"20","m":5.0,"dn":100,"status":"Não Executado","id":"rp_115"},{"sheet":"RP","bacia":6,"qd":"16","pv":"10","pv2":"RC","m":21.0,"dn":100,"status":"Não Executado","id":"rp_116"},{"sheet":"RP","bacia":6,"qd":"16","pv":"20","pv2":"19","m":41.0,"dn":100,"status":"Não Executado","id":"rp_117"},{"sheet":"RP","bacia":6,"qd":"16","pv":"19","pv2":"18","m":3.0,"dn":100,"status":"Não Executado","id":"rp_118"},{"sheet":"RP","bacia":6,"qd":"16","pv":"18","pv2":"29","m":20.0,"dn":100,"status":"Não Executado","id":"rp_119"},{"sheet":"RP","bacia":6,"qd":"16","pv":"18","pv2":"17","m":4.0,"dn":100,"status":"Não Executado","id":"rp_120"},{"sheet":"RP","bacia":6,"qd":"16","pv":"17","pv2":"16","m":45.0,"dn":100,"status":"Não Executado","id":"rp_121"},{"sheet":"RP","bacia":6,"qd":"16","pv":"16","pv2":"15","m":80.0,"dn":100,"status":"Não Executado","id":"rp_122"},{"sheet":"RP","bacia":6,"qd":"16","pv":"15","pv2":"14","m":80.0,"dn":100,"status":"Não Executado","id":"rp_123"},{"sheet":"RP","bacia":6,"qd":"16","pv":"9","pv2":"RC","m":15.0,"dn":100,"status":"Não Executado","id":"rp_124"},{"sheet":"RP","bacia":7,"qd":"1","pv":"1","pv2":"2","m":71.0,"dn":100,"status":"Não Executado","id":"rp_125"},{"sheet":"RP","bacia":7,"qd":"1","pv":"2","pv2":"3","m":60.0,"dn":100,"status":"Não Executado","id":"rp_126"},{"sheet":"RP","bacia":7,"qd":"1","pv":"3","pv2":"4","m":80.0,"dn":100,"status":"Não Executado","id":"rp_127"},{"sheet":"RP","bacia":7,"qd":"1","pv":"4","pv2":"5","m":23.0,"dn":100,"status":"Não Executado","id":"rp_128"},{"sheet":"RP","bacia":7,"qd":"1","pv":"5","pv2":"6","m":6.0,"dn":100,"status":"Não Executado","id":"rp_129"},{"sheet":"RP","bacia":7,"qd":"1","pv":"6","pv2":"7","m":6.0,"dn":100,"status":"Não Executado","id":"rp_130"},{"sheet":"RP","bacia":7,"qd":"1","pv":"7","pv2":"8","m":40.0,"dn":100,"status":"Não Executado","id":"rp_131"},{"sheet":"RP","bacia":7,"qd":"1","pv":"8","pv2":"9","m":3.0,"dn":100,"status":"Não Executado","id":"rp_132"},{"sheet":"RP","bacia":7,"qd":"1","pv":"9","pv2":"34","m":5.0,"dn":100,"status":"Não Executado","id":"rp_133"},{"sheet":"RP","bacia":7,"qd":"1","pv":"34","pv2":"33","m":80.0,"dn":100,"status":"Não Executado","id":"rp_134"},{"sheet":"RP","bacia":7,"qd":"1","pv":"33","pv2":"32","m":80.0,"dn":100,"status":"Não Executado","id":"rp_135"},{"sheet":"RP","bacia":7,"qd":"1","pv":"32","pv2":"31","m":80.0,"dn":100,"status":"Não Executado","id":"rp_136"},{"sheet":"RP","bacia":7,"qd":"5","pv":"26","pv2":"27","m":80.0,"dn":100,"status":"Não Executado","id":"rp_137"},{"sheet":"RP","bacia":7,"qd":"5","pv":"27","pv2":"28","m":80.0,"dn":100,"status":"Não Executado","id":"rp_138"},{"sheet":"RP","bacia":7,"qd":"5","pv":"28","pv2":"29","m":80.0,"dn":100,"status":"Não Executado","id":"rp_139"},{"sheet":"RP","bacia":7,"qd":"5","pv":"29","pv2":"30","m":6.0,"dn":100,"status":"Não Executado","id":"rp_140"},{"sheet":"RP","bacia":7,"qd":"5","pv":"30","pv2":"10","m":5.0,"dn":100,"status":"Não Executado","id":"rp_141"},{"sheet":"RP","bacia":7,"qd":"5","pv":"10","pv2":"8","m":27.0,"dn":100,"status":"Não Executado","id":"rp_142"},{"sheet":"RP","bacia":7,"qd":"5","pv":"10","pv2":"11","m":6.0,"dn":100,"status":"Não Executado","id":"rp_143"},{"sheet":"RP","bacia":7,"qd":"5","pv":"11","pv2":"12","m":49.0,"dn":100,"status":"Não Executado","id":"rp_144"},{"sheet":"RP","bacia":7,"qd":"5","pv":"12","pv2":"13","m":3.0,"dn":100,"status":"Não Executado","id":"rp_145"},{"sheet":"RP","bacia":7,"qd":"5","pv":"13","pv2":"25","m":56.0,"dn":100,"status":"Não Executado","id":"rp_146"},{"sheet":"RP","bacia":7,"qd":"5","pv":"25","pv2":"24","m":81.0,"dn":100,"status":"Não Executado","id":"rp_147"},{"sheet":"RP","bacia":7,"qd":"5","pv":"24","pv2":"23","m":80.0,"dn":100,"status":"Não Executado","id":"rp_148"},{"sheet":"RP","bacia":7,"qd":"9","pv":"18","pv2":"19","m":80.0,"dn":100,"status":"Não Executado","id":"rp_149"},{"sheet":"RP","bacia":7,"qd":"9","pv":"19","pv2":"20","m":80.0,"dn":100,"status":"Não Executado","id":"rp_150"},{"sheet":"RP","bacia":7,"qd":"9","pv":"20","pv2":"21","m":37.0,"dn":100,"status":"Não Executado","id":"rp_151"},{"sheet":"RP","bacia":7,"qd":"9","pv":"21","pv2":"22","m":5.0,"dn":100,"status":"Não Executado","id":"rp_152"},{"sheet":"RP","bacia":7,"qd":"9","pv":"22","pv2":"14","m":6.0,"dn":100,"status":"Não Executado","id":"rp_153"},{"sheet":"RP","bacia":7,"qd":"9","pv":"14","pv2":"13","m":27.0,"dn":100,"status":"Não Executado","id":"rp_154"},{"sheet":"RP","bacia":7,"qd":"9","pv":"14","pv2":"15","m":5.0,"dn":100,"status":"Não Executado","id":"rp_155"},{"sheet":"RP","bacia":7,"qd":"9","pv":"15","pv2":"16","m":39.0,"dn":100,"status":"Não Executado","id":"rp_156"},{"sheet":"RP","bacia":7,"qd":"9","pv":"16","pv2":"38","m":6.0,"dn":100,"status":"Não Executado","id":"rp_157"},{"sheet":"RP","bacia":7,"qd":"9","pv":"38","pv2":"RC 12","m":13.0,"dn":100,"status":"Não Executado","id":"rp_158"},{"sheet":"RP","bacia":7,"qd":"9","pv":"38","pv2":"17","m":6.0,"dn":100,"status":"Não Executado","id":"rp_159"},{"sheet":"RP","bacia":7,"qd":"9","pv":"17","pv2":"37","m":22.0,"dn":100,"status":"Não Executado","id":"rp_160"},{"sheet":"RP","bacia":7,"qd":"9","pv":"37","pv2":"36","m":80.0,"dn":100,"status":"Não Executado","id":"rp_161"},{"sheet":"RP","bacia":7,"qd":"9","pv":"36","pv2":"35","m":80.0,"dn":100,"status":"Não Executado","id":"rp_162"},{"sheet":"RP","bacia":8,"qd":"4","pv":"1","pv2":"2","m":74.0,"dn":100,"status":"Não Executado","id":"rp_163"},{"sheet":"RP","bacia":8,"qd":"4","pv":"2","pv2":"40","m":12.0,"dn":100,"status":"Não Executado","id":"rp_164"},{"sheet":"RP","bacia":8,"qd":"4","pv":"2","pv2":"3","m":80.0,"dn":100,"status":"Não Executado","id":"rp_165"},{"sheet":"RP","bacia":8,"qd":"4","pv":"48","pv2":"49","m":80.0,"dn":100,"status":"Não Executado","id":"rp_166"},{"sheet":"RP","bacia":8,"qd":"3","pv":"3","pv2":"4","m":80.0,"dn":100,"status":"Não Executado","id":"rp_167"},{"sheet":"RP","bacia":8,"qd":"3","pv":"49","pv2":"50","m":80.0,"dn":100,"status":"Não Executado","id":"rp_168"},{"sheet":"RP","bacia":8,"qd":"3","pv":"50","pv2":"51","m":80.0,"dn":100,"status":"Não Executado","id":"rp_169"},{"sheet":"RP","bacia":8,"qd":"2","pv":"4","pv2":"5","m":80.0,"dn":100,"status":"Não Executado","id":"rp_170"},{"sheet":"RP","bacia":8,"qd":"2","pv":"5","pv2":"6","m":80.0,"dn":100,"status":"Não Executado","id":"rp_171"},{"sheet":"RP","bacia":8,"qd":"2","pv":"6","pv2":"7","m":80.0,"dn":100,"status":"Não Executado","id":"rp_172"},{"sheet":"RP","bacia":8,"qd":"2","pv":"7","pv2":"8","m":48.0,"dn":100,"status":"Não Executado","id":"rp_173"},{"sheet":"RP","bacia":8,"qd":"2","pv":"8","pv2":"9","m":5.0,"dn":100,"status":"Não Executado","id":"rp_174"},{"sheet":"RP","bacia":8,"qd":"2","pv":"9","pv2":"10","m":5.0,"dn":100,"status":"Não Executado","id":"rp_175"},{"sheet":"RP","bacia":8,"qd":"2","pv":"10","pv2":"11","m":38.0,"dn":100,"status":"Não Executado","id":"rp_176"},{"sheet":"RP","bacia":8,"qd":"2","pv":"11","pv2":"12","m":4.0,"dn":100,"status":"Não Executado","id":"rp_177"},{"sheet":"RP","bacia":8,"qd":"2","pv":"12","pv2":"13","m":17.0,"dn":100,"status":"Não Executado","id":"rp_178"},{"sheet":"RP","bacia":8,"qd":"2","pv":"12","pv2":"55","m":4.0,"dn":100,"status":"Não Executado","id":"rp_179"},{"sheet":"RP","bacia":8,"qd":"2","pv":"55","pv2":"54","m":80.0,"dn":100,"status":"Não Executado","id":"rp_180"},{"sheet":"RP","bacia":8,"qd":"2","pv":"54","pv2":"53","m":80.0,"dn":100,"status":"Não Executado","id":"rp_181"},{"sheet":"RP","bacia":8,"qd":"2","pv":"53","pv2":"52","m":80.0,"dn":100,"status":"Não Executado","id":"rp_182"},{"sheet":"RP","bacia":8,"qd":"8","pv":"25","pv2":"26","m":80.0,"dn":100,"status":"Não Executado","id":"rp_183"},{"sheet":"RP","bacia":8,"qd":"8","pv":"56","pv2":"57","m":56.0,"dn":100,"status":"Não Executado","id":"rp_184"},{"sheet":"RP","bacia":8,"qd":"7","pv":"26","pv2":"27","m":80.0,"dn":100,"status":"Não Executado","id":"rp_185"},{"sheet":"RP","bacia":8,"qd":"7","pv":"27","pv2":"28","m":80.0,"dn":100,"status":"Não Executado","id":"rp_186"},{"sheet":"RP","bacia":8,"qd":"7","pv":"57","pv2":"58","m":80.0,"dn":100,"status":"Não Executado","id":"rp_187"},{"sheet":"RP","bacia":8,"qd":"7","pv":"58","pv2":"59","m":80.0,"dn":100,"status":"Não Executado","id":"rp_188"},{"sheet":"RP","bacia":8,"qd":"6","pv":"28","pv2":"29","m":80.0,"dn":100,"status":"Não Executado","id":"rp_189"},{"sheet":"RP","bacia":8,"qd":"6","pv":"29","pv2":"30","m":80.0,"dn":100,"status":"Não Executado","id":"rp_190"},{"sheet":"RP","bacia":8,"qd":"6","pv":"30","pv2":"31","m":40.0,"dn":100,"status":"Não Executado","id":"rp_191"},{"sheet":"RP","bacia":8,"qd":"6","pv":"31","pv2":"32","m":43.0,"dn":100,"status":"Não Executado","id":"rp_192"},{"sheet":"RP","bacia":8,"qd":"6","pv":"32","pv2":"13","m":5.0,"dn":100,"status":"Não Executado","id":"rp_193"},{"sheet":"RP","bacia":8,"qd":"6","pv":"13","pv2":"14","m":5.0,"dn":100,"status":"Não Executado","id":"rp_194"},{"sheet":"RP","bacia":8,"qd":"6","pv":"14","pv2":"15","m":38.0,"dn":100,"status":"Não Executado","id":"rp_195"},{"sheet":"RP","bacia":8,"qd":"6","pv":"15","pv2":"16","m":4.0,"dn":100,"status":"Não Executado","id":"rp_196"},{"sheet":"RP","bacia":8,"qd":"6","pv":"16","pv2":"17","m":17.0,"dn":100,"status":"Não Executado","id":"rp_197"},{"sheet":"RP","bacia":8,"qd":"6","pv":"16","pv2":"62","m":5.0,"dn":100,"status":"Não Executado","id":"rp_198"},{"sheet":"RP","bacia":8,"qd":"6","pv":"62","pv2":"61","m":71.0,"dn":100,"status":"Não Executado","id":"rp_199"},{"sheet":"RP","bacia":8,"qd":"6","pv":"61","pv2":"60","m":80.0,"dn":100,"status":"Não Executado","id":"rp_200"},{"sheet":"RP","bacia":8,"qd":"6","pv":"60","pv2":"59","m":80.0,"dn":100,"status":"Não Executado","id":"rp_201"},{"sheet":"RP","bacia":8,"qd":"11","pv":"33","pv2":"34","m":47.0,"dn":100,"status":"Não Executado","id":"rp_202"},{"sheet":"RP","bacia":8,"qd":"11","pv":"34","pv2":"35","m":80.0,"dn":100,"status":"Não Executado","id":"rp_203"},{"sheet":"RP","bacia":8,"qd":"11","pv":"35","pv2":"36","m":71.0,"dn":100,"status":"Não Executado","id":"rp_204"},{"sheet":"RP","bacia":8,"qd":"11","pv":"63","pv2":"64","m":80.0,"dn":100,"status":"Não Executado","id":"rp_205"},{"sheet":"RP","bacia":8,"qd":"11","pv":"64","pv2":"65","m":80.0,"dn":100,"status":"Não Executado","id":"rp_206"},{"sheet":"RP","bacia":8,"qd":"10","pv":"36","pv2":"37","m":80.0,"dn":100,"status":"Não Executado","id":"rp_207"},{"sheet":"RP","bacia":8,"qd":"10","pv":"37","pv2":"38","m":80.0,"dn":100,"status":"Não Executado","id":"rp_208"},{"sheet":"RP","bacia":8,"qd":"10","pv":"38","pv2":"39","m":64.0,"dn":100,"status":"Não Executado","id":"rp_209"},{"sheet":"RP","bacia":8,"qd":"10","pv":"39","pv2":"17","m":5.0,"dn":100,"status":"Não Executado","id":"rp_210"},{"sheet":"RP","bacia":8,"qd":"10","pv":"17","pv2":"18","m":5.0,"dn":100,"status":"Não Executado","id":"rp_211"},{"sheet":"RP","bacia":8,"qd":"10","pv":"18","pv2":"19","m":37.0,"dn":100,"status":"Não Executado","id":"rp_212"},{"sheet":"RP","bacia":8,"qd":"10","pv":"19","pv2":"20","m":5.0,"dn":150,"status":"Não Executado","id":"rp_213"},{"sheet":"RP","bacia":8,"qd":"10","pv":"20","pv2":"21","m":17.0,"dn":150,"status":"Não Executado","id":"rp_214"},{"sheet":"RP","bacia":8,"qd":"10","pv":"20","pv2":"68","m":4.0,"dn":100,"status":"Não Executado","id":"rp_215"},{"sheet":"RP","bacia":8,"qd":"10","pv":"68","pv2":"67","m":74.0,"dn":100,"status":"Não Executado","id":"rp_216"},{"sheet":"RP","bacia":8,"qd":"10","pv":"67","pv2":"66","m":80.0,"dn":100,"status":"Não Executado","id":"rp_217"},{"sheet":"RP","bacia":8,"qd":"10","pv":"66","pv2":"65","m":80.0,"dn":100,"status":"Não Executado","id":"rp_218"},{"sheet":"RP","bacia":8,"qd":"12","pv":"41","pv2":"42","m":76.0,"dn":100,"status":"Não Executado","id":"rp_219"},{"sheet":"RP","bacia":8,"qd":"12","pv":"42","pv2":"43","m":80.0,"dn":100,"status":"Não Executado","id":"rp_220"},{"sheet":"RP","bacia":8,"qd":"12","pv":"43","pv2":"21","m":7.0,"dn":100,"status":"Não Executado","id":"rp_221"},{"sheet":"RP","bacia":8,"qd":"12","pv":"21","pv2":"22","m":5.0,"dn":150,"status":"Não Executado","id":"rp_222"},{"sheet":"RP","bacia":8,"qd":"12","pv":"22","pv2":"23","m":38.0,"dn":150,"status":"Não Executado","id":"rp_223"},{"sheet":"RP","bacia":8,"qd":"12","pv":"23","pv2":"24","m":5.0,"dn":150,"status":"Não Executado","id":"rp_224"},{"sheet":"RP","bacia":8,"qd":"12","pv":"24","pv2":"RC 06","m":13.0,"dn":150,"status":"Não Executado","id":"rp_225"},{"sheet":"RP","bacia":8,"qd":"12","pv":"24","pv2":"47","m":5.0,"dn":100,"status":"Não Executado","id":"rp_226"},{"sheet":"RP","bacia":8,"qd":"12","pv":"47","pv2":"46","m":62.0,"dn":100,"status":"Não Executado","id":"rp_227"},{"sheet":"RP","bacia":8,"qd":"12","pv":"46","pv2":"45","m":70.0,"dn":100,"status":"Não Executado","id":"rp_228"},{"sheet":"RP","bacia":8,"qd":"12","pv":"45","pv2":"44","m":14.0,"dn":100,"status":"Não Executado","id":"rp_229"},{"sheet":"RP","bacia":9,"qd":"13","pv":"1","pv2":"2","m":80.0,"dn":100,"status":"Não Executado","id":"rp_230"},{"sheet":"RP","bacia":9,"qd":"13","pv":"2","pv2":"3","m":56.0,"dn":100,"status":"Não Executado","id":"rp_231"},{"sheet":"RP","bacia":9,"qd":"13","pv":"3","pv2":"4","m":5.0,"dn":100,"status":"Não Executado","id":"rp_232"},{"sheet":"RP","bacia":9,"qd":"13","pv":"4","pv2":"5","m":5.0,"dn":100,"status":"Não Executado","id":"rp_233"},{"sheet":"RP","bacia":9,"qd":"13","pv":"5","pv2":"6","m":38.0,"dn":100,"status":"Não Executado","id":"rp_234"},{"sheet":"RP","bacia":9,"qd":"13","pv":"6","pv2":"7","m":4.0,"dn":100,"status":"Não Executado","id":"rp_235"},{"sheet":"RP","bacia":9,"qd":"13","pv":"7","pv2":"8","m":17.0,"dn":100,"status":"Não Executado","id":"rp_236"},{"sheet":"RP","bacia":9,"qd":"13","pv":"7","pv2":"20","m":6.0,"dn":100,"status":"Não Executado","id":"rp_237"},{"sheet":"RP","bacia":9,"qd":"13","pv":"20","pv2":"19","m":61.0,"dn":100,"status":"Não Executado","id":"rp_238"},{"sheet":"RP","bacia":9,"qd":"13","pv":"19","pv2":"18","m":74.0,"dn":100,"status":"Não Executado","id":"rp_239"},{"sheet":"RP","bacia":9,"qd":"14","pv":"30","pv2":"31","m":73.0,"dn":100,"status":"Não Executado","id":"rp_240"},{"sheet":"RP","bacia":9,"qd":"14","pv":"31","pv2":"32","m":52.0,"dn":100,"status":"Não Executado","id":"rp_241"},{"sheet":"RP","bacia":9,"qd":"14","pv":"32","pv2":"8","m":5.0,"dn":100,"status":"Não Executado","id":"rp_242"},{"sheet":"RP","bacia":9,"qd":"14","pv":"8","pv2":"9","m":5.0,"dn":100,"status":"Não Executado","id":"rp_243"},{"sheet":"RP","bacia":9,"qd":"14","pv":"9","pv2":"10","m":38.0,"dn":100,"status":"Não Executado","id":"rp_244"},{"sheet":"RP","bacia":9,"qd":"14","pv":"10","pv2":"11","m":5.0,"dn":100,"status":"Não Executado","id":"rp_245"},{"sheet":"RP","bacia":9,"qd":"14","pv":"11","pv2":"12","m":14.0,"dn":100,"status":"Não Executado","id":"rp_246"},{"sheet":"RP","bacia":9,"qd":"14","pv":"11","pv2":"23","m":4.0,"dn":100,"status":"Não Executado","id":"rp_247"},{"sheet":"RP","bacia":9,"qd":"14","pv":"23","pv2":"22","m":52.0,"dn":100,"status":"Não Executado","id":"rp_248"},{"sheet":"RP","bacia":9,"qd":"14","pv":"22","pv2":"21","m":73.0,"dn":100,"status":"Não Executado","id":"rp_249"},{"sheet":"RP","bacia":9,"qd":"15","pv":"24","pv2":"25","m":72.0,"dn":100,"status":"Não Executado","id":"rp_250"},{"sheet":"RP","bacia":9,"qd":"15","pv":"25","pv2":"12","m":56.0,"dn":100,"status":"Não Executado","id":"rp_251"},{"sheet":"RP","bacia":9,"qd":"15","pv":"12","pv2":"13","m":72.0,"dn":100,"status":"Não Executado","id":"rp_252"},{"sheet":"RP","bacia":9,"qd":"15","pv":"13","pv2":"14","m":5.0,"dn":100,"status":"Não Executado","id":"rp_253"},{"sheet":"RP","bacia":9,"qd":"15","pv":"14","pv2":"15","m":5.0,"dn":100,"status":"Não Executado","id":"rp_254"},{"sheet":"RP","bacia":9,"qd":"15","pv":"15","pv2":"16","m":27.0,"dn":100,"status":"Não Executado","id":"rp_255"},{"sheet":"RP","bacia":9,"qd":"15","pv":"16","pv2":"17","m":8.0,"dn":100,"status":"Não Executado","id":"rp_256"},{"sheet":"RP","bacia":9,"qd":"15","pv":"17","pv2":"RC 01","m":13.0,"dn":100,"status":"Não Executado","id":"rp_257"},{"sheet":"RP","bacia":9,"qd":"15","pv":"17","pv2":"29","m":8.0,"dn":100,"status":"Não Executado","id":"rp_258"},{"sheet":"RP","bacia":9,"qd":"15","pv":"29","pv2":"28","m":44.0,"dn":100,"status":"Não Executado","id":"rp_259"},{"sheet":"RP","bacia":9,"qd":"15","pv":"28","pv2":"27","m":80.0,"dn":100,"status":"Não Executado","id":"rp_260"},{"sheet":"RP","bacia":9,"qd":"15","pv":"27","pv2":"26","m":73.0,"dn":100,"status":"Não Executado","id":"rp_261"}],"ct1":[{"sheet":"CT1","pv":"1","pv2":"2","m":79.0,"dn":150,"status":"Não Executado","id":"ct1_0"},{"sheet":"CT1","pv":"2","pv2":"3","m":54.0,"dn":150,"status":"Não Executado","id":"ct1_1"},{"sheet":"CT1","pv":"3","pv2":"4","m":38.0,"dn":150,"status":"Não Executado","id":"ct1_2"},{"sheet":"CT1","pv":"4","pv2":"5","m":35.0,"dn":150,"status":"Não Executado","id":"ct1_3"},{"sheet":"CT1","pv":"5","pv2":"6","m":37.0,"dn":150,"status":"Não Executado","id":"ct1_4"},{"sheet":"CT1","pv":"6","pv2":"7","m":65.0,"dn":150,"status":"Não Executado","id":"ct1_5"},{"sheet":"CT1","pv":"7","pv2":"8","m":54.0,"dn":150,"status":"Não Executado","id":"ct1_6"},{"sheet":"CT1","pv":"8","pv2":"9","m":51.0,"dn":150,"status":"Não Executado","id":"ct1_7"},{"sheet":"CT1","pv":"9","pv2":"10","m":70.0,"dn":150,"status":"Não Executado","id":"ct1_8"},{"sheet":"CT1","pv":"10","pv2":"11","m":75.0,"dn":150,"status":"Não Executado","id":"ct1_9"},{"sheet":"CT1","pv":"11","pv2":"12","m":42.0,"dn":150,"status":"Não Executado","id":"ct1_10"},{"sheet":"CT1","pv":"12","pv2":"13","m":59.0,"dn":150,"status":"Não Executado","id":"ct1_11"},{"sheet":"CT1","pv":"13","pv2":"14","m":58.0,"dn":150,"status":"Não Executado","id":"ct1_12"},{"sheet":"CT1","pv":"14","pv2":"15","m":57.0,"dn":150,"status":"Não Executado","id":"ct1_13"},{"sheet":"CT1","pv":"15","pv2":"16","m":52.0,"dn":150,"status":"Não Executado","id":"ct1_14"},{"sheet":"CT1","pv":"16","pv2":"TRAVESSIA","m":60.0,"dn":150,"status":"Não Executado","id":"ct1_15"}],"ct2":[{"sheet":"CT2","pv":"1","pv2":"2","m":35.0,"dn":150,"status":"Não Executado","id":"ct2_0"},{"sheet":"CT2","pv":"2","pv2":"3","m":46.0,"dn":150,"status":"Não Executado","id":"ct2_1"},{"sheet":"CT2","pv":"3","pv2":"4","m":73.0,"dn":150,"status":"Não Executado","id":"ct2_2"},{"sheet":"CT2","pv":"4","pv2":"5","m":44.0,"dn":150,"status":"Não Executado","id":"ct2_3"},{"sheet":"CT2","pv":"5","pv2":"6","m":14.0,"dn":150,"status":"Não Executado","id":"ct2_4"},{"sheet":"CT2","pv":"6","pv2":"7","m":19.0,"dn":150,"status":"Não Executado","id":"ct2_5"},{"sheet":"CT2","pv":"7","pv2":"8","m":29.0,"dn":150,"status":"Não Executado","id":"ct2_6"},{"sheet":"CT2","pv":"8","pv2":"9","m":55.0,"dn":150,"status":"Não Executado","id":"ct2_7"},{"sheet":"CT2","pv":"9","pv2":"10","m":40.0,"dn":150,"status":"Não Executado","id":"ct2_8"},{"sheet":"CT2","pv":"10","pv2":"11","m":69.0,"dn":150,"status":"Não Executado","id":"ct2_9"},{"sheet":"CT2","pv":"11","pv2":"12","m":38.0,"dn":150,"status":"Não Executado","id":"ct2_10"},{"sheet":"CT2","pv":"12","pv2":"13","m":55.0,"dn":150,"status":"Não Executado","id":"ct2_11"},{"sheet":"CT2","pv":"13","pv2":"-","m":28.0,"dn":150,"status":"Não Executado","id":"ct2_12"}],"rp2":[{"id":"rp2_0","sheet":"RP2","modulo":"TP MD 04","qd":"16","m":436.0,"dn":50,"status":"Executado"},{"id":"rp2_1","sheet":"RP2","modulo":"TP MD 04","qd":"16","m":87.0,"dn":75,"status":"Não Executado"},{"id":"rp2_2","sheet":"RP2","modulo":"TP MD 04","qd":"19","m":439.0,"dn":50,"status":"Não Executado"},{"id":"rp2_3","sheet":"RP2","modulo":"TP MD 04","qd":"22","m":387.0,"dn":50,"status":"Não Executado"},{"id":"rp2_4","sheet":"RP2","modulo":"TP MD 05","qd":"17","m":558.0,"dn":50,"status":"Não Executado"},{"id":"rp2_5","sheet":"RP2","modulo":"TP MD 05","qd":"18","m":142.0,"dn":50,"status":"Executado"},{"id":"rp2_6","sheet":"RP2","modulo":"TP MD 05","qd":"18","m":317.0,"dn":75,"status":"Executado"},{"id":"rp2_7","sheet":"RP2","modulo":"TP MD 05","qd":"20","m":461.0,"dn":50,"status":"Não Executado"},{"id":"rp2_8","sheet":"RP2","modulo":"TP MD 05","qd":"21","m":312.0,"dn":50,"status":"Executado"},{"id":"rp2_9","sheet":"RP2","modulo":"TP MD 05","qd":"23","m":387.0,"dn":50,"status":"Executado"},{"id":"rp2_10","sheet":"RP2","modulo":"TP MD 06","qd":"24","m":289.0,"dn":50,"status":"Não Executado"},{"id":"rp2_11","sheet":"RP2","modulo":"TP MD 06","qd":"25","m":285.0,"dn":50,"status":"Executado"},{"id":"rp2_12","sheet":"RP2","modulo":"TP MD 06","qd":"26","m":408.0,"dn":50,"status":"Executado"},{"id":"rp2_13","sheet":"RP2","modulo":"TP MD 06","qd":"27","m":312.0,"dn":50,"status":"Executado"},{"id":"rp2_14","sheet":"RP2","modulo":"TP MD 07","qd":"1","m":549.0,"dn":50,"status":"Não Executado"},{"id":"rp2_15","sheet":"RP2","modulo":"TP MD 07","qd":"1","m":82.0,"dn":75,"status":"Não Executado"},{"id":"rp2_16","sheet":"RP2","modulo":"TP MD 07","qd":"5","m":613.0,"dn":50,"status":"Não Executado"},{"id":"rp2_17","sheet":"RP2","modulo":"TP MD 07","qd":"9","m":532.0,"dn":50,"status":"Não Executado"},{"id":"rp2_18","sheet":"RP2","modulo":"TP MD 08","qd":"2","m":488.0,"dn":50,"status":"Não Executado"},{"id":"rp2_19","sheet":"RP2","modulo":"TP MD 08","qd":"2","m":103.0,"dn":75,"status":"Não Executado"},{"id":"rp2_20","sheet":"RP2","modulo":"TP MD 08","qd":"6","m":477.0,"dn":50,"status":"Não Executado"},{"id":"rp2_21","sheet":"RP2","modulo":"TP MD 08","qd":"6","m":89.0,"dn":75,"status":"Não Executado"},{"id":"rp2_22","sheet":"RP2","modulo":"TP MD 08","qd":"10","m":530.0,"dn":50,"status":"Não Executado"},{"id":"rp2_23","sheet":"RP2","modulo":"TP MD 08","qd":"12","m":444.0,"dn":50,"status":"Não Executado"},{"id":"rp2_24","sheet":"RP2","modulo":"TP MD 09","qd":"3 e 4","m":586.0,"dn":50,"status":"Não Executado"},{"id":"rp2_25","sheet":"RP2","modulo":"TP MD 09","qd":"3 e 4","m":84.0,"dn":100,"status":"Não Executado"},{"id":"rp2_26","sheet":"RP2","modulo":"TP MD 09","qd":"7 e 8","m":524.0,"dn":50,"status":"Não Executado"},{"id":"rp2_27","sheet":"RP2","modulo":"TP MD 09","qd":"7 e 8","m":105.0,"dn":75,"status":"Não Executado"},{"id":"rp2_28","sheet":"RP2","modulo":"TP MD 09","qd":"11","m":411.0,"dn":50,"status":"Não Executado"},{"id":"rp2_29","sheet":"RP2","modulo":"TP MD 09","qd":"11","m":142.0,"dn":75,"status":"Não Executado"},{"id":"rp2_30","sheet":"RP2","modulo":"TP MD 09","qd":"13","m":412.0,"dn":50,"status":"Não Executado"},{"id":"rp2_31","sheet":"RP2","modulo":"TP MD 09","qd":"14","m":416.0,"dn":50,"status":"Não Executado"},{"id":"rp2_32","sheet":"RP2","modulo":"TP MD 09","qd":"15","m":557.0,"dn":50,"status":"Não Executado"}],"rp2_summary":[{"modulo":"TP MD 04","proj":1349.0,"real":436.0,"saldo":913.0},{"modulo":"TP MD 05","proj":2177.0,"real":1158.0,"saldo":1019.0},{"modulo":"TP MD 06","proj":1294.0,"real":1005.0,"saldo":289.0},{"modulo":"TP MD 07","proj":1776.0,"real":0,"saldo":1776.0},{"modulo":"TP MD 08","proj":2131.0,"real":0,"saldo":2131.0},{"modulo":"TP MD 09","proj":3237.0,"real":0,"saldo":3237.0}],"trav":[{"id":"trav_0","modulo":"Travessia 1","m":1,"dn":150,"status":"Não Executado"},{"id":"trav_1","modulo":"Travessia 2","m":1,"dn":150,"status":"Não Executado"}],"adutora":[{"id":"ad_0","modulo":"DN 100","m":306.0,"dn":50,"status":"Não Executado"},{"id":"ad_1","modulo":"DN 150","m":895.0,"dn":75,"status":"Não Executado"}],"dispositivos":[{"id":"disp_0","modulo":"MÓDULO 04","item":"REGISTRO DE DESCARGA","qty":1,"status":"Não Executado"},{"id":"disp_1","modulo":"MÓDULO 04","item":"VENTOSA DN 75","qty":1,"status":"Não Executado"},{"id":"disp_2","modulo":"MÓDULO 04","item":"VRP DN 80 (TP-M4)","qty":1,"status":"Não Executado"},{"id":"disp_3","modulo":"MÓDULO 05","item":"REGISTRO DE ENTRADA","qty":1,"status":"Não Executado"},{"id":"disp_4","modulo":"MÓDULO 05","item":"VENTOSA DN 75","qty":1,"status":"Não Executado"},{"id":"disp_5","modulo":"MÓDULO 06","item":"REGISTRO DE DESCARGA","qty":1,"status":"Não Executado"},{"id":"disp_6","modulo":"MÓDULO 06","item":"REGISTRO DE ENTRADA","qty":2,"status":"Não Executado"},{"id":"disp_7","modulo":"MÓDULO 06","item":"VENTOSA DN 50","qty":1,"status":"Não Executado"},{"id":"disp_8","modulo":"MÓDULO 06","item":"VRP DN 80 (TP - M6)","qty":1,"status":"Não Executado"},{"id":"disp_9","modulo":"MÓDULO 07","item":"REGISTRO DE DESCARGA","qty":1,"status":"Não Executado"},{"id":"disp_10","modulo":"MÓDULO 07","item":"VENTOSA DN 75","qty":1,"status":"Não Executado"},{"id":"disp_11","modulo":"MÓDULO 07","item":"VRP DN 80 (TP - M7)","qty":1,"status":"Não Executado"},{"id":"disp_12","modulo":"MÓDULO 08","item":"VENTOSA DN 75 (TP- M8)","qty":1,"status":"Não Executado"},{"id":"disp_13","modulo":"MÓDULO 08","item":"VRP DN 80(TP-08)","qty":1,"status":"Não Executado"},{"id":"disp_14","modulo":"MÓDULO 08","item":"REGISTRO DE DESCARGA DN50 (TP- M8)","qty":1,"status":"Não Executado"},{"id":"disp_15","modulo":"MÓDULO 09","item":"REGISTRO DE DESCARGA (TP - M9)","qty":1,"status":"Não Executado"},{"id":"disp_16","modulo":"MÓDULO 09","item":"REGISTRO DE ENTRADA (TP - M9)","qty":1,"status":"Não Executado"},{"id":"disp_17","modulo":"MÓDULO 09","item":"VENTOSA DN 75 (TP - M9)","qty":1,"status":"Não Executado"}],"drenagem":{"rp1":[{"id":"dr_rp1_0","pv1":"20","pv2":"19","m":148.0,"dn":1500,"status":"Não Executado"},{"id":"dr_rp1_1","pv1":"19","pv2":"18","m":65.0,"dn":1500,"status":"Executado"},{"id":"dr_rp1_2","pv1":"18","pv2":"17","m":74.0,"dn":1500,"status":"Executado"},{"id":"dr_rp1_3","pv1":"17","pv2":"16","m":70.0,"dn":1500,"status":"Executado"},{"id":"dr_rp1_4","pv1":"16","pv2":"15","m":66.0,"dn":1500,"status":"Executado"},{"id":"dr_rp1_5","pv1":"15","pv2":"14","m":63.0,"dn":1500,"status":"Executado"},{"id":"dr_rp1_6","pv1":"14","pv2":"13","m":61.0,"dn":1200,"status":"Não Executado"},{"id":"dr_rp1_7","pv1":"13","pv2":"12","m":59.0,"dn":1200,"status":"Executado"},{"id":"dr_rp1_8","pv1":"12","pv2":"11","m":62.0,"dn":1200,"status":"Executado"},{"id":"dr_rp1_9","pv1":"11","pv2":"10","m":62.0,"dn":1200,"status":"Executado"},{"id":"dr_rp1_10","pv1":"10","pv2":"9","m":75.0,"dn":1200,"status":"Executado"},{"id":"dr_rp1_11","pv1":"9","pv2":"8","m":76.0,"dn":1000,"status":"Executado"},{"id":"dr_rp1_12","pv1":"8","pv2":"7","m":47.0,"dn":800,"status":"Executado"},{"id":"dr_rp1_13","pv1":"7","pv2":"6","m":43.0,"dn":600,"status":"Executado"},{"id":"dr_rp1_14","pv1":"6","pv2":"5","m":40.0,"dn":600,"status":"Executado"},{"id":"dr_rp1_15","pv1":"5","pv2":"4","m":33.0,"dn":600,"status":"Executado"},{"id":"dr_rp1_16","pv1":"4","pv2":"3","m":28.0,"dn":600,"status":"Executado"},{"id":"dr_rp1_17","pv1":"3","pv2":"2","m":43.0,"dn":600,"status":"Executado"},{"id":"dr_rp1_18","pv1":"2","pv2":"1","m":63.0,"dn":600,"status":"Executado"},{"id":"dr_rp1_19","pv1":"1","pv2":"1.2","m":64.0,"dn":600,"status":"Executado"},{"id":"dr_rp1_20","pv1":"1.2","pv2":"1.1","m":49.0,"dn":600,"status":"Executado"},{"id":"dr_rp1_21","pv1":"8","pv2":"8.6","m":34.0,"dn":800,"status":"Executado"},{"id":"dr_rp1_22","pv1":"8.6","pv2":"8.5","m":51.0,"dn":800,"status":"Executado"},{"id":"dr_rp1_23","pv1":"8.5","pv2":"8.4","m":59.0,"dn":800,"status":"Executado"},{"id":"dr_rp1_24","pv1":"8.4","pv2":"8.3","m":59.0,"dn":600,"status":"Executado"},{"id":"dr_rp1_25","pv1":"8.3","pv2":"8.2","m":48.0,"dn":600,"status":"Executado"},{"id":"dr_rp1_26","pv1":"8.2","pv2":"8.1","m":62.0,"dn":600,"status":"Executado"},{"id":"dr_rp1_27","pv1":"10","pv2":"10.3","m":63.0,"dn":600,"status":"Executado"},{"id":"dr_rp1_28","pv1":"10.3","pv2":"10.2","m":63.0,"dn":600,"status":"Executado"},{"id":"dr_rp1_29","pv1":"10.2","pv2":"10.1","m":50.0,"dn":600,"status":"Executado"},{"id":"dr_rp1_30","pv1":"19","pv2":"19.16","m":18.0,"dn":1000,"status":"Executado"},{"id":"dr_rp1_31","pv1":"19.16","pv2":"19.15","m":26.0,"dn":1000,"status":"Executado"},{"id":"dr_rp1_32","pv1":"19.15","pv2":"19.14","m":32.0,"dn":1000,"status":"Executado"},{"id":"dr_rp1_33","pv1":"19.14","pv2":"19.13","m":23.0,"dn":1000,"status":"Executado"},{"id":"dr_rp1_34","pv1":"19.13","pv2":"19.12","m":23.0,"dn":1000,"status":"Executado"},{"id":"dr_rp1_35","pv1":"19.12","pv2":"19.11","m":42.0,"dn":1000,"status":"Executado"},{"id":"dr_rp1_36","pv1":"19.11","pv2":"19.10","m":53.0,"dn":1000,"status":"Executado"},{"id":"dr_rp1_37","pv1":"19.10","pv2":"19.9","m":39.0,"dn":800,"status":"Executado"},{"id":"dr_rp1_38","pv1":"19.9","pv2":"19.8","m":34.0,"dn":800,"status":"Executado"},{"id":"dr_rp1_39","pv1":"19.8","pv2":"19.7","m":42.0,"dn":800,"status":"Executado"},{"id":"dr_rp1_40","pv1":"19.7","pv2":"19.6","m":43.0,"dn":800,"status":"Executado"},{"id":"dr_rp1_41","pv1":"19.6","pv2":"19.5","m":45.0,"dn":800,"status":"Executado"},{"id":"dr_rp1_42","pv1":"19.5","pv2":"19.4","m":19.0,"dn":600,"status":"Executado"},{"id":"dr_rp1_43","pv1":"19.4","pv2":"19.3","m":47.0,"dn":600,"status":"Executado"},{"id":"dr_rp1_44","pv1":"19.3","pv2":"19.2","m":66.0,"dn":600,"status":"Executado"},{"id":"dr_rp1_45","pv1":"19.2","pv2":"19.1","m":56.0,"dn":600,"status":"Executado"},{"id":"dr_rp1_46","pv1":"19.10","pv2":"19.10.4","m":32.0,"dn":800,"status":"Executado"},{"id":"dr_rp1_47","pv1":"19.10.4","pv2":"19.10.3","m":32.0,"dn":800,"status":"Executado"},{"id":"dr_rp1_48","pv1":"19.10.3","pv2":"19.10.2","m":61.0,"dn":800,"status":"Executado"},{"id":"dr_rp1_49","pv1":"19.10.2","pv2":"19.10.1","m":54.0,"dn":600,"status":"Executado"}],"ram1":[{"id":"dr_ram1_0","pv":"20","bl":"","qty":0,"dn":0,"status":"Executado"},{"id":"dr_ram1_1","pv":"19","bl":"83,84,85","qty":5,"dn":600,"status":"Não Executado"},{"id":"dr_ram1_2","pv":"18","bl":"75,76,77,78,79,80","qty":73,"dn":600,"status":"Executado"},{"id":"dr_ram1_3","pv":"17","bl":"71,72,73,74","qty":42,"dn":600,"status":"Executado"},{"id":"dr_ram1_4","pv":"16","bl":"68,69,70","qty":23,"dn":600,"status":"Executado"},{"id":"dr_ram1_5","pv":"15","bl":"56,57,58,59,60,61,62,63","qty":74,"dn":600,"status":"Executado"},{"id":"dr_ram1_6","pv":"14","bl":"53,54,55","qty":22,"dn":600,"status":"Executado"},{"id":"dr_ram1_7","pv":"13","bl":"","qty":0,"dn":0,"status":"Executado"},{"id":"dr_ram1_8","pv":"12","bl":"51.52","qty":23,"dn":600,"status":"Executado"},{"id":"dr_ram1_9","pv":"11","bl":"","qty":0,"dn":0,"status":"Executado"},{"id":"dr_ram1_10","pv":"10","bl":"","qty":0,"dn":0,"status":"Executado"},{"id":"dr_ram1_11","pv":"9","bl":"","qty":0,"dn":0,"status":"Executado"},{"id":"dr_ram1_12","pv":"8","bl":"","qty":0,"dn":0,"status":"Executado"},{"id":"dr_ram1_13","pv":"7","bl":"22.23","qty":24,"dn":600,"status":"Executado"},{"id":"dr_ram1_14","pv":"6","bl":"","qty":0,"dn":0,"status":"Executado"},{"id":"dr_ram1_15","pv":"5","bl":"","qty":0,"dn":0,"status":"Executado"},{"id":"dr_ram1_16","pv":"4","bl":"","qty":0,"dn":0,"status":"Executado"},{"id":"dr_ram1_17","pv":"3","bl":"","qty":0,"dn":0,"status":"Executado"},{"id":"dr_ram1_18","pv":"2","bl":"17,18,19,20,21","qty":53,"dn":600,"status":"Executado"},{"id":"dr_ram1_19","pv":"1","bl":"13,14,15,16","qty":26,"dn":600,"status":"Executado"},{"id":"dr_ram1_20","pv":"1.2","bl":"6,7,8,9,10,11,12","qty":47,"dn":600,"status":"Executado"},{"id":"dr_ram1_21","pv":"1.1","bl":"1,2,3,4,5","qty":33,"dn":600,"status":"Executado"},{"id":"dr_ram1_22","pv":"8.6","bl":"32,33,34,35,36","qty":38,"dn":600,"status":"Executado"},{"id":"dr_ram1_23","pv":"8.5","bl":"","qty":0,"dn":0,"status":"Executado"},{"id":"dr_ram1_24","pv":"8.4","bl":"27,28,29,30,31","qty":30,"dn":600,"status":"Executado"},{"id":"dr_ram1_25","pv":"8.3","bl":"","qty":0,"dn":0,"status":"Executado"},{"id":"dr_ram1_26","pv":"8.2","bl":"26","qty":12,"dn":600,"status":"Executado"},{"id":"dr_ram1_27","pv":"8.1","bl":"24.25","qty":15,"dn":600,"status":"Executado"},{"id":"dr_ram1_28","pv":"10.3","bl":"46,47,48,49,50","qty":50,"dn":600,"status":"Executado"},{"id":"dr_ram1_29","pv":"10.2","bl":"41,42,43,44,45","qty":46,"dn":600,"status":"Executado"},{"id":"dr_ram1_30","pv":"10.1","bl":"37,38,39,40","qty":34,"dn":600,"status":"Executado"},{"id":"dr_ram1_31","pv":"19.16","bl":"","qty":0,"dn":600,"status":"Executado"},{"id":"dr_ram1_32","pv":"19.15","bl":"","qty":0,"dn":600,"status":"Executado"},{"id":"dr_ram1_33","pv":"19.14","bl":"","qty":0,"dn":600,"status":"Executado"},{"id":"dr_ram1_34","pv":"19.13","bl":"","qty":0,"dn":600,"status":"Executado"},{"id":"dr_ram1_35","pv":"19.12","bl":"","qty":0,"dn":600,"status":"Executado"},{"id":"dr_ram1_36","pv":"19.11","bl":"","qty":0,"dn":600,"status":"Executado"},{"id":"dr_ram1_37","pv":"19.10","bl":"101,102,103,104,105","qty":48,"dn":600,"status":"Não Executado"},{"id":"dr_ram1_38","pv":"19.9","bl":"","qty":0,"dn":600,"status":"Executado"},{"id":"dr_ram1_39","pv":"19.8","bl":"","qty":0,"dn":600,"status":"Executado"},{"id":"dr_ram1_40","pv":"19.7","bl":"","qty":0,"dn":600,"status":"Executado"},{"id":"dr_ram1_41","pv":"19.6","bl":"","qty":0,"dn":0,"status":"Executado"},{"id":"dr_ram1_42","pv":"19.5","bl":"120,121,122,123,124","qty":73,"dn":600,"status":"Executado"},{"id":"dr_ram1_43","pv":"19.4","bl":"119","qty":10,"dn":600,"status":"Executado"},{"id":"dr_ram1_44","pv":"19.3","bl":"115,116,117,118","qty":28,"dn":600,"status":"Executado"},{"id":"dr_ram1_45","pv":"19.2","bl":"110,111,112,113,114","qty":43,"dn":600,"status":"Executado"},{"id":"dr_ram1_46","pv":"19.1","bl":"106,107,108,109","qty":30,"dn":600,"status":"Executado"},{"id":"dr_ram1_47","pv":"19.10.4","bl":"","qty":0,"dn":0,"status":"Executado"},{"id":"dr_ram1_48","pv":"19.10.3","bl":"95,96,97,98,99,100","qty":61,"dn":600,"status":"Executado"},{"id":"dr_ram1_49","pv":"19.10.2","bl":"91,02,93,94","qty":29,"dn":600,"status":"Executado"},{"id":"dr_ram1_50","pv":"19.10.1","bl":"86,87,88,89,90","qty":32,"dn":600,"status":"Executado"}],"rp2":[{"id":"dr_rp2_0","pv1":"LANÇ","pv2":"2","m":17.0,"dn":600,"status":"Executado"},{"id":"dr_rp2_1","pv1":"2","pv2":"1","m":35.0,"dn":600,"status":"Executado"},{"id":"dr_rp2_2","pv1":"1","pv2":"1.4","m":49.0,"dn":600,"status":"Executado"},{"id":"dr_rp2_3","pv1":"1.4","pv2":"1.3","m":25.0,"dn":600,"status":"Executado"},{"id":"dr_rp2_4","pv1":"1.3","pv2":"1.2","m":29.0,"dn":600,"status":"Executado"},{"id":"dr_rp2_5","pv1":"1.2","pv2":"1.1","m":32.0,"dn":600,"status":"Executado"}],"ram2":[{"id":"dr_ram2_0","pv":"2","bl":"07,08,09","qty":13,"dn":600,"status":"Executado"},{"id":"dr_ram2_1","pv":"1","bl":"01,02,03,04,05,06","qty":32,"dn":600,"status":"Executado"},{"id":"dr_ram2_2","pv":"1.4","bl":"","qty":0,"dn":600,"status":"Executado"},{"id":"dr_ram2_3","pv":"1.3","bl":"10.11","qty":22,"dn":600,"status":"Executado"},{"id":"dr_ram2_4","pv":"1.2","bl":"","qty":0,"dn":600,"status":"Executado"},{"id":"dr_ram2_5","pv":"1.1","bl":"10.11","qty":22,"dn":600,"status":"Executado"}]}};
+
 var D=carregarDados();
 var filtBacia='all',filtMod='all';
+initPVs();
+
 
 function carregarDados(){
-  // Carrega do localStorage como fallback inicial
   try{
     var s=localStorage.getItem('tato_v4');
     if(s){
@@ -362,8 +399,8 @@ function carregarDados(){
         (BASE[k]||[]).forEach(function(t){if(sm[t.id])t.status=sm[t.id];});
       });
       (BASE.adutora||[]).forEach(function(t){
-        if(sm[t.id]) t.status=sm[t.id];
-        if(sm[t.id+'_r']!==undefined) t.realizado=sm[t.id+'_r'];
+        if(sm[t.id])t.status=sm[t.id];
+        if(sm[t.id+'_r']!==undefined)t.realizado=sm[t.id+'_r'];
       });
       ['rp1','ram1','rp2','ram2'].forEach(function(k){
         ((BASE.drenagem||{})[k]||[]).forEach(function(t){if(sm[t.id])t.status=sm[t.id];});
@@ -382,6 +419,7 @@ function getStatusMap(){
   ['rp1','ram1','rp2','ram2'].forEach(function(k){
     ((D.drenagem||{})[k]||[]).forEach(function(t){sm[t.id]=t.status;});
   });
+  (D.pvs||[]).forEach(function(t){sm[t.id]=t.status;});
   return sm;
 }
 
@@ -392,62 +430,55 @@ function aplicarStatusMap(sm){
   ['rp1','ram1','rp2','ram2'].forEach(function(k){
     ((D.drenagem||{})[k]||[]).forEach(function(t){if(sm[t.id])t.status=sm[t.id];});
   });
+  (D.pvs||[]).forEach(function(t){if(sm[t.id])t.status=sm[t.id];});
 }
 
 function salvar(){
   var ind=document.getElementById('saveInd');
-  ind.textContent='&#8987; Salvando...';
+  ind.textContent='\u29d7 Salvando...';
   clearTimeout(saveTimer);
   saveTimer=setTimeout(function(){
     try{
       var sm=getStatusMap();
-      // Salva no Firebase
-      db.collection('dashboard').doc('status').set({statusMap:sm, updatedAt: new Date().toISOString()})
+      db.collection('dashboard').doc('status').set({statusMap:sm,updatedAt:new Date().toISOString()})
         .then(function(){
-          ind.textContent='&#10003; Salvo '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+          ind.textContent='\u2713 Salvo '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
         })
         .catch(function(e){
-          ind.textContent='&#9888; Erro Firebase';
-          // fallback localStorage
+          ind.textContent='\u26a0 Erro Firebase';
           localStorage.setItem('tato_v4',JSON.stringify({statusMap:sm}));
         });
-    }catch(e){ind.textContent='&#9888; Erro';}
+    }catch(e){ind.textContent='\u26a0 Erro';}
   },400);
 }
 
-// Escuta mudanças em tempo real do Firebase
 function iniciarSincronizacao(){
   db.collection('dashboard').doc('status').onSnapshot(function(doc){
     if(doc.exists){
       var data=doc.data();
-      if(data && data.statusMap){
+      if(data&&data.statusMap){
         aplicarStatusMap(data.statusMap);
         renderTudo();
         var ind=document.getElementById('saveInd');
-        if(ind) ind.textContent='&#10003; Sincronizado';
+        if(ind)ind.textContent='\u2713 Sincronizado';
       }
     }
-  }, function(error){
-    console.log('Firebase sync error:', error);
-  });
+  },function(error){console.log('Firebase sync error:',error);});
 }
 
 function mudarRealizadoAdutora(input){
-  var id = input.getAttribute('data-id');
-  var val = parseFloat(input.value) || 0;
-  var ad = D.adutora || [];
-  for(var i=0; i<ad.length; i++){
-    if(ad[i].id === id){
-      ad[i].realizado = val;
-      // Atualiza saldo na mesma linha
-      var td = input.parentElement.nextElementSibling;
-      if(td) td.textContent = (ad[i].m - val).toLocaleString('pt-BR', {minimumFractionDigits:0, maximumFractionDigits:1});
+  var id=input.getAttribute('data-id');
+  var val=parseFloat(input.value)||0;
+  var ad=D.adutora||[];
+  for(var i=0;i<ad.length;i++){
+    if(ad[i].id===id){
+      ad[i].realizado=val;
+      var td=input.parentElement.nextElementSibling;
+      if(td)td.textContent=(ad[i].m-val).toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:1});
       break;
     }
   }
-  salvar();
-  renderAgua();
-  renderResultados();
+  salvar();renderAgua();renderResultados();
 }
 
 function verificarSenha(){
@@ -458,85 +489,55 @@ function verificarSenha(){
   return false;
 }
 
-function fmt(n){
-  if(typeof n!=='number')return n||'-';
-  return n.toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:1});
-}
-function pct(r,p){
-  if(!p)return '0,00%';
-  return (r/p*100).toFixed(2).replace('.',',')+' %';
-}
+function fmt(n){if(typeof n!=='number')return n||'-';return n.toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:1});}
+function pct(r,p){if(!p)return '0,00%';return(r/p*100).toFixed(2).replace('.',',')+' %';}
 function pN(r,p){return p>0?Math.min(r/p*100,100):0;}
 
 function setKpi(id,cards){
-  var el=document.getElementById(id);
-  if(!el)return;
-  el.innerHTML=cards.map(function(c){
-    return '<div class="kpi '+c.c+'"><div class="kpi-lbl">'+c.l+'</div><div class="kpi-val">'+c.v+'</div><div class="kpi-sub">'+c.s+'</div></div>';
-  }).join('');
+  var el=document.getElementById(id);if(!el)return;
+  el.innerHTML=cards.map(function(c){return '<div class="kpi '+c.c+'"><div class="kpi-lbl">'+c.l+'</div><div class="kpi-val">'+c.v+'</div><div class="kpi-sub">'+c.s+'</div></div>';}).join('');
 }
 
 function setProg(pfx,real,proj,sfx){
-  var p=pN(real,proj);
-  sfx=sfx||' m';
+  var p=pN(real,proj);sfx=sfx||' m';
   var el=document.getElementById('pp-'+pfx);if(el)el.textContent=p.toFixed(2).replace('.',',')+' %';
   el=document.getElementById('pf-'+pfx);if(el)el.style.width=p+'%';
   el=document.getElementById('pd-'+pfx);if(el)el.textContent=fmt(real)+sfx+' executados de '+fmt(proj)+sfx+' previstos';
   el=document.getElementById('pm-'+pfx);if(el)el.innerHTML='<span>Realizado: '+fmt(real)+sfx+'</span><span>Saldo: '+fmt(proj-real)+sfx+'</span>';
 }
 
-function stSel(t, key) {
-  var cls = t.status === 'Executado' ? 'ok' : t.status === 'Em Execução' ? 'ex' : 'nd';
-  return '<select class="st-sel ' + cls + '" data-id="' + t.id + '" data-key="' + key + '" onchange="mudarStatus(this)">'
-    + '<option value="Executado"' + (t.status === 'Executado' ? ' selected' : '') + '>\u2713 Executado</option>'
-    + '<option value="Em Execução"' + (t.status === 'Em Execução' ? ' selected' : '') + '>\u2699 Em Execução</option>'
-    + '<option value="Não Executado"' + (t.status === 'Não Executado' ? ' selected' : '') + '>\u25cb Não Executado</option>'
-    + '</select>';
+function stSel(t,key){
+  var cls=t.status==='Executado'?'ok':t.status==='Em Execução'?'ex':'nd';
+  return '<select class="st-sel '+cls+'" data-id="'+t.id+'" data-key="'+key+'" onchange="mudarStatus(this)">'
+    +'<option value="Executado"'+(t.status==='Executado'?' selected':'')+'>&#10003; Executado</option>'
+    +'<option value="Em Execução"'+(t.status==='Em Execução'?' selected':'')+'>&#9881; Em Execução</option>'
+    +'<option value="Não Executado"'+(t.status==='Não Executado'?' selected':'')+'>&#9675; Não Executado</option>'
+    +'</select>';
 }
 
-function mudarStatus(sel) {
-  var id = sel.getAttribute('data-id');
-  var key = sel.getAttribute('data-key');
-  var novoStatus = sel.value;
-
-  // Bloqueia viewer
-  if(window._somenteLeitura){
-    alert('⚠️ Você não tem permissão para editar.');
-    renderTudo();
-    return;
-  }
-
-  // Atualiza classe visual
-  sel.className = 'st-sel ' + (novoStatus === 'Executado' ? 'ok' : novoStatus === 'Em Execução' ? 'ex' : 'nd');
-
-  if (!verificarSenha()) {
-    renderTudo();
-    return;
-  }
-
-  // Encontra o item
-  var arr = null;
-  if (key.indexOf('dr_') === 0) {
-    var sub = key.replace('dr_', '');
-    arr = (D.drenagem || {})[sub] || [];
+function mudarStatus(sel){
+  var id=sel.getAttribute('data-id');
+  var key=sel.getAttribute('data-key');
+  var novoStatus=sel.value;
+  if(window._somenteLeitura){alert('⚠️ Você não tem permissão para editar.');renderTudo();return;}
+  if(!verificarSenha()){renderTudo();return;}
+  sel.className='st-sel '+(novoStatus==='Executado'?'ok':novoStatus==='Em Execução'?'ex':'nd');
+  var arr=null;
+  if(key.indexOf('dr_')===0){
+    var sub=key.replace('dr_','');
+    arr=(D.drenagem||{})[sub]||[];
+  } else if(key==='pvs'){
+    arr=D.pvs||[];
   } else {
-    arr = D[key] || [];
+    arr=D[key]||[];
   }
-
-  for (var i = 0; i < arr.length; i++) {
-    if (arr[i].id === id) {
-      arr[i].status = novoStatus;
-      break;
-    }
-  }
-
-  salvar();
-  renderTudo();
+  for(var i=0;i<arr.length;i++){if(arr[i].id===id){arr[i].status=novoStatus;break;}}
+  salvar();renderTudo();
 }
 
 function mainTab(id,btn){
   document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('on');});
-  document.querySelectorAll('.mnav').forEach(function(b){b.classList.remove('ae','aa','ad');});
+  document.querySelectorAll('.mnav').forEach(function(b){b.classList.remove('ae','aa','ad','ar');});
   document.querySelectorAll('.sub-nav').forEach(function(n){n.style.display='none';});
   document.getElementById('p-'+id).classList.add('on');
   btn.classList.add(id==='esgoto'?'ae':id==='agua'?'aa':id==='drenagem'?'ad':'ar');
@@ -557,190 +558,81 @@ var PV_PROJ={4:13,5:63,6:53,7:37,8:71,9:32};
 var RAM_REAL={4:19,5:125,6:0,7:0,8:0,9:0};
 var RAM_PROJ={4:19,5:142,6:161,7:130,8:272,9:95};
 
-function renderTudo(){renderEsgoto();renderAgua();renderDrenagem();renderResultados();}
+function renderTudo(){renderEsgoto();renderAgua();renderDrenagem();renderResultados();renderPVs();}
+
 
 function renderEsgoto(){
-  var rp=D.rp||[];
-  var bacias=[4,5,6,7,8,9];
-  var metros=bacias.map(function(b){
-    var rows=rp.filter(function(r){return r.bacia===b;});
-    var proj=rows.reduce(function(a,r){return a+r.m;},0);
-    var real=rows.filter(function(r){return r.status==='Executado';}).reduce(function(a,r){return a+r.m;},0);
-    return {bacia:'Bacia 0'+b,lbl:'B0'+b,proj:Math.round(proj*10)/10,real:Math.round(real*10)/10};
-  });
-  var totP=metros.reduce(function(a,r){return a+r.proj;},0);
-  var totR=metros.reduce(function(a,r){return a+r.real;},0);
+  var rp=D.rp||[];var bacias=[4,5,6,7,8,9];
+  var metros=bacias.map(function(b){var rows=rp.filter(function(r){return r.bacia===b;});var proj=rows.reduce(function(a,r){return a+r.m;},0);var real=rows.filter(function(r){return r.status==='Executado';}).reduce(function(a,r){return a+r.m;},0);return{bacia:'Bacia 0'+b,lbl:'B0'+b,proj:Math.round(proj*10)/10,real:Math.round(real*10)/10};});
+  var totP=metros.reduce(function(a,r){return a+r.proj;},0);var totR=metros.reduce(function(a,r){return a+r.real;},0);
   var totPVProj=bacias.reduce(function(a,b){return a+PV_PROJ[b];},0);
-  var totPVReal=bacias.reduce(function(a,b){
-    return a+rp.filter(function(r){return r.bacia===b&&r.status==='Executado';}).length;
-  },0);
+  var totPVReal=bacias.reduce(function(a,b){return a+rp.filter(function(r){return r.bacia===b&&r.status==='Executado';}).length;},0);
   var totRamProj=bacias.reduce(function(a,b){return a+RAM_PROJ[b];},0);
   var totRamReal=bacias.reduce(function(a,b){return a+RAM_REAL[b];},0);
-  setKpi('kpi-rp',[
-    {c:'kc-green',l:'Metros Projeto',v:fmt(totP),s:'m rede coletora'},
-    {c:'kc-g2',l:'Metros Executados',v:fmt(totR),s:pct(totR,totP)+' concluído'},
-    {c:'kc-blue',l:'PVs Executados',v:totPVReal+'/'+totPVProj,s:'Poços de Visita'},
-    {c:'kc-gold',l:'Ramais Executados',v:totRamReal+'/'+totRamProj,s:'ramais prediais'}
-  ]);
+  setKpi('kpi-rp',[{c:'kc-green',l:'Metros Projeto',v:fmt(totP),s:'m rede coletora'},{c:'kc-g2',l:'Metros Executados',v:fmt(totR),s:pct(totR,totP)+' concluído'},{c:'kc-blue',l:'PVs Executados',v:totPVReal+'/'+totPVProj,s:'Poços de Inspeção'},{c:'kc-gold',l:'Ramais Executados',v:totRamReal+'/'+totRamProj,s:'ramais prediais'}]);
   setProg('rp',totR,totP,' m');
   var max=Math.max.apply(null,metros.map(function(r){return r.proj;}));
   var el=document.getElementById('ch-rp');
-  if(el)el.innerHTML=metros.map(function(r,i){
-    return '<div class="bar-row"><div class="bar-lbl">'+r.lbl+'</div>'
-      +'<div class="bar-track"><div class="bar-bg" style="width:'+(r.proj/max*100).toFixed(1)+'%;background:'+COLS[i%6]+'"></div>'
-      +'<div class="bar-fg" style="width:'+(r.real/max*100).toFixed(1)+'%;background:'+COLS[i%6]+'"></div></div>'
-      +'<div class="bar-num">'+fmt(r.proj)+'m</div><div class="bar-pct">'+pct(r.real,r.proj)+'</div></div>';
-  }).join('');
+  if(el)el.innerHTML=metros.map(function(r,i){return '<div class="bar-row"><div class="bar-lbl">'+r.lbl+'</div><div class="bar-track"><div class="bar-bg" style="width:'+(r.proj/max*100).toFixed(1)+'%;background:'+COLS[i%6]+'"></div><div class="bar-fg" style="width:'+(r.real/max*100).toFixed(1)+'%;background:'+COLS[i%6]+'"></div></div><div class="bar-num">'+fmt(r.proj)+'m</div><div class="bar-pct">'+pct(r.real,r.proj)+'</div></div>';}).join('');
   el=document.getElementById('tb-metros-rp');
-  if(el)el.innerHTML=metros.map(function(r){
-    return '<tr><td>'+r.bacia+'</td><td class="num">'+fmt(r.proj)+'</td><td class="num" style="color:var(--green2)">'+fmt(r.real)+'</td><td class="num">'+fmt(r.proj-r.real)+'</td><td class="num">'+pct(r.real,r.proj)+'</td></tr>';
-  }).join('')+'<tr class="tr-tot"><td>TOTAL</td><td class="num">'+fmt(totP)+'</td><td class="num">'+fmt(totR)+'</td><td class="num">'+fmt(totP-totR)+'</td><td class="num">'+pct(totR,totP)+'</td></tr>';
-  renderRP();
-  renderSimpleKpi('ct1',D.ct1||[],'ct1','coletora DN150');renderSimple('ct1');
+  if(el)el.innerHTML=metros.map(function(r){return '<tr><td>'+r.bacia+'</td><td class="num">'+fmt(r.proj)+'</td><td class="num" style="color:var(--green2)">'+fmt(r.real)+'</td><td class="num">'+fmt(r.proj-r.real)+'</td><td class="num">'+pct(r.real,r.proj)+'</td></tr>';}).join('')+'<tr class="tr-tot"><td>TOTAL</td><td class="num">'+fmt(totP)+'</td><td class="num">'+fmt(totR)+'</td><td class="num">'+fmt(totP-totR)+'</td><td class="num">'+pct(totR,totP)+'</td></tr>';
+  renderRP();renderSimpleKpi('ct1',D.ct1||[],'ct1','coletora DN150');renderSimple('ct1');
   renderSimpleKpi('ct2',D.ct2||[],'ct2','coletora DN150');renderSimple('ct2');
 }
-
 function renderSimpleKpi(kpiId,arr,pfx,lbl){
-  var proj=arr.reduce(function(a,r){return a+r.m;},0);
-  var real=arr.filter(function(r){return r.status==='Executado';}).reduce(function(a,r){return a+r.m;},0);
-  var exec=arr.filter(function(r){return r.status==='Executado';}).length;
-  setKpi('kpi-'+kpiId,[
-    {c:'kc-green',l:'Metros Projeto',v:fmt(proj),s:'m '+lbl},
-    {c:'kc-g2',l:'Metros Executados',v:fmt(real),s:pct(real,proj)+' concluído'},
-    {c:'kc-blue',l:'Trechos Exec.',v:exec+'/'+arr.length,s:'trechos'},
-    {c:'kc-gold',l:'Saldo',v:fmt(proj-real),s:'metros restantes'}
-  ]);
+  var proj=arr.reduce(function(a,r){return a+r.m;},0);var real=arr.filter(function(r){return r.status==='Executado';}).reduce(function(a,r){return a+r.m;},0);var exec=arr.filter(function(r){return r.status==='Executado';}).length;
+  setKpi('kpi-'+kpiId,[{c:'kc-green',l:'Metros Projeto',v:fmt(proj),s:'m '+lbl},{c:'kc-g2',l:'Metros Executados',v:fmt(real),s:pct(real,proj)+' concluído'},{c:'kc-blue',l:'Trechos Exec.',v:exec+'/'+arr.length,s:'trechos'},{c:'kc-gold',l:'Saldo',v:fmt(proj-real),s:'metros restantes'}]);
   setProg(pfx,real,proj,' m');
 }
-
 function renderRP(){
   var srch=(document.getElementById('s-rp')||{value:''}).value.toLowerCase();
-  var rows=(D.rp||[]).filter(function(r){
-    if(filtBacia!=='all'&&r.bacia!==filtBacia)return false;
-    if(srch&&JSON.stringify(r).toLowerCase().indexOf(srch)<0)return false;
-    return true;
-  });
+  var rows=(D.rp||[]).filter(function(r){if(filtBacia!=='all'&&r.bacia!==filtBacia)return false;if(srch&&JSON.stringify(r).toLowerCase().indexOf(srch)<0)return false;return true;});
   var el=document.getElementById('c-rp');if(el)el.textContent=rows.length+' trechos';
   el=document.getElementById('td-rp');
-  if(el)el.innerHTML=rows.map(function(r){
-    return '<tr><td><b>B0'+r.bacia+'</b></td><td>'+r.qd+'</td><td>'+r.pv+'</td><td>'+r.pv2+'</td><td class="num">'+r.m+'m</td><td><span class="dn-b">DN '+r.dn+'</span></td><td>'+stSel(r,'rp')+'</td></tr>';
-  }).join('');
+  if(el)el.innerHTML=rows.map(function(r){return '<tr><td><b>B0'+r.bacia+'</b></td><td>'+r.qd+'</td><td>'+r.pv+'</td><td>'+r.pv2+'</td><td class="num">'+r.m+'m</td><td><span class="dn-b">DN '+r.dn+'</span></td><td>'+stSel(r,'rp')+'</td></tr>';}).join('');
 }
-
 function renderSimple(key){
   var srch=(document.getElementById('s-'+key)||{value:''}).value.toLowerCase();
-  var rows=(D[key]||[]).filter(function(r){return !srch||JSON.stringify(r).toLowerCase().indexOf(srch)>=0;});
+  var rows=(D[key]||[]).filter(function(r){return!srch||JSON.stringify(r).toLowerCase().indexOf(srch)>=0;});
   var el=document.getElementById('c-'+key);if(el)el.textContent=rows.length+' trechos';
   el=document.getElementById('td-'+key);
-  if(el)el.innerHTML=rows.map(function(r){
-    return '<tr><td>'+r.pv+'</td><td>'+r.pv2+'</td><td class="num">'+r.m+'m</td><td><span class="dn-b">DN '+r.dn+'</span></td><td>'+stSel(r,key)+'</td></tr>';
-  }).join('');
+  if(el)el.innerHTML=rows.map(function(r){return '<tr><td>'+r.pv+'</td><td>'+r.pv2+'</td><td class="num">'+r.m+'m</td><td><span class="dn-b">DN '+r.dn+'</span></td><td>'+stSel(r,key)+'</td></tr>';}).join('');
 }
-
-function filtRp(b,btn){
-  filtBacia=b;
-  document.getElementById('bar-rp').querySelectorAll('.fbtn').forEach(function(x){x.classList.remove('fe');});
-  btn.classList.add('fe');
-  renderRP();
-}
-
+function filtRp(b,btn){filtBacia=b;document.getElementById('bar-rp').querySelectorAll('.fbtn').forEach(function(x){x.classList.remove('fe');});btn.classList.add('fe');renderRP();}
 function renderAgua(){
-  var rp2=D.rp2||[];
-  var summary=D.rp2_summary||[];
-  var modMap={};
-  rp2.forEach(function(t){
-    if(!modMap[t.modulo])modMap[t.modulo]=0;
-    if(t.status==='Executado')modMap[t.modulo]+=t.m;
-  });
-  var sumRows=summary.map(function(s){
-    var real=Math.round((modMap[s.modulo]||0)*10)/10;
-    return {modulo:s.modulo,proj:s.proj,real:real,saldo:Math.round((s.proj-real)*10)/10};
-  });
-  var r2P=sumRows.reduce(function(a,r){return a+r.proj;},0);
-  var r2R=sumRows.reduce(function(a,r){return a+r.real;},0);
-  setKpi('kpi-rp2',[
-    {c:'kc-blue',l:'Metros Projeto',v:fmt(r2P),s:'m rede distribuição'},
-    {c:'kc-g2',l:'Metros Executados',v:fmt(r2R),s:pct(r2R,r2P)+' concluído'},
-    {c:'kc-green',l:'Módulos',v:sumRows.length,s:'módulos'},
-    {c:'kc-gold',l:'Saldo',v:fmt(r2P-r2R),s:'metros restantes'}
-  ]);
+  var rp2=D.rp2||[];var summary=D.rp2_summary||[];var modMap={};
+  rp2.forEach(function(t){if(!modMap[t.modulo])modMap[t.modulo]=0;if(t.status==='Executado')modMap[t.modulo]+=t.m;});
+  var sumRows=summary.map(function(s){var real=Math.round((modMap[s.modulo]||0)*10)/10;return{modulo:s.modulo,proj:s.proj,real:real,saldo:Math.round((s.proj-real)*10)/10};});
+  var r2P=sumRows.reduce(function(a,r){return a+r.proj;},0);var r2R=sumRows.reduce(function(a,r){return a+r.real;},0);
+  setKpi('kpi-rp2',[{c:'kc-blue',l:'Metros Projeto',v:fmt(r2P),s:'m rede distribuição'},{c:'kc-g2',l:'Metros Executados',v:fmt(r2R),s:pct(r2R,r2P)+' concluído'},{c:'kc-green',l:'Módulos',v:sumRows.length,s:'módulos'},{c:'kc-gold',l:'Saldo',v:fmt(r2P-r2R),s:'metros restantes'}]);
   setProg('rp2',r2R,r2P,' m');
   var max2=Math.max.apply(null,sumRows.map(function(r){return r.proj;}));
-  var el=document.getElementById('ch-rp2');
-  if(el)el.innerHTML=sumRows.map(function(r,i){
-    var lbl=r.modulo.replace('TP MD 0','MD');
-    return '<div class="bar-row"><div class="bar-lbl">'+lbl+'</div>'
-      +'<div class="bar-track"><div class="bar-bg" style="width:'+(r.proj/max2*100).toFixed(1)+'%;background:'+COLS[i%6]+'"></div>'
-      +'<div class="bar-fg" style="width:'+(r.real/max2*100).toFixed(1)+'%;background:'+COLS[i%6]+'"></div></div>'
-      +'<div class="bar-num">'+fmt(r.proj)+'m</div><div class="bar-pct">'+pct(r.real,r.proj)+'</div></div>';
-  }).join('');
-  el=document.getElementById('tb-rp2');
-  if(el)el.innerHTML=sumRows.map(function(r){
-    return '<tr><td>'+r.modulo+'</td><td class="num">'+fmt(r.proj)+'</td><td class="num" style="color:var(--green2)">'+fmt(r.real)+'</td><td class="num">'+fmt(r.saldo)+'</td><td class="num">'+pct(r.real,r.proj)+'</td></tr>';
-  }).join('')+'<tr class="tr-tot"><td>TOTAL</td><td class="num">'+fmt(r2P)+'</td><td class="num">'+fmt(r2R)+'</td><td class="num">'+fmt(r2P-r2R)+'</td><td class="num">'+pct(r2R,r2P)+'</td></tr>';
+  var el=document.getElementById('ch-rp2');if(el)el.innerHTML=sumRows.map(function(r,i){var lbl=r.modulo.replace('TP MD 0','MD');return '<div class="bar-row"><div class="bar-lbl">'+lbl+'</div><div class="bar-track"><div class="bar-bg" style="width:'+(r.proj/max2*100).toFixed(1)+'%;background:'+COLS[i%6]+'"></div><div class="bar-fg" style="width:'+(r.real/max2*100).toFixed(1)+'%;background:'+COLS[i%6]+'"></div></div><div class="bar-num">'+fmt(r.proj)+'m</div><div class="bar-pct">'+pct(r.real,r.proj)+'</div></div>';}).join('');
+  el=document.getElementById('tb-rp2');if(el)el.innerHTML=sumRows.map(function(r){return '<tr><td>'+r.modulo+'</td><td class="num">'+fmt(r.proj)+'</td><td class="num" style="color:var(--green2)">'+fmt(r.real)+'</td><td class="num">'+fmt(r.saldo)+'</td><td class="num">'+pct(r.real,r.proj)+'</td></tr>';}).join('')+'<tr class="tr-tot"><td>TOTAL</td><td class="num">'+fmt(r2P)+'</td><td class="num">'+fmt(r2R)+'</td><td class="num">'+fmt(r2P-r2R)+'</td><td class="num">'+pct(r2R,r2P)+'</td></tr>';
   renderRP2();
-  var ad=D.adutora||[];
-  var adP=ad.reduce(function(a,r){return a+r.m;},0);
-  var adR=ad.reduce(function(a,r){return a+(r.realizado !== undefined ? r.realizado : (r.status==='Executado'?r.m:0));},0);
-  setKpi('kpi-ad',[
-    {c:'kc-blue',l:'Total Metros',v:fmt(adP),s:'m rede adutora'},
-    {c:'kc-g2',l:'Executados',v:fmt(adR),s:pct(adR,adP)+' concluído'},
-    {c:'kc-green',l:'Trechos',v:ad.length,s:'trechos'},
-    {c:'kc-gold',l:'Saldo',v:fmt(adP-adR),s:'metros restantes'}
-  ]);
+  var ad=D.adutora||[];var adP=ad.reduce(function(a,r){return a+r.m;},0);var adR=ad.reduce(function(a,r){return a+(r.realizado!==undefined?r.realizado:(r.status==='Executado'?r.m:0));},0);
+  setKpi('kpi-ad',[{c:'kc-blue',l:'Total Metros',v:fmt(adP),s:'m rede adutora'},{c:'kc-g2',l:'Executados',v:fmt(adR),s:pct(adR,adP)+' concluído'},{c:'kc-green',l:'Trechos',v:ad.length,s:'trechos'},{c:'kc-gold',l:'Saldo',v:fmt(adP-adR),s:'metros restantes'}]);
   setProg('ad',adR,adP,' m');
   el=document.getElementById('td-ad');
-  if(el)el.innerHTML=ad.map(function(r){
-    var realizado = r.realizado !== undefined ? r.realizado : (r.status==='Executado' ? r.m : 0);
-    var saldo = r.m - realizado;
-    return '<tr><td>'+r.modulo+'</td><td><span class="dn-b">DN '+r.dn+'</span></td><td class="num">'+fmt(r.m)+'</td>'
-      +'<td class="num"><input type="number" min="0" max="'+r.m+'" value="'+realizado+'" data-id="'+r.id+'" onchange="mudarRealizadoAdutora(this)" style="width:70px;text-align:right;font-family:JetBrains Mono,monospace;font-size:12px;border:1px solid var(--border);border-radius:3px;padding:2px 6px;background:#fff;color:var(--green2);font-weight:600"></td>'
-      +'<td class="num">'+fmt(saldo)+'</td><td>'+stSel(r,'adutora')+'</td></tr>';
-  }).join('');
+  if(el)el.innerHTML=ad.map(function(r){var realizado=r.realizado!==undefined?r.realizado:(r.status==='Executado'?r.m:0);var saldo=r.m-realizado;return '<tr><td>'+r.modulo+'</td><td><span class="dn-b">DN '+r.dn+'</span></td><td class="num">'+fmt(r.m)+'</td><td class="num"><input type="number" min="0" max="'+r.m+'" value="'+realizado+'" data-id="'+r.id+'" onchange="mudarRealizadoAdutora(this)" style="width:70px;text-align:right;font-family:JetBrains Mono,monospace;font-size:12px;border:1px solid var(--border);border-radius:3px;padding:2px 6px;background:#fff;color:var(--green2);font-weight:600"></td><td class="num">'+fmt(saldo)+'</td><td>'+stSel(r,'adutora')+'</td></tr>';}).join('');
   var tv=D.trav||[];var tvE=tv.filter(function(r){return r.status==='Executado';}).length;
   var disp=D.dispositivos||[];var dispE=disp.filter(function(r){return r.status==='Executado';}).length;
-  setKpi('kpi-tv',[
-    {c:'kc-blue',l:'Total Travessias',v:tv.length,s:tvE+' executadas'},
-    {c:'kc-g2',l:'Total Dispositivos',v:disp.length,s:dispE+' executados'},
-    {c:'kc-green',l:'Exec. Travessias',v:tvE+'/'+tv.length,s:'concluídas'},
-    {c:'kc-gold',l:'Exec. Dispositivos',v:dispE+'/'+disp.length,s:'concluídos'}
-  ]);
+  setKpi('kpi-tv',[{c:'kc-blue',l:'Total Travessias',v:tv.length,s:tvE+' executadas'},{c:'kc-g2',l:'Total Dispositivos',v:disp.length,s:dispE+' executados'},{c:'kc-green',l:'Exec. Travessias',v:tvE+'/'+tv.length,s:'concluídas'},{c:'kc-gold',l:'Exec. Dispositivos',v:dispE+'/'+disp.length,s:'concluídos'}]);
   el=document.getElementById('trav-count');if(el)el.textContent=tvE+'/'+tv.length+' executadas';
-  el=document.getElementById('td-tv');
-  if(el)el.innerHTML=tv.map(function(r){return '<tr><td><strong>'+r.modulo+'</strong></td><td><span class="dn-b">DN 150</span></td><td>'+stSel(r,'trav')+'</td></tr>';}).join('');
+  el=document.getElementById('td-tv');if(el)el.innerHTML=tv.map(function(r){return '<tr><td><strong>'+r.modulo+'</strong></td><td><span class="dn-b">DN 150</span></td><td>'+stSel(r,'trav')+'</td></tr>';}).join('');
   var mods=[];disp.forEach(function(d){if(mods.indexOf(d.modulo)<0)mods.push(d.modulo);});
   el=document.getElementById('disp-container');
-  if(el)el.innerHTML=mods.map(function(mod){
-    var itens=disp.filter(function(d){return d.modulo===mod;});
-    var exec=itens.filter(function(d){return d.status==='Executado';}).length;
-    return '<div class="trwrap" style="margin-bottom:16px"><div class="tbar"><span style="font-size:12px;font-weight:700;text-transform:uppercase">'+mod+'</span><div class="tcount">'+exec+'/'+itens.length+' executados</div></div><table><thead><tr><th>Item</th><th class="num" style="width:80px">Qtd</th><th style="width:200px">Status &#9998;</th></tr></thead><tbody>'+itens.map(function(r){return '<tr><td>'+r.item+'</td><td class="num">'+r.qty+'</td><td>'+stSel(r,'dispositivos')+'</td></tr>';}).join('')+'</tbody></table></div>';
-  }).join('');
+  if(el)el.innerHTML=mods.map(function(mod){var itens=disp.filter(function(d){return d.modulo===mod;});var exec=itens.filter(function(d){return d.status==='Executado';}).length;return '<div class="trwrap" style="margin-bottom:16px"><div class="tbar"><span style="font-size:12px;font-weight:700;text-transform:uppercase">'+mod+'</span><div class="tcount">'+exec+'/'+itens.length+' executados</div></div><table><thead><tr><th>Item</th><th class="num" style="width:80px">Qtd</th><th style="width:200px">Status &#9998;</th></tr></thead><tbody>'+itens.map(function(r){return '<tr><td>'+r.item+'</td><td class="num">'+r.qty+'</td><td>'+stSel(r,'dispositivos')+'</td></tr>';}).join('')+'</tbody></table></div>';}).join('');
 }
-
 function renderRP2(){
   var srch=(document.getElementById('s-rp2')||{value:''}).value.toLowerCase();
-  var rows=(D.rp2||[]).filter(function(r){
-    if(filtMod!=='all'&&r.modulo!==filtMod)return false;
-    if(srch&&JSON.stringify(r).toLowerCase().indexOf(srch)<0)return false;
-    return true;
-  });
+  var rows=(D.rp2||[]).filter(function(r){if(filtMod!=='all'&&r.modulo!==filtMod)return false;if(srch&&JSON.stringify(r).toLowerCase().indexOf(srch)<0)return false;return true;});
   var el=document.getElementById('c-rp2');if(el)el.textContent=rows.length+' trechos';
-  el=document.getElementById('td-rp2');
-  if(el)el.innerHTML=rows.map(function(r){
-    return '<tr><td>'+r.modulo+'</td><td>'+r.qd+'</td><td class="num">'+r.m+'m</td><td><span class="dn-b">DN '+r.dn+'</span></td><td>'+stSel(r,'rp2')+'</td></tr>';
-  }).join('');
+  el=document.getElementById('td-rp2');if(el)el.innerHTML=rows.map(function(r){return '<tr><td>'+r.modulo+'</td><td>'+r.qd+'</td><td class="num">'+r.m+'m</td><td><span class="dn-b">DN '+r.dn+'</span></td><td>'+stSel(r,'rp2')+'</td></tr>';}).join('');
 }
-
-function filtRp2(m,btn){
-  filtMod=m;
-  document.getElementById('bar-rp2').querySelectorAll('.fbtn').forEach(function(x){x.classList.remove('fa');});
-  btn.classList.add('fa');
-  renderRP2();
-}
-
+function filtRp2(m,btn){filtMod=m;document.getElementById('bar-rp2').querySelectorAll('.fbtn').forEach(function(x){x.classList.remove('fa');});btn.classList.add('fa');renderRP2();}
 function renderDrenagem(){
-  var dr=D.drenagem||{};
-  var rp1=dr.rp1||[],ram1=dr.ram1||[],rp2=dr.rp2||[],ram2=dr.ram2||[];
+  var dr=D.drenagem||{};var rp1=dr.rp1||[],ram1=dr.ram1||[],rp2=dr.rp2||[],ram2=dr.ram2||[];
   var rp1Proj=2735,ram1Proj=1024,rp2Proj=187,ram2Proj=89,pvProj=57,pvReal=54;
   var rp1R=0,rp1E=0;rp1.forEach(function(r){if(r.status==='Executado'){rp1R+=r.m;rp1E++;}});rp1R=Math.round(rp1R*10)/10;
   var ram1R=0,ram1E=0;ram1.forEach(function(r){if(r.status==='Executado'){ram1R+=(r.qty||0);ram1E++;}});
@@ -755,277 +647,94 @@ function renderDrenagem(){
   setKpi('kpi-dr-ram2',[{c:'kc-purple',l:'Metros Projeto',v:fmt(ram2Proj),s:'m ramal rede 02'},{c:'kc-g2',l:'Metros Executados',v:fmt(ram2R),s:pct(ram2R,ram2Proj)+' concluído'},{c:'kc-blue',l:'Saldo',v:fmt(ram2Proj-ram2R),s:'metros restantes'},{c:'kc-gold',l:'Ramais',v:ram2E+'/'+ram2.length,s:ram2.length+' total'}]);
   setProg('dr-ram2',ram2R,ram2Proj,' m');renderDrR('ram2');
   var saldo=(rp1Proj-rp1R)+(rp2Proj-rp2R)+(ram1Proj-ram1R)+(ram2Proj-ram2R);
-  // Barra de progresso total = média das 5 porcentagens (igual ao TOTAL da tabela)
-  var mediaDr=(rp1R/rp1Proj + rp2R/rp2Proj + ram1R/ram1Proj + ram2R/ram2Proj + pvReal/pvProj)/5*100;
-  var totProjDr=rp1Proj+rp2Proj+ram1Proj+ram2Proj+pvProj;
-  var totRealDr=rp1R+rp2R+ram1R+ram2R+pvReal;
-  var el_pp=document.getElementById('pp-dr-resumo');
-  if(el_pp) el_pp.textContent=mediaDr.toFixed(2).replace('.',',')+' %';
-  var el_pf=document.getElementById('pf-dr-resumo');
-  if(el_pf) el_pf.style.width=Math.min(mediaDr,100)+'%';
-  var el_pd=document.getElementById('pd-dr-resumo');
-  if(el_pd) el_pd.textContent='Média geral de execução das 5 redes';
-  var el_pm=document.getElementById('pm-dr-resumo');
-  if(el_pm) el_pm.innerHTML='<span>Metros executados: '+fmt(totRealDr)+'m</span><span>Saldo: '+fmt(totProjDr-totRealDr)+'m</span>';
+  var mediaDr=(rp1R/rp1Proj+rp2R/rp2Proj+ram1R/ram1Proj+ram2R/ram2Proj+pvReal/pvProj)/5*100;
+  var totProjDr=rp1Proj+rp2Proj+ram1Proj+ram2Proj+pvProj;var totRealDr=rp1R+rp2R+ram1R+ram2R+pvReal;
+  var el_pp=document.getElementById('pp-dr-resumo');if(el_pp)el_pp.textContent=mediaDr.toFixed(2).replace('.',',')+' %';
+  var el_pf=document.getElementById('pf-dr-resumo');if(el_pf)el_pf.style.width=Math.min(mediaDr,100)+'%';
+  var el_pd=document.getElementById('pd-dr-resumo');if(el_pd)el_pd.textContent='Média geral de execução das 5 redes';
+  var el_pm=document.getElementById('pm-dr-resumo');if(el_pm)el_pm.innerHTML='<span>Metros executados: '+fmt(totRealDr)+'m</span><span>Saldo: '+fmt(totProjDr-totRealDr)+'m</span>';
   var el=document.getElementById('kpi-dr-resumo');
-  if(el)el.innerHTML=[
-    {c:'kc-purple',l:'Rede Principal 01',v:fmt(rp1R)+'/'+fmt(rp1Proj)+'m',s:pct(rp1R,rp1Proj)+' concluído'},
-    {c:'kc-purple',l:'Rede Principal 02',v:fmt(rp2R)+'/'+fmt(rp2Proj)+'m',s:pct(rp2R,rp2Proj)+' concluído'},
-    {c:'kc-blue',l:'Ramal Rede 01',v:fmt(ram1R)+'/'+fmt(ram1Proj)+'m',s:pct(ram1R,ram1Proj)+' concluído'},
-    {c:'kc-blue',l:'Ramal Rede 02',v:fmt(ram2R)+'/'+fmt(ram2Proj)+'m',s:pct(ram2R,ram2Proj)+' concluído'},
-    {c:'kc-gold',l:'Saldo Geral',v:fmt(saldo)+'m',s:'metros restantes'}
-  ].map(function(c){return '<div class="kpi '+c.c+'"><div class="kpi-lbl">'+c.l+'</div><div class="kpi-val">'+c.v+'</div><div class="kpi-sub">'+c.s+'</div></div>';}).join('');
-  var resumo=[
-    {s:'Rede Principal 01',p:rp1Proj,r:rp1R},
-    {s:'Rede Principal 02',p:rp2Proj,r:rp2R},
-    {s:'Ramal Rede 01',p:ram1Proj,r:ram1R},
-    {s:'Ramal Rede 02',p:ram2Proj,r:ram2R},
-    {s:'Poco de Visita',p:pvProj,r:pvReal}
-  ];
-  var totP=0,totR=0,soma=0;
-  var html=resumo.map(function(row){
-    totP+=row.p;totR+=row.r;soma+=(row.p>0?row.r/row.p*100:0);
-    return '<tr><td>'+row.s+'</td><td class="num">'+fmt(row.p)+'</td><td class="num" style="color:var(--green2)">'+fmt(row.r)+'</td><td class="num">'+fmt(row.p-row.r)+'</td><td class="num">'+pct(row.r,row.p)+'</td></tr>';
-  }).join('');
+  if(el)el.innerHTML=[{c:'kc-purple',l:'Rede Principal 01',v:fmt(rp1R)+'/'+fmt(rp1Proj)+'m',s:pct(rp1R,rp1Proj)+' concluído'},{c:'kc-purple',l:'Rede Principal 02',v:fmt(rp2R)+'/'+fmt(rp2Proj)+'m',s:pct(rp2R,rp2Proj)+' concluído'},{c:'kc-blue',l:'Ramal Rede 01',v:fmt(ram1R)+'/'+fmt(ram1Proj)+'m',s:pct(ram1R,ram1Proj)+' concluído'},{c:'kc-blue',l:'Ramal Rede 02',v:fmt(ram2R)+'/'+fmt(ram2Proj)+'m',s:pct(ram2R,ram2Proj)+' concluído'},{c:'kc-gold',l:'Saldo Geral',v:fmt(saldo)+'m',s:'metros restantes'}].map(function(c){return '<div class="kpi '+c.c+'"><div class="kpi-lbl">'+c.l+'</div><div class="kpi-val">'+c.v+'</div><div class="kpi-sub">'+c.s+'</div></div>';}).join('');
+  var resumo=[{s:'Rede Principal 01',p:rp1Proj,r:rp1R},{s:'Rede Principal 02',p:rp2Proj,r:rp2R},{s:'Ramal Rede 01',p:ram1Proj,r:ram1R},{s:'Ramal Rede 02',p:ram2Proj,r:ram2R},{s:'Poço de Inspeção',p:pvProj,r:pvReal}];
+  var totP2=0,totR2=0,soma=0;
+  var html=resumo.map(function(row){totP2+=row.p;totR2+=row.r;soma+=(row.p>0?row.r/row.p*100:0);return '<tr><td>'+row.s+'</td><td class="num">'+fmt(row.p)+'</td><td class="num" style="color:var(--green2)">'+fmt(row.r)+'</td><td class="num">'+fmt(row.p-row.r)+'</td><td class="num">'+pct(row.r,row.p)+'</td></tr>';}).join('');
   var media=(soma/resumo.length).toFixed(2).replace('.',',')+' %';
-  html+='<tr class="tr-tot"><td>TOTAL</td><td class="num">'+fmt(totP)+'</td><td class="num">'+fmt(totR)+'</td><td class="num">'+fmt(totP-totR)+'</td><td class="num">'+media+'</td></tr>';
+  html+='<tr class="tr-tot"><td>TOTAL</td><td class="num">'+fmt(totP2)+'</td><td class="num">'+fmt(totR2)+'</td><td class="num">'+fmt(totP2-totR2)+'</td><td class="num">'+media+'</td></tr>';
   el=document.getElementById('td-dr-resumo');if(el)el.innerHTML=html;
 }
-
 function renderDrT(key){
   var srch=(document.getElementById('s-dr-'+key)||{value:''}).value.toLowerCase();
-  var rows=((D.drenagem||{})[key]||[]).filter(function(r){return !srch||JSON.stringify(r).toLowerCase().indexOf(srch)>=0;});
+  var rows=((D.drenagem||{})[key]||[]).filter(function(r){return!srch||JSON.stringify(r).toLowerCase().indexOf(srch)>=0;});
   var el=document.getElementById('c-dr-'+key);if(el)el.textContent=rows.length+' registros';
-  el=document.getElementById('td-dr-'+key);
-  if(el)el.innerHTML=rows.map(function(r){
-    return '<tr><td>'+r.pv1+'</td><td>'+r.pv2+'</td><td class="num">'+r.m+' m</td><td><span class="dn-b">DN '+r.dn+'</span></td><td>'+stSel(r,'dr_'+key)+'</td></tr>';
-  }).join('');
+  el=document.getElementById('td-dr-'+key);if(el)el.innerHTML=rows.map(function(r){return '<tr><td>'+r.pv1+'</td><td>'+r.pv2+'</td><td class="num">'+r.m+' m</td><td><span class="dn-b">DN '+r.dn+'</span></td><td>'+stSel(r,'dr_'+key)+'</td></tr>';}).join('');
 }
-
 function renderDrR(key){
   var srch=(document.getElementById('s-dr-'+key)||{value:''}).value.toLowerCase();
-  var rows=((D.drenagem||{})[key]||[]).filter(function(r){return !srch||JSON.stringify(r).toLowerCase().indexOf(srch)>=0;});
+  var rows=((D.drenagem||{})[key]||[]).filter(function(r){return!srch||JSON.stringify(r).toLowerCase().indexOf(srch)>=0;});
   var el=document.getElementById('c-dr-'+key);if(el)el.textContent=rows.length+' registros';
-  el=document.getElementById('td-dr-'+key);
-  if(el)el.innerHTML=rows.map(function(r){
-    return '<tr><td>'+r.pv+'</td><td>'+(r.bl||'-')+'</td><td class="num">'+(r.qty||0)+'</td><td>'+(r.dn?'<span class="dn-b">DN '+r.dn+'</span>':'-')+'</td><td>'+stSel(r,'dr_'+key)+'</td></tr>';
-  }).join('');
+  el=document.getElementById('td-dr-'+key);if(el)el.innerHTML=rows.map(function(r){return '<tr><td>'+r.pv+'</td><td>'+(r.bl||'-')+'</td><td class="num">'+(r.qty||0)+'</td><td>'+(r.dn?'<span class="dn-b">DN '+r.dn+'</span>':'-')+'</td><td>'+stSel(r,'dr_'+key)+'</td></tr>';}).join('');
 }
-
 function renderResultados(){
-  var rp=D.rp||[];
-  var rpP=rp.reduce(function(a,r){return a+r.m;},0);
-  var rpR=rp.filter(function(r){return r.status==='Executado';}).reduce(function(a,r){return a+r.m;},0);
-  var ct1=D.ct1||[];
-  var ct1P=ct1.reduce(function(a,r){return a+r.m;},0);
-  var ct1R=ct1.filter(function(r){return r.status==='Executado';}).reduce(function(a,r){return a+r.m;},0);
-  var ct2=D.ct2||[];
-  var ct2P=ct2.reduce(function(a,r){return a+r.m;},0);
-  var ct2R=ct2.filter(function(r){return r.status==='Executado';}).reduce(function(a,r){return a+r.m;},0);
-  var esgP=rpP+ct1P+ct2P, esgR=rpR+ct1R+ct2R;
-  var rp2=D.rp2||[];
-  var summary=D.rp2_summary||[];
-  var modMap={};
+  var rp=D.rp||[];var rpP=rp.reduce(function(a,r){return a+r.m;},0);var rpR=rp.filter(function(r){return r.status==='Executado';}).reduce(function(a,r){return a+r.m;},0);
+  var ct1=D.ct1||[];var ct1P=ct1.reduce(function(a,r){return a+r.m;},0);var ct1R=ct1.filter(function(r){return r.status==='Executado';}).reduce(function(a,r){return a+r.m;},0);
+  var ct2=D.ct2||[];var ct2P=ct2.reduce(function(a,r){return a+r.m;},0);var ct2R=ct2.filter(function(r){return r.status==='Executado';}).reduce(function(a,r){return a+r.m;},0);
+  var esgP=rpP+ct1P+ct2P,esgR=rpR+ct1R+ct2R;
+  var rp2=D.rp2||[];var summary=D.rp2_summary||[];var modMap={};
   rp2.forEach(function(t){if(!modMap[t.modulo])modMap[t.modulo]=0;if(t.status==='Executado')modMap[t.modulo]+=t.m;});
-  var aguaP=summary.reduce(function(a,s){return a+s.proj;},0);
-  var aguaR=summary.reduce(function(a,s){return a+(modMap[s.modulo]||0);},0);
-  var ad=D.adutora||[];
-  var adP=ad.reduce(function(a,r){return a+r.m;},0);
-  var adR=ad.reduce(function(a,r){return a+(r.realizado !== undefined ? r.realizado : (r.status==='Executado'?r.m:0));},0);
-  var totAguaP=aguaP+adP, totAguaR=aguaR+adR;
-  var dr=D.drenagem||{};
-  var rp1Proj=2735,ram1Proj=1024,drRp2Proj=187,ram2Proj=89,pvProj=57,pvReal=54;
+  var aguaP=summary.reduce(function(a,s){return a+s.proj;},0);var aguaR=summary.reduce(function(a,s){return a+(modMap[s.modulo]||0);},0);
+  var ad=D.adutora||[];var adP=ad.reduce(function(a,r){return a+r.m;},0);var adR=ad.reduce(function(a,r){return a+(r.realizado!==undefined?r.realizado:(r.status==='Executado'?r.m:0));},0);
+  var totAguaP=aguaP+adP,totAguaR=aguaR+adR;
+  var dr=D.drenagem||{};var rp1Proj=2735,ram1Proj=1024,drRp2Proj=187,ram2Proj=89,pvProj=57,pvReal=54;
   var rp1R=dr.rp1?dr.rp1.filter(function(r){return r.status==='Executado';}).reduce(function(a,r){return a+r.m;},0):0;
   var ram1R=dr.ram1?dr.ram1.filter(function(r){return r.status==='Executado';}).reduce(function(a,r){return a+(r.qty||0);},0):0;
   var drRp2R=dr.rp2?dr.rp2.filter(function(r){return r.status==='Executado';}).reduce(function(a,r){return a+r.m;},0):0;
   var ram2R=dr.ram2?dr.ram2.filter(function(r){return r.status==='Executado';}).reduce(function(a,r){return a+(r.qty||0);},0):0;
-  var drP=rp1Proj+ram1Proj+drRp2Proj+ram2Proj+pvProj;
-  var drR=rp1R+ram1R+drRp2R+ram2R+pvReal;
   var mediaDr=(rp1R/rp1Proj+drRp2R/drRp2Proj+ram1R/ram1Proj+ram2R/ram2Proj+pvReal/pvProj)/5*100;
-  var totGeralP=esgP+totAguaP+drP;
-  var totGeralR=esgR+totAguaR+drR;
-  var el=document.getElementById('res-kpis');
-  // Cards expandidos com detalhamento por serviço
-  function miniBar(r,p,cor){
-    var pN=p>0?Math.min(r/p*100,100):0;
-    return '<div style="margin-bottom:8px">'
-      +'<div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:3px">'
-      +'<span style="color:rgba(255,255,255,.7);font-family:JetBrains Mono,monospace">'+fmt(r)+'/'+fmt(p)+'m</span>'
-      +'<span style="font-weight:700;font-family:JetBrains Mono,monospace">'+pct(r,p)+'</span>'
-      +'</div>'
-      +'<div style="height:5px;background:rgba(255,255,255,.2);border-radius:100px;overflow:hidden">'
-      +'<div style="height:100%;width:'+pN.toFixed(1)+'%;background:rgba(255,255,255,.85);border-radius:100px"></div>'
-      +'</div></div>';
-  }
-
-  function miniBar(r,p){
-    var pN=p>0?Math.min(r/p*100,100):0;
-    return '<div style="margin-bottom:8px">'
-      +'<div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:3px">'
-      +'<span style="color:rgba(255,255,255,.7);font-family:JetBrains Mono,monospace">'+fmt(r)+'/'+fmt(p)+'m</span>'
-      +'<span style="font-weight:700;font-family:JetBrains Mono,monospace">'+pct(r,p)+'</span>'
-      +'</div>'
-      +'<div style="height:5px;background:rgba(255,255,255,.2);border-radius:100px;overflow:hidden">'
-      +'<div style="height:100%;width:'+pN.toFixed(1)+'%;background:rgba(255,255,255,.85);border-radius:100px"></div>'
-      +'</div></div>';
-  }
-
-  var cardEsgoto = '<div style="background:var(--green);color:#fff;border-radius:10px;padding:20px;height:auto">'
-    +'<div style="font-family:JetBrains Mono,monospace;font-size:10px;letter-spacing:2px;opacity:.8;margin-bottom:6px">REDE DE ESGOTO</div>'
-    +'<div style="font-size:28px;font-weight:800;margin-bottom:12px">'+pct(esgR,esgP)+'</div>'
-    +'<div style="font-size:10px;font-family:JetBrains Mono,monospace;opacity:.7;margin-bottom:10px;border-top:1px solid rgba(255,255,255,.2);padding-top:10px">DETALHAMENTO</div>'
-    +'<div style="font-size:11px;margin-bottom:4px;opacity:.9">Rede Principal</div>'+miniBar(rpR,rpP)
-    +'<div style="font-size:11px;margin-bottom:4px;opacity:.9">Coletor Tronco 1</div>'+miniBar(ct1R,ct1P)
-    +'<div style="font-size:11px;margin-bottom:4px;opacity:.9">Coletor Tronco 2</div>'+miniBar(ct2R,ct2P)
-    +'</div>';
-
-  var cardAgua = '<div style="background:var(--blue);color:#fff;border-radius:10px;padding:20px;height:auto">'
-    +'<div style="font-family:JetBrains Mono,monospace;font-size:10px;letter-spacing:2px;opacity:.8;margin-bottom:6px">REDE DE ÁGUA</div>'
-    +'<div style="font-size:28px;font-weight:800;margin-bottom:12px">'+pct(totAguaR,totAguaP)+'</div>'
-    +'<div style="font-size:10px;font-family:JetBrains Mono,monospace;opacity:.7;margin-bottom:10px;border-top:1px solid rgba(255,255,255,.2);padding-top:10px">DETALHAMENTO</div>'
-    +'<div style="font-size:11px;margin-bottom:4px;opacity:.9">Rede Principal</div>'+miniBar(aguaR,aguaP)
-    +'<div style="font-size:11px;margin-bottom:4px;opacity:.9">Rede Adutora</div>'+miniBar(adR,adP)
-    +'</div>';
-
-  var cardDr = '<div style="background:var(--purple);color:#fff;border-radius:10px;padding:20px;height:auto">'
-    +'<div style="font-family:JetBrains Mono,monospace;font-size:10px;letter-spacing:2px;opacity:.8;margin-bottom:6px">DRENAGEM PLUVIAL</div>'
-    +'<div style="font-size:28px;font-weight:800;margin-bottom:12px">'+mediaDr.toFixed(2).replace('.',',')+' %</div>'
-    +'<div style="font-size:10px;font-family:JetBrains Mono,monospace;opacity:.7;margin-bottom:10px;border-top:1px solid rgba(255,255,255,.2);padding-top:10px">DETALHAMENTO</div>'
-    +'<div style="font-size:11px;margin-bottom:4px;opacity:.9">Rede Principal 01</div>'+miniBar(rp1R,rp1Proj)
-    +'<div style="font-size:11px;margin-bottom:4px;opacity:.9">Rede Principal 02</div>'+miniBar(drRp2R,drRp2Proj)
-    +'<div style="font-size:11px;margin-bottom:4px;opacity:.9">Ramal Rede 01</div>'+miniBar(ram1R,ram1Proj)
-    +'<div style="font-size:11px;margin-bottom:4px;opacity:.9">Ramal Rede 02</div>'+miniBar(ram2R,ram2Proj)
-    +'<div style="font-size:11px;margin-bottom:4px;opacity:.9">Poços de Visita</div>'+miniBar(pvReal,pvProj)
-    +'</div>';
-
-  if(el) el.style.gridTemplateColumns='repeat(3,1fr)';
-  if(el) el.innerHTML=cardEsgoto+cardAgua+cardDr;
-  var progs=[
-    {lbl:'Rede Principal (Esgoto)',       r:rpR,    p:rpP,      cor:'var(--green)'},
-    {lbl:'Coletor Tronco 1',              r:ct1R,   p:ct1P,     cor:'var(--green2)'},
-    {lbl:'Coletor Tronco 2',              r:ct2R,   p:ct2P,     cor:'var(--green2)'},
-    {lbl:'Rede Principal (Água)',    r:aguaR,  p:aguaP,    cor:'var(--blue)'},
-    {lbl:'Rede Adutora',                  r:adR,    p:adP,      cor:'var(--blue)'},
-    {lbl:'Drenagem — RP01',          r:rp1R,   p:rp1Proj,  cor:'var(--purple)'},
-    {lbl:'Drenagem — RP02',          r:drRp2R, p:drRp2Proj,cor:'var(--purple)'},
-    {lbl:'Drenagem — Ramal 01',      r:ram1R,  p:ram1Proj, cor:'var(--purple)'},
-    {lbl:'Drenagem — Ramal 02',      r:ram2R,  p:ram2Proj, cor:'var(--purple)'},
-    {lbl:'Poços de Visita',          r:pvReal, p:pvProj,   cor:'var(--purple)'}
-  ];
+  function miniBar(r,p){var pN=p>0?Math.min(r/p*100,100):0;return '<div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:3px"><span style="color:rgba(255,255,255,.7);font-family:JetBrains Mono,monospace">'+fmt(r)+'/'+fmt(p)+'m</span><span style="font-weight:700;font-family:JetBrains Mono,monospace">'+pct(r,p)+'</span></div><div style="height:5px;background:rgba(255,255,255,.2);border-radius:100px;overflow:hidden"><div style="height:100%;width:'+pN.toFixed(1)+'%;background:rgba(255,255,255,.85);border-radius:100px"></div></div></div>';}
+  var cardEsgoto='<div style="background:var(--green);color:#fff;border-radius:10px;padding:20px"><div style="font-family:JetBrains Mono,monospace;font-size:10px;letter-spacing:2px;opacity:.8;margin-bottom:6px">REDE DE ESGOTO</div><div style="font-size:28px;font-weight:800;margin-bottom:12px">'+pct(esgR,esgP)+'</div><div style="font-size:10px;font-family:JetBrains Mono,monospace;opacity:.7;margin-bottom:10px;border-top:1px solid rgba(255,255,255,.2);padding-top:10px">DETALHAMENTO</div><div style="font-size:11px;margin-bottom:4px;opacity:.9">Rede Principal</div>'+miniBar(rpR,rpP)+'<div style="font-size:11px;margin-bottom:4px;opacity:.9">Coletor Tronco 1</div>'+miniBar(ct1R,ct1P)+'<div style="font-size:11px;margin-bottom:4px;opacity:.9">Coletor Tronco 2</div>'+miniBar(ct2R,ct2P)+'</div>';
+  var cardAgua='<div style="background:var(--blue);color:#fff;border-radius:10px;padding:20px"><div style="font-family:JetBrains Mono,monospace;font-size:10px;letter-spacing:2px;opacity:.8;margin-bottom:6px">REDE DE ÁGUA</div><div style="font-size:28px;font-weight:800;margin-bottom:12px">'+pct(totAguaR,totAguaP)+'</div><div style="font-size:10px;font-family:JetBrains Mono,monospace;opacity:.7;margin-bottom:10px;border-top:1px solid rgba(255,255,255,.2);padding-top:10px">DETALHAMENTO</div><div style="font-size:11px;margin-bottom:4px;opacity:.9">Rede Principal</div>'+miniBar(aguaR,aguaP)+'<div style="font-size:11px;margin-bottom:4px;opacity:.9">Rede Adutora</div>'+miniBar(adR,adP)+'</div>';
+  var cardDr='<div style="background:var(--purple);color:#fff;border-radius:10px;padding:20px"><div style="font-family:JetBrains Mono,monospace;font-size:10px;letter-spacing:2px;opacity:.8;margin-bottom:6px">DRENAGEM PLUVIAL</div><div style="font-size:28px;font-weight:800;margin-bottom:12px">'+mediaDr.toFixed(2).replace('.',',')+' %</div><div style="font-size:10px;font-family:JetBrains Mono,monospace;opacity:.7;margin-bottom:10px;border-top:1px solid rgba(255,255,255,.2);padding-top:10px">DETALHAMENTO</div><div style="font-size:11px;margin-bottom:4px;opacity:.9">Rede Principal 01</div>'+miniBar(rp1R,rp1Proj)+'<div style="font-size:11px;margin-bottom:4px;opacity:.9">Ramal Rede 01</div>'+miniBar(ram1R,ram1Proj)+'<div style="font-size:11px;margin-bottom:4px;opacity:.9">Rede Principal 02</div>'+miniBar(drRp2R,drRp2Proj)+'<div style="font-size:11px;margin-bottom:4px;opacity:.9">Ramal Rede 02</div>'+miniBar(ram2R,ram2Proj)+'<div style="font-size:11px;margin-bottom:4px;opacity:.9">Poços de Inspeção</div>'+miniBar(pvReal,pvProj)+'</div>';
+  var el=document.getElementById('res-kpis');if(el){el.style.gridTemplateColumns='repeat(3,1fr)';el.innerHTML=cardEsgoto+cardAgua+cardDr;}
+  var progs=[{lbl:'Rede Principal (Esgoto)',r:rpR,p:rpP,cor:'var(--green)'},{lbl:'Coletor Tronco 1',r:ct1R,p:ct1P,cor:'var(--green2)'},{lbl:'Coletor Tronco 2',r:ct2R,p:ct2P,cor:'var(--green2)'},{lbl:'Rede Principal (Água)',r:aguaR,p:aguaP,cor:'var(--blue)'},{lbl:'Rede Adutora',r:adR,p:adP,cor:'var(--blue)'},{lbl:'Drenagem — RP01',r:rp1R,p:rp1Proj,cor:'var(--purple)'},{lbl:'Drenagem — RP02',r:drRp2R,p:drRp2Proj,cor:'var(--purple)'},{lbl:'Drenagem — Ramal 01',r:ram1R,p:ram1Proj,cor:'var(--purple)'},{lbl:'Drenagem — Ramal 02',r:ram2R,p:ram2Proj,cor:'var(--purple)'},{lbl:'Poços de Inspeção',r:pvReal,p:pvProj,cor:'var(--purple)'}];
   el=document.getElementById('res-progs');
-  if(el) el.innerHTML='<div style="background:var(--card);border:1px solid var(--border);border-radius:5px;padding:20px">'
-    +progs.map(function(pg){
-      var pN=pg.p>0?Math.min(pg.r/pg.p*100,100):0;
-      return '<div style="margin-bottom:16px">'
-        +'<div style="display:flex;justify-content:space-between;margin-bottom:5px">'
-        +'<span style="font-size:13px;font-weight:600">'+pg.lbl+'</span>'
-        +'<span style="font-family:JetBrains Mono,monospace;font-size:13px;font-weight:700;color:'+pg.cor+'">'+pct(pg.r,pg.p)+'</span>'
-        +'</div>'
-        +'<div style="height:10px;background:var(--border);border-radius:100px;overflow:hidden">'
-        +'<div style="height:100%;width:'+pN.toFixed(2)+'%;background:'+pg.cor+';border-radius:100px;transition:width .8s"></div>'
-        +'</div>'
-        +'<div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--muted);margin-top:4px">'+fmt(pg.r)+'m executados de '+fmt(pg.p)+'m previstos — Saldo: '+fmt(pg.p-pg.r)+'m</div>'
-        +'</div>';
-    }).join('')+'</div>';
-  var linhas=[
-    {rede:'Rede Principal (Esgoto)',        p:rpP,      r:rpR,    cor:'var(--green)'},
-    {rede:'Coletor Tronco 1',               p:ct1P,     r:ct1R,   cor:'var(--green2)'},
-    {rede:'Coletor Tronco 2',               p:ct2P,     r:ct2R,   cor:'var(--green2)'},
-    {rede:'Rede Principal (Água)',      p:aguaP,    r:aguaR,  cor:'var(--blue)'},
-    {rede:'Rede Adutora',                   p:adP,      r:adR,    cor:'var(--blue)'},
-    {rede:'Drenagem — Rede Principal 01',p:rp1Proj, r:rp1R,  cor:'var(--purple)'},
-    {rede:'Drenagem — Rede Principal 02',p:drRp2Proj,r:drRp2R,cor:'var(--purple)'},
-    {rede:'Drenagem — Ramal 01',        p:ram1Proj, r:ram1R,  cor:'var(--purple)'},
-    {rede:'Drenagem — Ramal 02',        p:ram2Proj, r:ram2R,  cor:'var(--purple)'},
-    {rede:'Poços de Visita',            p:pvProj,   r:pvReal, cor:'var(--purple)'}
-  ];
-  el=document.getElementById('td-res-tabela');
-  if(el) el.innerHTML=linhas.map(function(l){
-    return '<tr>'
-      +'<td style="padding:8px 14px;border-bottom:1px solid var(--border);font-size:12px"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:'+l.cor+';margin-right:8px;vertical-align:middle"></span>'+l.rede+'</td>'
-      +'<td style="padding:8px 14px;border-bottom:1px solid var(--border);font-size:12px;text-align:right;font-family:JetBrains Mono,monospace;font-weight:700;color:'+l.cor+'">'+pct(l.r,l.p)+'</td>'
-      +'</tr>';
-  }).join('');
+  if(el)el.innerHTML='<div style="background:var(--card);border:1px solid var(--border);border-radius:5px;padding:20px">'+progs.map(function(pg){var pN=pg.p>0?Math.min(pg.r/pg.p*100,100):0;return '<div style="margin-bottom:16px"><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:13px;font-weight:600">'+pg.lbl+'</span><span style="font-family:JetBrains Mono,monospace;font-size:13px;font-weight:700;color:'+pg.cor+'">'+pct(pg.r,pg.p)+'</span></div><div style="height:10px;background:var(--border);border-radius:100px;overflow:hidden"><div style="height:100%;width:'+pN.toFixed(2)+'%;background:'+pg.cor+';border-radius:100px;transition:width .8s"></div></div><div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--muted);margin-top:4px">'+fmt(pg.r)+'m executados de '+fmt(pg.p)+'m previstos — Saldo: '+fmt(pg.p-pg.r)+'m</div></div>';}).join('')+'</div>';
+  var linhas=[{rede:'Rede Principal (Esgoto)',p:rpP,r:rpR,cor:'var(--green)'},{rede:'Coletor Tronco 1',p:ct1P,r:ct1R,cor:'var(--green2)'},{rede:'Coletor Tronco 2',p:ct2P,r:ct2R,cor:'var(--green2)'},{rede:'Rede Principal (Água)',p:aguaP,r:aguaR,cor:'var(--blue)'},{rede:'Rede Adutora',p:adP,r:adR,cor:'var(--blue)'},{rede:'Drenagem — Rede Principal 01',p:rp1Proj,r:rp1R,cor:'var(--purple)'},{rede:'Drenagem — Rede Principal 02',p:drRp2Proj,r:drRp2R,cor:'var(--purple)'},{rede:'Drenagem — Ramal 01',p:ram1Proj,r:ram1R,cor:'var(--purple)'},{rede:'Drenagem — Ramal 02',p:ram2Proj,r:ram2R,cor:'var(--purple)'},{rede:'Poços de Inspeção',p:pvProj,r:pvReal,cor:'var(--purple)'}];
+  el=document.getElementById('td-res-tabela');if(el)el.innerHTML=linhas.map(function(l){return '<tr><td style="padding:8px 14px;border-bottom:1px solid var(--border);font-size:12px"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:'+l.cor+';margin-right:8px;vertical-align:middle"></span>'+l.rede+'</td><td style="padding:8px 14px;border-bottom:1px solid var(--border);font-size:12px;text-align:right;font-family:JetBrains Mono,monospace;font-weight:700;color:'+l.cor+'">'+pct(l.r,l.p)+'</td></tr>';}).join('');
 }
 
-
-// ============================================================
-// SISTEMA DE LOGIN
-// ============================================================
-var USUARIOS = {
-  'Admin.Tato': { senha: 'Tato29284',     perfil: 'admin' },
-  'Visua.Tato': { senha: 'Tatourbanismo',  perfil: 'viewer' }
-};
-
-var usuarioAtual = null;
-
+// LOGIN
+var USUARIOS={'Admin.Tato':{senha:'Tato29284',perfil:'admin'},'Visua.Tato':{senha:'Tatourbanismo',perfil:'viewer'}};
+var usuarioAtual=null;
 function fazerLogin(){
-  var user = document.getElementById('loginUser').value.trim();
-  var pass = document.getElementById('loginPass').value;
-  var err  = document.getElementById('loginErr');
-
-  if(!user || !pass){
-    err.textContent = 'Preencha usuário e senha.';
-    return;
-  }
-
-  var u = USUARIOS[user];
-  if(!u || u.senha !== pass){
-    err.textContent = '❌ Usuário ou senha incorretos.';
-    document.getElementById('loginPass').value = '';
-    return;
-  }
-
-  // Login OK
-  usuarioAtual = { nome: user, perfil: u.perfil };
-  // sessão não salva - pede login sempre
-  document.getElementById('loginOverlay').style.display = 'none';
-  document.getElementById('saveInd').textContent = '✓ ' + user;
-
-  // Se viewer, desabilita edição
-  if(u.perfil === 'viewer'){
-    window._somenteLeitura = true;
-  }
-
+  var user=document.getElementById('loginUser').value.trim();
+  var pass=document.getElementById('loginPass').value;
+  var err=document.getElementById('loginErr');
+  if(!user||!pass){err.textContent='Preencha usuário e senha.';return;}
+  var u=USUARIOS[user];
+  if(!u||u.senha!==pass){err.textContent='\u274C Usuário ou senha incorretos.';document.getElementById('loginPass').value='';return;}
+  usuarioAtual={nome:user,perfil:u.perfil};
+  document.getElementById('loginOverlay').style.display='none';
+  document.getElementById('saveInd').textContent='\u2713 '+user;
+  if(u.perfil==='viewer')window._somenteLeitura=true;
   renderTudo();
 }
-
-// Permite login com Enter
-document.addEventListener('DOMContentLoaded', function(){
+document.addEventListener('DOMContentLoaded',function(){
   ['loginUser','loginPass'].forEach(function(id){
-    var el = document.getElementById(id);
-    if(el) el.addEventListener('keydown', function(e){ if(e.key==='Enter') fazerLogin(); });
+    var el=document.getElementById(id);
+    if(el)el.addEventListener('keydown',function(e){if(e.key==='Enter')fazerLogin();});
   });
-
-  // Sempre pede login ao abrir
   sessionStorage.removeItem('tato_user');
 });
 document.getElementById('hDate').textContent=new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'});
 
-// Carrega dados do Firebase e inicia sincronização em tempo real
-var _primeiraSync = true;
+// INIT — Firebase
 db.collection('dashboard').doc('status').get().then(function(doc){
-  if(doc.exists && doc.data() && doc.data().statusMap){
-    aplicarStatusMap(doc.data().statusMap);
-  }
-  renderTudo();
-  iniciarSincronizacao();
-}).catch(function(){
-  renderTudo();
-  iniciarSincronizacao();
-});
+  if(doc.exists&&doc.data()&&doc.data().statusMap)aplicarStatusMap(doc.data().statusMap);
+  renderTudo();iniciarSincronizacao();
+}).catch(function(){renderTudo();iniciarSincronizacao();});
 </script>
-
 <script>
-if('serviceWorker' in navigator){
-  window.addEventListener('load', function(){
-    navigator.serviceWorker.register('sw.js').then(function(reg){
-      console.log('SW registrado');
-    }).catch(function(e){
-      console.log('SW erro:', e);
-    });
-  });
-}
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
 </script>
 </body>
 </html>
