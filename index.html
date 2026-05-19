@@ -86,7 +86,60 @@ tr:last-child td{border-bottom:none}
 .login-err{color:#c0392b;font-size:12px;font-family:'JetBrains Mono',monospace;margin-top:10px;min-height:18px}
 .login-version{color:rgba(255,255,255,0.25);font-size:10px;font-family:'JetBrains Mono',monospace;margin-top:20px}
 @media(max-width:900px){main,header,.main-nav,.sub-nav{padding-left:10px;padding-right:10px}.kpi-grid,.kpi-grid5{grid-template-columns:repeat(2,1fr)}.h-title{font-size:18px}.main-nav{overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch}.main-nav::-webkit-scrollbar{display:none}.mnav{font-size:10px;padding:10px;white-space:nowrap;flex-shrink:0}.g2{grid-template-columns:1fr}}
-@media(max-width:600px){main{padding:12px 10px}.kpi-grid,.kpi-grid5{grid-template-columns:1fr 1fr;gap:8px}.kpi{height:auto;min-height:90px;padding:10px}.kpi-val{font-size:20px}.h-right{display:none}.snav{font-size:10px;padding:4px 10px}}
+@media(max-width:600px){
+  main{padding:8px 8px 60px}
+  .kpi-grid,.kpi-grid5{grid-template-columns:1fr 1fr;gap:8px}
+  .kpi{height:auto;min-height:78px;padding:10px 12px}
+  .kpi-val{font-size:17px}
+  .kpi-lbl{font-size:8px}
+  .kpi-sub{font-size:10px}
+  .h-right{display:none}
+  .h-title{font-size:13px}
+  .h-logo img{height:34px !important}
+  header{padding:0 10px;min-height:54px}
+  .main-nav{padding:0 4px}
+  .mnav{font-size:9px;padding:11px 7px;white-space:nowrap;flex-shrink:0}
+  .sub-nav{padding:6px 8px;gap:4px;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch}
+  .sub-nav::-webkit-scrollbar{display:none}
+  .snav{font-size:10px;padding:5px 11px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+  .g2{grid-template-columns:1fr;gap:8px}
+  .scroll-t{max-height:280px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{min-width:400px}
+  th{font-size:8px;padding:6px 8px}
+  td{font-size:11px;padding:5px 8px}
+  .tbar{padding:7px 8px;gap:4px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .tbar::-webkit-scrollbar{display:none}
+  .fbtn{font-size:8px;padding:3px 8px;white-space:nowrap;flex-shrink:0}
+  .srch{width:90px;font-size:10px}
+  .st-sel{width:126px;font-size:10px}
+  .slabel{font-size:9px;letter-spacing:.8px;margin-bottom:8px;margin-top:8px}
+  .prog{padding:10px 12px;margin-bottom:10px}
+  .prog-title{font-size:11px}
+  .prog-pct{font-size:15px}
+  /* CARDS DE RESULTADO — empilha em coluna no mobile */
+  #res-kpis{grid-template-columns:1fr !important;gap:10px !important}
+  #res-kpis>div{border-radius:12px !important;padding:16px !important}
+  #res-kpis>div>div:first-child{font-size:9px !important;letter-spacing:1px !important;margin-bottom:4px !important}
+  #res-kpis>div>div:nth-child(2){font-size:22px !important;margin-bottom:8px !important}
+  /* BARRAS MINI NOS CARDS */
+  #res-kpis div[style*="font-size:11px"]{font-size:10px !important}
+  /* PROGRESSO POR REDE */
+  #res-progs>div{padding:12px !important}
+  #res-progs div[style*="font-size:13px;font-weight:600"]{font-size:12px !important}
+  #res-progs div[style*="font-family:JetBrains Mono,monospace;font-size:13px"]{font-size:11px !important}
+  #res-progs div[style*="font-size:10px;color"]{font-size:9px !important}
+  /* LOGIN — caixa compacta */
+  .login-overlay{padding:0;align-items:center;justify-content:center}
+  .login-box{padding:22px 18px;width:80vw;max-width:320px;border-radius:16px}
+  .login-logo{margin-bottom:12px}
+  .login-logo img{height:56px;width:56px;border-radius:8px}
+  .login-title{font-size:15px;margin-bottom:3px}
+  .login-sub{font-size:11px;margin-bottom:14px}
+  .login-field{padding:9px 12px;font-size:13px;margin-bottom:8px;border-radius:8px}
+  .login-btn{padding:11px;font-size:13px;border-radius:8px;margin-top:2px}
+  .login-err{font-size:11px}
+  .login-version{font-size:9px;margin-top:12px}
+}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
@@ -692,7 +745,10 @@ function renderResultados(){
   var rp=D.rp||[];var rpP=rp.reduce(function(a,r){return a+r.m;},0);var rpR=rp.filter(function(r){return r.status==='Executado';}).reduce(function(a,r){return a+r.m;},0);
   var ct1=D.ct1||[];var ct1P=ct1.reduce(function(a,r){return a+r.m;},0);var ct1R=ct1.filter(function(r){return r.status==='Executado';}).reduce(function(a,r){return a+r.m;},0);
   var ct2=D.ct2||[];var ct2P=ct2.reduce(function(a,r){return a+r.m;},0);var ct2R=ct2.filter(function(r){return r.status==='Executado';}).reduce(function(a,r){return a+r.m;},0);
-  var esgP=rpP+ct1P+ct2P,esgR=rpR+ct1R+ct2R;
+  // PVs de inspeção: total=305, executados contados de D.pvs
+  var pvsTot=(D.pvs||[]).length;
+  var pvsExec=(D.pvs||[]).filter(function(p){return p.status==='Executado';}).length;
+  var esgP=rpP+ct1P+ct2P+pvsTot,esgR=rpR+ct1R+ct2R+pvsExec;
   var rp2=D.rp2||[];var summary=D.rp2_summary||[];var modMap={};
   rp2.forEach(function(t){if(!modMap[t.modulo])modMap[t.modulo]=0;if(t.status==='Executado')modMap[t.modulo]+=t.m;});
   var aguaP=summary.reduce(function(a,s){return a+s.proj;},0);var aguaR=summary.reduce(function(a,s){return a+(modMap[s.modulo]||0);},0);
@@ -704,15 +760,19 @@ function renderResultados(){
   var drRp2R=dr.rp2?dr.rp2.filter(function(r){return r.status==='Executado';}).reduce(function(a,r){return a+r.m;},0):0;
   var ram2R=dr.ram2?dr.ram2.filter(function(r){return r.status==='Executado';}).reduce(function(a,r){return a+(r.qty||0);},0):0;
   var mediaDr=(rp1R/rp1Proj+drRp2R/drRp2Proj+ram1R/ram1Proj+ram2R/ram2Proj+pvReal/pvProj)/5*100;
-  function miniBar(r,p){var pN=p>0?Math.min(r/p*100,100):0;return '<div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:3px"><span style="color:rgba(255,255,255,.7);font-family:JetBrains Mono,monospace">'+fmt(r)+'/'+fmt(p)+'m</span><span style="font-weight:700;font-family:JetBrains Mono,monospace">'+pct(r,p)+'</span></div><div style="height:5px;background:rgba(255,255,255,.2);border-radius:100px;overflow:hidden"><div style="height:100%;width:'+pN.toFixed(1)+'%;background:rgba(255,255,255,.85);border-radius:100px"></div></div></div>';}
-  var cardEsgoto='<div style="background:var(--green);color:#fff;border-radius:10px;padding:20px"><div style="font-family:JetBrains Mono,monospace;font-size:10px;letter-spacing:2px;opacity:.8;margin-bottom:6px">REDE DE ESGOTO</div><div style="font-size:28px;font-weight:800;margin-bottom:12px">'+pct(esgR,esgP)+'</div><div style="font-size:10px;font-family:JetBrains Mono,monospace;opacity:.7;margin-bottom:10px;border-top:1px solid rgba(255,255,255,.2);padding-top:10px">DETALHAMENTO</div><div style="font-size:11px;margin-bottom:4px;opacity:.9">Rede Principal</div>'+miniBar(rpR,rpP)+'<div style="font-size:11px;margin-bottom:4px;opacity:.9">Coletor Tronco 1</div>'+miniBar(ct1R,ct1P)+'<div style="font-size:11px;margin-bottom:4px;opacity:.9">Coletor Tronco 2</div>'+miniBar(ct2R,ct2P)+'</div>';
+  function miniBar(r,p){var pN=p>0?Math.min(r/p*100,100):0;return '<div style="margin-bottom:6px"><div style="display:flex;justify-content:space-between;align-items:center;font-size:9px;margin-bottom:2px"><span style="color:rgba(255,255,255,.7);font-family:JetBrains Mono,monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:60%">'+fmt(r)+'/'+fmt(p)+'m</span><span style="font-weight:700;font-family:JetBrains Mono,monospace;white-space:nowrap">'+pct(r,p)+'</span></div><div style="height:4px;background:rgba(255,255,255,.2);border-radius:100px;overflow:hidden"><div style="height:100%;width:'+pN.toFixed(1)+'%;background:rgba(255,255,255,.85);border-radius:100px"></div></div></div>';}
+  var cardEsgoto='<div style="background:var(--green);color:#fff;border-radius:10px;padding:20px"><div style="font-family:JetBrains Mono,monospace;font-size:10px;letter-spacing:2px;opacity:.8;margin-bottom:6px">REDE DE ESGOTO</div><div style="font-size:28px;font-weight:800;margin-bottom:12px">'+pct(esgR,esgP)+'</div><div style="font-size:10px;font-family:JetBrains Mono,monospace;opacity:.7;margin-bottom:10px;border-top:1px solid rgba(255,255,255,.2);padding-top:10px">DETALHAMENTO</div><div style="font-size:11px;margin-bottom:4px;opacity:.9">Rede Principal</div>'+miniBar(rpR,rpP)+'<div style="font-size:11px;margin-bottom:4px;opacity:.9">Coletor Tronco 1</div>'+miniBar(ct1R,ct1P)+'<div style="font-size:11px;margin-bottom:4px;opacity:.9">Coletor Tronco 2</div>'+miniBar(ct2R,ct2P)+'<div style="font-size:11px;margin-bottom:4px;opacity:.9">Poços de Inspeção</div>'+miniBar(pvsExec,pvsTot)+'</div>';
   var cardAgua='<div style="background:var(--blue);color:#fff;border-radius:10px;padding:20px"><div style="font-family:JetBrains Mono,monospace;font-size:10px;letter-spacing:2px;opacity:.8;margin-bottom:6px">REDE DE ÁGUA</div><div style="font-size:28px;font-weight:800;margin-bottom:12px">'+pct(totAguaR,totAguaP)+'</div><div style="font-size:10px;font-family:JetBrains Mono,monospace;opacity:.7;margin-bottom:10px;border-top:1px solid rgba(255,255,255,.2);padding-top:10px">DETALHAMENTO</div><div style="font-size:11px;margin-bottom:4px;opacity:.9">Rede Principal</div>'+miniBar(aguaR,aguaP)+'<div style="font-size:11px;margin-bottom:4px;opacity:.9">Rede Adutora</div>'+miniBar(adR,adP)+'</div>';
   var cardDr='<div style="background:var(--purple);color:#fff;border-radius:10px;padding:20px"><div style="font-family:JetBrains Mono,monospace;font-size:10px;letter-spacing:2px;opacity:.8;margin-bottom:6px">DRENAGEM PLUVIAL</div><div style="font-size:28px;font-weight:800;margin-bottom:12px">'+mediaDr.toFixed(2).replace('.',',')+' %</div><div style="font-size:10px;font-family:JetBrains Mono,monospace;opacity:.7;margin-bottom:10px;border-top:1px solid rgba(255,255,255,.2);padding-top:10px">DETALHAMENTO</div><div style="font-size:11px;margin-bottom:4px;opacity:.9">Rede Principal 01</div>'+miniBar(rp1R,rp1Proj)+'<div style="font-size:11px;margin-bottom:4px;opacity:.9">Ramal Rede 01</div>'+miniBar(ram1R,ram1Proj)+'<div style="font-size:11px;margin-bottom:4px;opacity:.9">Rede Principal 02</div>'+miniBar(drRp2R,drRp2Proj)+'<div style="font-size:11px;margin-bottom:4px;opacity:.9">Ramal Rede 02</div>'+miniBar(ram2R,ram2Proj)+'<div style="font-size:11px;margin-bottom:4px;opacity:.9">Poços de Visita</div>'+miniBar(pvReal,pvProj)+'</div>';
-  var el=document.getElementById('res-kpis');if(el){el.style.gridTemplateColumns='repeat(3,1fr)';el.innerHTML=cardEsgoto+cardAgua+cardDr;}
-  var progs=[{lbl:'Rede Principal (Esgoto)',r:rpR,p:rpP,cor:'var(--green)'},{lbl:'Coletor Tronco 1',r:ct1R,p:ct1P,cor:'var(--green2)'},{lbl:'Coletor Tronco 2',r:ct2R,p:ct2P,cor:'var(--green2)'},{lbl:'Rede Principal (Água)',r:aguaR,p:aguaP,cor:'var(--blue)'},{lbl:'Rede Adutora',r:adR,p:adP,cor:'var(--blue)'},{lbl:'Drenagem — RP01',r:rp1R,p:rp1Proj,cor:'var(--purple)'},{lbl:'Drenagem — RP02',r:drRp2R,p:drRp2Proj,cor:'var(--purple)'},{lbl:'Drenagem — Ramal 01',r:ram1R,p:ram1Proj,cor:'var(--purple)'},{lbl:'Drenagem — Ramal 02',r:ram2R,p:ram2Proj,cor:'var(--purple)'},{lbl:'Poços de Visita',r:pvReal,p:pvProj,cor:'var(--purple)'}];
+  var el=document.getElementById('res-kpis');if(el){
+    var isMobile=window.innerWidth<=600;
+    el.style.gridTemplateColumns=isMobile?'1fr':'repeat(3,1fr)';
+    el.innerHTML=cardEsgoto+cardAgua+cardDr;
+  }
+  var progs=[{lbl:'Rede Principal (Esgoto)',r:rpR,p:rpP,cor:'var(--green)'},{lbl:'Coletor Tronco 1',r:ct1R,p:ct1P,cor:'var(--green2)'},{lbl:'Coletor Tronco 2',r:ct2R,p:ct2P,cor:'var(--green2)'},{lbl:'Poços de Inspeção',r:pvsExec,p:pvsTot,cor:'var(--green)'},{lbl:'Rede Principal (Água)',r:aguaR,p:aguaP,cor:'var(--blue)'},{lbl:'Rede Adutora',r:adR,p:adP,cor:'var(--blue)'},{lbl:'Drenagem — RP01',r:rp1R,p:rp1Proj,cor:'var(--purple)'},{lbl:'Drenagem — RP02',r:drRp2R,p:drRp2Proj,cor:'var(--purple)'},{lbl:'Drenagem — Ramal 01',r:ram1R,p:ram1Proj,cor:'var(--purple)'},{lbl:'Drenagem — Ramal 02',r:ram2R,p:ram2Proj,cor:'var(--purple)'},{lbl:'Poços de Visita',r:pvReal,p:pvProj,cor:'var(--purple)'}];
   el=document.getElementById('res-progs');
   if(el)el.innerHTML='<div style="background:var(--card);border:1px solid var(--border);border-radius:5px;padding:20px">'+progs.map(function(pg){var pN=pg.p>0?Math.min(pg.r/pg.p*100,100):0;return '<div style="margin-bottom:16px"><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:13px;font-weight:600">'+pg.lbl+'</span><span style="font-family:JetBrains Mono,monospace;font-size:13px;font-weight:700;color:'+pg.cor+'">'+pct(pg.r,pg.p)+'</span></div><div style="height:10px;background:var(--border);border-radius:100px;overflow:hidden"><div style="height:100%;width:'+pN.toFixed(2)+'%;background:'+pg.cor+';border-radius:100px;transition:width .8s"></div></div><div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--muted);margin-top:4px">'+fmt(pg.r)+'m executados de '+fmt(pg.p)+'m previstos — Saldo: '+fmt(pg.p-pg.r)+'m</div></div>';}).join('')+'</div>';
-  var linhas=[{rede:'Rede Principal (Esgoto)',p:rpP,r:rpR,cor:'var(--green)'},{rede:'Coletor Tronco 1',p:ct1P,r:ct1R,cor:'var(--green2)'},{rede:'Coletor Tronco 2',p:ct2P,r:ct2R,cor:'var(--green2)'},{rede:'Rede Principal (Água)',p:aguaP,r:aguaR,cor:'var(--blue)'},{rede:'Rede Adutora',p:adP,r:adR,cor:'var(--blue)'},{rede:'Drenagem — Rede Principal 01',p:rp1Proj,r:rp1R,cor:'var(--purple)'},{rede:'Drenagem — Rede Principal 02',p:drRp2Proj,r:drRp2R,cor:'var(--purple)'},{rede:'Drenagem — Ramal 01',p:ram1Proj,r:ram1R,cor:'var(--purple)'},{rede:'Drenagem — Ramal 02',p:ram2Proj,r:ram2R,cor:'var(--purple)'},{rede:'Poços de Visita',p:pvProj,r:pvReal,cor:'var(--purple)'}];
+  var linhas=[{rede:'Rede Principal (Esgoto)',p:rpP,r:rpR,cor:'var(--green)'},{rede:'Coletor Tronco 1',p:ct1P,r:ct1R,cor:'var(--green2)'},{rede:'Coletor Tronco 2',p:ct2P,r:ct2R,cor:'var(--green2)'},{rede:'Poços de Inspeção',p:pvsTot,r:pvsExec,cor:'var(--green)'},{rede:'Rede Principal (Água)',p:aguaP,r:aguaR,cor:'var(--blue)'},{rede:'Rede Adutora',p:adP,r:adR,cor:'var(--blue)'},{rede:'Drenagem — Rede Principal 01',p:rp1Proj,r:rp1R,cor:'var(--purple)'},{rede:'Drenagem — Rede Principal 02',p:drRp2Proj,r:drRp2R,cor:'var(--purple)'},{rede:'Drenagem — Ramal 01',p:ram1Proj,r:ram1R,cor:'var(--purple)'},{rede:'Drenagem — Ramal 02',p:ram2Proj,r:ram2R,cor:'var(--purple)'},{rede:'Poços de Visita',p:pvProj,r:pvReal,cor:'var(--purple)'}];
   el=document.getElementById('td-res-tabela');if(el)el.innerHTML=linhas.map(function(l){return '<tr><td style="padding:8px 14px;border-bottom:1px solid var(--border);font-size:12px"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:'+l.cor+';margin-right:8px;vertical-align:middle"></span>'+l.rede+'</td><td style="padding:8px 14px;border-bottom:1px solid var(--border);font-size:12px;text-align:right;font-family:JetBrains Mono,monospace;font-weight:700;color:'+l.cor+'">'+pct(l.r,l.p)+'</td></tr>';}).join('');
 }
 
