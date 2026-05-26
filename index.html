@@ -761,9 +761,9 @@ function renderDrPVs(){
     {c:'kc-blue',l:'Rede 01',v:execR1+'/51',s:'executados'},
     {c:'kc-gold',l:'Rede 02',v:execR2+'/6',s:'executados'}
   ]);
-  setProg('dr-pvs',exec,total,'');
+  setProg('dr-pvs',exec,total,' un');
   var el=document.getElementById('pd-dr-pvs');if(el)el.textContent=exec+' de '+total+' poços executados';
-  var el2=document.getElementById('pm-dr-pvs');if(el2)el2.innerHTML='<span>Executados: '+exec+'</span><span>Saldo: '+(total-exec)+'</span>';
+  var el2=document.getElementById('pm-dr-pvs');if(el2)el2.innerHTML='<span>Executados: '+exec+' un</span><span>Saldo: '+(total-exec)+' un</span>';
   var el3=document.getElementById('c-dr-pvs');if(el3)el3.textContent=rows.length+' registros';
   var el4=document.getElementById('td-dr-pvs');
   if(el4)el4.innerHTML=rows.map(function(r,i){
@@ -816,9 +816,9 @@ function renderResultados(){
     el.style.gridTemplateColumns=isMobile?'1fr':'repeat(3,1fr)';
     el.innerHTML=cardEsgoto+cardAgua+cardDr;
   }
-  var progs=[{lbl:'Rede Principal (Esgoto)',r:rpR,p:rpP,cor:'var(--green)'},{lbl:'Coletor Tronco 1',r:ct1R,p:ct1P,cor:'var(--green2)'},{lbl:'Coletor Tronco 2',r:ct2R,p:ct2P,cor:'var(--green2)'},{lbl:'Poços de Inspeção',r:pvsExec,p:pvsTot,cor:'var(--green)'},{lbl:'Rede Principal (Água)',r:aguaR,p:aguaP,cor:'var(--blue)'},{lbl:'Rede Adutora',r:adR,p:adP,cor:'var(--blue)'},{lbl:'Drenagem — RP01',r:rp1R,p:rp1Proj,cor:'var(--purple)'},{lbl:'Drenagem — RP02',r:drRp2R,p:drRp2Proj,cor:'var(--purple)'},{lbl:'Drenagem — Ramal 01',r:ram1R,p:ram1Proj,cor:'var(--purple)'},{lbl:'Drenagem — Ramal 02',r:ram2R,p:ram2Proj,cor:'var(--purple)'},{lbl:'Poços de Visita',r:pvReal,p:pvProj,cor:'var(--purple)'}];
+  var progs=[{lbl:'Rede Principal (Esgoto)',r:rpR,p:rpP,cor:'var(--green)',u:'m'},{lbl:'Coletor Tronco 1',r:ct1R,p:ct1P,cor:'var(--green2)',u:'m'},{lbl:'Coletor Tronco 2',r:ct2R,p:ct2P,cor:'var(--green2)',u:'m'},{lbl:'Poços de Inspeção',r:pvsExec,p:pvsTot,cor:'var(--green)',u:' un'},{lbl:'Rede Principal (Água)',r:aguaR,p:aguaP,cor:'var(--blue)',u:'m'},{lbl:'Rede Adutora',r:adR,p:adP,cor:'var(--blue)',u:'m'},{lbl:'Drenagem — RP01',r:rp1R,p:rp1Proj,cor:'var(--purple)',u:'m'},{lbl:'Drenagem — RP02',r:drRp2R,p:drRp2Proj,cor:'var(--purple)',u:'m'},{lbl:'Drenagem — Ramal 01',r:ram1R,p:ram1Proj,cor:'var(--purple)',u:'m'},{lbl:'Drenagem — Ramal 02',r:ram2R,p:ram2Proj,cor:'var(--purple)',u:'m'},{lbl:'Poços de Visita',r:pvReal,p:pvProj,cor:'var(--purple)',u:' un'}];
   el=document.getElementById('res-progs');
-  if(el)el.innerHTML='<div style="background:var(--card);border:1px solid var(--border);border-radius:5px;padding:20px">'+progs.map(function(pg){var pN=pg.p>0?Math.min(pg.r/pg.p*100,100):0;return '<div style="margin-bottom:16px"><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:13px;font-weight:600">'+pg.lbl+'</span><span style="font-family:JetBrains Mono,monospace;font-size:13px;font-weight:700;color:'+pg.cor+'">'+pct(pg.r,pg.p)+'</span></div><div style="height:10px;background:var(--border);border-radius:100px;overflow:hidden"><div style="height:100%;width:'+pN.toFixed(2)+'%;background:'+pg.cor+';border-radius:100px;transition:width .8s"></div></div><div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--muted);margin-top:4px">'+fmt(pg.r)+'m executados de '+fmt(pg.p)+'m previstos — Saldo: '+fmt(pg.p-pg.r)+'m</div></div>';}).join('')+'</div>';
+  if(el)el.innerHTML='<div style="background:var(--card);border:1px solid var(--border);border-radius:5px;padding:20px">'+progs.map(function(pg){var pN=pg.p>0?Math.min(pg.r/pg.p*100,100):0;return '<div style="margin-bottom:16px"><div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:13px;font-weight:600">'+pg.lbl+'</span><span style="font-family:JetBrains Mono,monospace;font-size:13px;font-weight:700;color:'+pg.cor+'">'+pct(pg.r,pg.p)+'</span></div><div style="height:10px;background:var(--border);border-radius:100px;overflow:hidden"><div style="height:100%;width:'+pN.toFixed(2)+'%;background:'+pg.cor+';border-radius:100px;transition:width .8s"></div></div><div style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--muted);margin-top:4px">'+fmt(pg.r)+(pg.u||'m')+' executados de '+fmt(pg.p)+(pg.u||'m')+' previstos — Saldo: '+fmt(pg.p-pg.r)+(pg.u||'m')+'</div></div>';}).join('')+'</div>';
   var linhas=[{rede:'Rede Principal (Esgoto)',p:rpP,r:rpR,cor:'var(--green)'},{rede:'Coletor Tronco 1',p:ct1P,r:ct1R,cor:'var(--green2)'},{rede:'Coletor Tronco 2',p:ct2P,r:ct2R,cor:'var(--green2)'},{rede:'Poços de Inspeção',p:pvsTot,r:pvsExec,cor:'var(--green)'},{rede:'Rede Principal (Água)',p:aguaP,r:aguaR,cor:'var(--blue)'},{rede:'Rede Adutora',p:adP,r:adR,cor:'var(--blue)'},{rede:'Drenagem — Rede Principal 01',p:rp1Proj,r:rp1R,cor:'var(--purple)'},{rede:'Drenagem — Rede Principal 02',p:drRp2Proj,r:drRp2R,cor:'var(--purple)'},{rede:'Drenagem — Ramal 01',p:ram1Proj,r:ram1R,cor:'var(--purple)'},{rede:'Drenagem — Ramal 02',p:ram2Proj,r:ram2R,cor:'var(--purple)'},{rede:'Poços de Visita',p:pvProj,r:pvReal,cor:'var(--purple)'}];
   el=document.getElementById('td-res-tabela');if(el)el.innerHTML=linhas.map(function(l){return '<tr><td style="padding:8px 14px;border-bottom:1px solid var(--border);font-size:12px"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:'+l.cor+';margin-right:8px;vertical-align:middle"></span>'+l.rede+'</td><td style="padding:8px 14px;border-bottom:1px solid var(--border);font-size:12px;text-align:right;font-family:JetBrains Mono,monospace;font-weight:700;color:'+l.cor+'">'+pct(l.r,l.p)+'</td></tr>';}).join('');
 }
@@ -848,7 +848,7 @@ function fazerLogin(){
   slides.forEach(function(s){s.style.opacity='0';});
   slides[idx].style.opacity='1';
   idx=(idx+1)%slides.length;
- localStorage.setItem('loginBgIdx',String(idx));
+  localStorage.setItem('loginBgIdx',String(idx));
 })();
 
 document.addEventListener('DOMContentLoaded',function(){
