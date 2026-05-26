@@ -753,11 +753,13 @@ function renderDrPVs(){
   var rows=pvs.filter(function(r){return!srch||JSON.stringify(r).toLowerCase().indexOf(srch)>=0;});
   var exec=pvs.filter(function(r){return r.status==='Executado';}).length;
   var total=pvs.length;
+  var execR1=pvs.filter(function(r){return r.rede==='Rede 01'&&r.status==='Executado';}).length;
+  var execR2=pvs.filter(function(r){return r.rede==='Rede 02'&&r.status==='Executado';}).length;
   setKpi('kpi-dr-pvs',[
     {c:'kc-purple',l:'Total de PVs',v:total,s:'poços de visita'},
     {c:'kc-g2',l:'Executados',v:exec,s:pct(exec,total)+' concluído'},
-    {c:'kc-gold',l:'Saldo',v:(total-exec),s:'poços restantes'},
-    {c:'kc-blue',l:'Rede 01',v:pvs.filter(function(r){return r.rede==='Rede 01'&&r.status==='Executado';}).length+'/51',s:'executados'}
+    {c:'kc-blue',l:'Rede 01',v:execR1+'/51',s:'executados'},
+    {c:'kc-gold',l:'Rede 02',v:execR2+'/6',s:'executados'}
   ]);
   setProg('dr-pvs',exec,total,'');
   var el=document.getElementById('pd-dr-pvs');if(el)el.textContent=exec+' de '+total+' poços executados';
@@ -799,7 +801,7 @@ function renderResultados(){
   var aguaP=summary.reduce(function(a,s){return a+s.proj;},0);var aguaR=summary.reduce(function(a,s){return a+(modMap[s.modulo]||0);},0);
   var ad=D.adutora||[];var adP=ad.reduce(function(a,r){return a+r.m;},0);var adR=ad.reduce(function(a,r){return a+(r.realizado!==undefined?r.realizado:(r.status==='Executado'?r.m:0));},0);
   var totAguaP=aguaP+adP,totAguaR=aguaR+adR;
-  var dr=D.drenagem||{};var rp1Proj=2735,ram1Proj=1024,drRp2Proj=187,ram2Proj=89,pvProj=57,pvReal=54;
+  var dr=D.drenagem||{};var rp1Proj=2735,ram1Proj=1024,drRp2Proj=187,ram2Proj=89,pvProj=57,pvReal=(dr.pvs||[]).filter(function(r){return r.status==='Executado';}).length;
   var rp1R=dr.rp1?dr.rp1.filter(function(r){return r.status==='Executado';}).reduce(function(a,r){return a+r.m;},0):0;
   var ram1R=dr.ram1?dr.ram1.filter(function(r){return r.status==='Executado';}).reduce(function(a,r){return a+(r.qty||0);},0):0;
   var drRp2R=dr.rp2?dr.rp2.filter(function(r){return r.status==='Executado';}).reduce(function(a,r){return a+r.m;},0):0;
