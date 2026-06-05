@@ -539,13 +539,13 @@ function salvar(){
   saveTimer=setTimeout(function(){
     try{
       var sm=getStatusMap();
+      localStorage.setItem('tato_v4',JSON.stringify({statusMap:sm}));
       db.collection('dashboard').doc('status').set({statusMap:sm,updatedAt:new Date().toISOString()})
         .then(function(){
           ind.textContent='\u2713 Salvo '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
         })
         .catch(function(e){
-          ind.textContent='\u26a0 Erro Firebase';
-          localStorage.setItem('tato_v4',JSON.stringify({statusMap:sm}));
+          ind.textContent='\u26a0 Erro Firebase (salvo localmente)';
         });
     }catch(e){ind.textContent='\u26a0 Erro';}
   },400);
