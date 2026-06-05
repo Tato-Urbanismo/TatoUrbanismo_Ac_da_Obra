@@ -146,6 +146,9 @@ tr:last-child td{border-bottom:none}
 <script>
 firebase.initializeApp({apiKey:"AIzaSyCeCpbaXkIoSwBoeKmwgHvpXaaTOinEs1E",authDomain:"acompanhamento-fisico-de-b6460.firebaseapp.com",projectId:"acompanhamento-fisico-de-b6460",storageBucket:"acompanhamento-fisico-de-b6460.firebasestorage.app",messagingSenderId:"516728803415",appId:"1:516728803415:web:cfee463f5dddc08c9b1312"});
 var db=firebase.firestore();
+// Desabilita cache persistente para garantir dados sempre atualizados entre aparelhos
+db.settings({cacheSizeBytes:firebase.firestore.CACHE_SIZE_UNLIMITED});
+try{db.enableNetwork();}catch(e){}
 </script>
 <meta name="theme-color" content="#0d1117">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -543,26 +546,38 @@ function salvar(){
       db.collection('dashboard').doc('status').set({statusMap:sm,updatedAt:new Date().toISOString()})
         .then(function(){
           ind.textContent='\u2713 Salvo '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+          console.log('[FIREBASE] Salvo com sucesso');
         })
         .catch(function(e){
-          ind.textContent='\u26a0 Erro Firebase (salvo localmente)';
+          ind.textContent='\u26a0 Firebase: '+e.code;
+          console.error('[FIREBASE] Erro ao salvar:',e.code,e.message);
         });
-    }catch(e){ind.textContent='\u26a0 Erro';}
+    }catch(e){ind.textContent='\u26a0 Erro: '+e.message;console.error('[SALVAR]',e);}
   },400);
 }
 
 function iniciarSincronizacao(){
-  db.collection('dashboard').doc('status').onSnapshot(function(doc){
+  console.log('[SYNC] Iniciando listener em tempo real...');
+  var unsubscribe = db.collection('dashboard').doc('status').onSnapshot(function(doc){
+    console.log('[SYNC] Snapshot recebido, fromCache:', doc.metadata.fromCache, 'hasPendingWrites:', doc.metadata.hasPendingWrites);
     if(doc.exists){
       var data=doc.data();
       if(data&&data.statusMap){
-        aplicarStatusMap(data.statusMap);
-        renderTudo();
-        var ind=document.getElementById('saveInd');
-        if(ind)ind.textContent='\u2713 Sincronizado';
+        // Só aplica se não for write pendente do próprio app (evita sobrescrever edição local)
+        if(!doc.metadata.hasPendingWrites){
+          aplicarStatusMap(data.statusMap);
+          renderTudo();
+          var ind=document.getElementById('saveInd');
+          if(ind&&!document.hidden)ind.textContent='\u2713 Atualizado '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+        }
       }
     }
-  },function(error){console.log('Firebase sync error:',error);});
+  },function(error){
+    console.error('[SYNC] Erro no listener:',error.code,error.message);
+    var ind=document.getElementById('saveInd');
+    if(ind)ind.textContent='\u26a0 Sync: '+error.code;
+  });
+  window._unsubscribeSync = unsubscribe;
 }
 
 function mudarRealizadoAdutora(input){
@@ -857,12 +872,20 @@ function fazerLogin(){
   document.getElementById('loginOverlay').style.display='none';
   document.getElementById('saveInd').textContent='\u2713 '+user+(u.perfil==='admin'?' [Admin]':'');
   if(u.perfil==='viewer')window._somenteLeitura=true;
-  // Busca dados frescos do Firebase ao fazer login e inicia sincronização em tempo real
-  db.collection('dashboard').doc('status').get().then(function(doc){
+  // Busca dados frescos do servidor (sem cache) ao fazer login
+  db.collection('dashboard').doc('status').get({source:'server'}).then(function(doc){
+    console.log('[LOGIN] Dados carregados do servidor');
     if(doc.exists&&doc.data()&&doc.data().statusMap)aplicarStatusMap(doc.data().statusMap);
     renderTudo();
     if(!window._sincronizacaoAtiva){window._sincronizacaoAtiva=true;iniciarSincronizacao();}
-  }).catch(function(){renderTudo();if(!window._sincronizacaoAtiva){window._sincronizacaoAtiva=true;iniciarSincronizacao();}});
+  }).catch(function(e){
+    console.warn('[LOGIN] Falha no servidor, usando cache:',e.message);
+    db.collection('dashboard').doc('status').get().then(function(doc){
+      if(doc.exists&&doc.data()&&doc.data().statusMap)aplicarStatusMap(doc.data().statusMap);
+      renderTudo();
+    }).catch(function(){renderTudo();});
+    if(!window._sincronizacaoAtiva){window._sincronizacaoAtiva=true;iniciarSincronizacao();}
+  });
 }
 // FUNDO DO LOGIN — troca a cada abertura do app
 (function(){
