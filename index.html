@@ -857,7 +857,12 @@ function fazerLogin(){
   document.getElementById('loginOverlay').style.display='none';
   document.getElementById('saveInd').textContent='\u2713 '+user+(u.perfil==='admin'?' [Admin]':'');
   if(u.perfil==='viewer')window._somenteLeitura=true;
-  renderTudo();
+  // Busca dados frescos do Firebase ao fazer login e inicia sincronização em tempo real
+  db.collection('dashboard').doc('status').get().then(function(doc){
+    if(doc.exists&&doc.data()&&doc.data().statusMap)aplicarStatusMap(doc.data().statusMap);
+    renderTudo();
+    if(!window._sincronizacaoAtiva){window._sincronizacaoAtiva=true;iniciarSincronizacao();}
+  }).catch(function(){renderTudo();if(!window._sincronizacaoAtiva){window._sincronizacaoAtiva=true;iniciarSincronizacao();}});
 }
 // FUNDO DO LOGIN — troca a cada abertura do app
 (function(){
@@ -879,11 +884,11 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 document.getElementById('hDate').textContent=new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'});
 
-// INIT — Firebase
+// INIT — carrega dados do Firebase (sincronização iniciada após login)
 db.collection('dashboard').doc('status').get().then(function(doc){
   if(doc.exists&&doc.data()&&doc.data().statusMap)aplicarStatusMap(doc.data().statusMap);
-  renderTudo();iniciarSincronizacao();
-}).catch(function(){renderTudo();iniciarSincronizacao();});
+  renderTudo();
+}).catch(function(){renderTudo();});
 </script>
 <script>
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
