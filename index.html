@@ -466,7 +466,7 @@ var _BACKUP_STATUS_MAP = {"pv_B6_16":"Não Executado","dr_rp1_42":"Executado","r
     if(_BACKUP_STATUS_MAP[t.id])t.status=_BACKUP_STATUS_MAP[t.id];
     if(_BACKUP_STATUS_MAP[t.id+'_r']!==undefined)t.realizado=_BACKUP_STATUS_MAP[t.id+'_r'];
   });
-  ['rp1','ram1','rp2','ram2'].forEach(function(k){
+  ['rp1','ram1','rp2','ram2','pvs'].forEach(function(k){
     ((BASE.drenagem||{})[k]||[]).forEach(function(t){if(_BACKUP_STATUS_MAP[t.id])t.status=_BACKUP_STATUS_MAP[t.id];});
   });
   if(typeof PVS_ALL!=='undefined'){
@@ -491,7 +491,7 @@ function carregarDados(){
         if(sm[t.id])t.status=sm[t.id];
         if(sm[t.id+'_r']!==undefined)t.realizado=sm[t.id+'_r'];
       });
-      ['rp1','ram1','rp2','ram2'].forEach(function(k){
+      ['rp1','ram1','rp2','ram2','pvs'].forEach(function(k){
         ((BASE.drenagem||{})[k]||[]).forEach(function(t){if(sm[t.id])t.status=sm[t.id];});
       });
     }
