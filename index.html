@@ -792,7 +792,7 @@ function renderAgua(){
   var tvP=tv.length;var tvR=tvE;
   var dispP=disp.length;var dispR=dispE;
   var totProjAg=r2P+adPA+tvP+dispP;var totRealAg=r2R+adRA+tvR+dispR;
-  var mediaAg=((r2R/r2P||0)+(adRA/adPA||0)+(tvR/tvP||0)+(dispR/dispP||0))/4*100;
+  var mediaAg=(r2P+adPA)>0?(r2R+adRA)/(r2P+adPA)*100:0;
   var elRA=document.getElementById('kpi-agua-resumo');
   if(elRA)elRA.innerHTML=[
     {c:'kc-blue',l:'Rede Principal',v:fmt(r2R)+'/'+fmt(r2P)+'m',s:pct(r2R,r2P)+' concluído'},
