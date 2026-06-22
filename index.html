@@ -50,7 +50,7 @@ table{width:100%;border-collapse:collapse}
 th{font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);padding:7px 12px;text-align:left;border-bottom:1px solid var(--border);background:var(--paper);font-weight:500}
 td{padding:6px 12px;border-bottom:1px solid var(--border);font-size:12px;vertical-align:middle}
 tr:last-child td{border-bottom:none}
-.tr-tot td{background:rgba(74,156,90,.06);font-weight:600;color:var(--green2)}
+.dt-cell{font-size:11px;color:var(--muted);white-space:nowrap;font-family:JetBrains Mono,monospace;}.ok-dt{color:var(--green2);font-weight:600;}.ex-dt{color:var(--gold);}.tr-tot td{background:rgba(74,156,90,.06);font-weight:600;color:var(--green2)}
 .num{text-align:right;font-family:'JetBrains Mono',monospace}
 .trwrap{background:var(--card);border:1px solid var(--border);border-radius:5px;overflow:hidden;margin-bottom:16px}
 .tbar{display:flex;gap:5px;padding:9px 12px;border-bottom:1px solid var(--border);background:var(--paper);flex-wrap:wrap;align-items:center}
@@ -246,21 +246,21 @@ db.settings({experimentalForceLongPolling:true,merge:true});
       <button class="fbtn" onclick="filtRp(9,this)">B09</button>
       <input class="srch" placeholder="Buscar PV..." id="s-rp" oninput="renderRP()">
       <div class="tcount" id="c-rp"></div>
-    </div><div class="scroll-t"><table><thead><tr><th>Bacia</th><th>QD</th><th>PV</th><th>PV2</th><th class="num">Metros</th><th>DN</th><th>Status &#9998;</th></tr></thead><tbody id="td-rp"></tbody></table></div></div>
+    </div><div class="scroll-t"><table><thead><tr><th>Bacia</th><th>QD</th><th>PV</th><th>PV2</th><th class="num">Metros</th><th>DN</th><th>Status &#9998;</th><th>Concluído em</th></tr></thead><tbody id="td-rp"></tbody></table></div></div>
   </div>
   <div class="sub-panel" id="sp-esgoto-ct1">
     <div class="slabel">Indicadores &mdash; Coletor Tronco 1</div>
     <div class="kpi-grid" id="kpi-ct1"></div>
     <div class="prog"><div class="prog-top"><div><div class="prog-title">Execução &mdash; Coletor Tronco 1</div><div class="prog-detail" id="pd-ct1"></div></div><div class="prog-pct" id="pp-ct1">0%</div></div><div class="prog-track"><div class="prog-fill" id="pf-ct1" style="width:0%"></div></div><div class="prog-meta" id="pm-ct1"></div></div>
     <div class="slabel">Trechos &mdash; clique no status para editar</div>
-    <div class="trwrap"><div class="tbar"><input class="srch" placeholder="Buscar PV..." id="s-ct1" oninput="renderSimple('ct1')"><div class="tcount" id="c-ct1"></div></div><div class="scroll-t"><table><thead><tr><th>PV</th><th>PV2</th><th class="num">Metros</th><th>DN</th><th>Status &#9998;</th></tr></thead><tbody id="td-ct1"></tbody></table></div></div>
+    <div class="trwrap"><div class="tbar"><input class="srch" placeholder="Buscar PV..." id="s-ct1" oninput="renderSimple('ct1')"><div class="tcount" id="c-ct1"></div></div><div class="scroll-t"><table><thead><tr><th>PV</th><th>PV2</th><th class="num">Metros</th><th>DN</th><th>Status &#9998;</th><th>Concluído em</th></tr></thead><tbody id="td-ct1"></tbody></table></div></div>
   </div>
   <div class="sub-panel" id="sp-esgoto-ct2">
     <div class="slabel">Indicadores &mdash; Coletor Tronco 2</div>
     <div class="kpi-grid" id="kpi-ct2"></div>
     <div class="prog"><div class="prog-top"><div><div class="prog-title">Execução &mdash; Coletor Tronco 2</div><div class="prog-detail" id="pd-ct2"></div></div><div class="prog-pct" id="pp-ct2">0%</div></div><div class="prog-track"><div class="prog-fill" id="pf-ct2" style="width:0%"></div></div><div class="prog-meta" id="pm-ct2"></div></div>
     <div class="slabel">Trechos &mdash; clique no status para editar</div>
-    <div class="trwrap"><div class="tbar"><input class="srch" placeholder="Buscar PV..." id="s-ct2" oninput="renderSimple('ct2')"><div class="tcount" id="c-ct2"></div></div><div class="scroll-t"><table><thead><tr><th>PV</th><th>PV2</th><th class="num">Metros</th><th>DN</th><th>Status &#9998;</th></tr></thead><tbody id="td-ct2"></tbody></table></div></div>
+    <div class="trwrap"><div class="tbar"><input class="srch" placeholder="Buscar PV..." id="s-ct2" oninput="renderSimple('ct2')"><div class="tcount" id="c-ct2"></div></div><div class="scroll-t"><table><thead><tr><th>PV</th><th>PV2</th><th class="num">Metros</th><th>DN</th><th>Status &#9998;</th><th>Concluído em</th></tr></thead><tbody id="td-ct2"></tbody></table></div></div>
   </div>
 
   <!-- ===== NOVA SUB-ABA: POÇOS DE VISITA ===== -->
@@ -289,7 +289,7 @@ db.settings({experimentalForceLongPolling:true,merge:true});
         <input class="srch" placeholder="Buscar PV..." id="s-pvs" oninput="renderPVs()">
         <div class="tcount" id="c-pvs"></div>
       </div>
-      <div class="scroll-t"><table><thead><tr><th>Bacia</th><th>Poço de Inspeção</th><th>Status &#9998;</th></tr></thead><tbody id="td-pvs"></tbody></table></div>
+      <div class="scroll-t"><table><thead><tr><th>Bacia</th><th>Poço de Inspeção</th><th>Status &#9998;</th><th>Concluído em</th></tr></thead><tbody id="td-pvs"></tbody></table></div>
     </div>
   </div>
 </div>
@@ -324,7 +324,7 @@ db.settings({experimentalForceLongPolling:true,merge:true});
       <button class="fbtn" onclick="filtRp2('TP MD 09',this)">MD09</button>
       <input class="srch" placeholder="Buscar..." id="s-rp2" oninput="renderRP2()">
       <div class="tcount" id="c-rp2"></div>
-    </div><div class="scroll-t"><table><thead><tr><th>Módulo</th><th>QD</th><th class="num">Metros</th><th>DN</th><th>Status &#9998;</th></tr></thead><tbody id="td-rp2"></tbody></table></div></div>
+    </div><div class="scroll-t"><table><thead><tr><th>Módulo</th><th>QD</th><th class="num">Metros</th><th>DN</th><th>Status &#9998;</th><th>Concluído em</th></tr></thead><tbody id="td-rp2"></tbody></table></div></div>
   </div>
   <div class="sub-panel" id="sp-agua-agua-adutora">
     <div class="slabel">Indicadores &mdash; Rede Adutora</div>
@@ -337,7 +337,7 @@ db.settings({experimentalForceLongPolling:true,merge:true});
     <div class="slabel">Indicadores &mdash; Dispositivos e VRPs</div>
     <div class="kpi-grid" id="kpi-tv"></div>
     <div class="slabel">Travessias</div>
-    <div class="trwrap"><div class="tbar"><span style="font-size:12px;font-weight:700;text-transform:uppercase">Travessias DN 150</span><div class="tcount" id="trav-count"></div></div><table><thead><tr><th>Travessia</th><th>DN</th><th>Status &#9998;</th></tr></thead><tbody id="td-tv"></tbody></table></div>
+    <div class="trwrap"><div class="tbar"><span style="font-size:12px;font-weight:700;text-transform:uppercase">Travessias DN 150</span><div class="tcount" id="trav-count"></div></div><table><thead><tr><th>Travessia</th><th>DN</th><th>Status &#9998;</th><th>Concluído em</th></tr></thead><tbody id="td-tv"></tbody></table></div>
     <div class="slabel">Dispositivos e VRPs</div>
     <div id="disp-container"></div>
   </div>
@@ -357,35 +357,35 @@ db.settings({experimentalForceLongPolling:true,merge:true});
     <div class="kpi-grid" id="kpi-dr-rp1"></div>
     <div class="prog"><div class="prog-top"><div><div class="prog-title">Execução &mdash; Rede Principal 01</div><div class="prog-detail" id="pd-dr-rp1"></div></div><div class="prog-pct purple" id="pp-dr-rp1">0%</div></div><div class="prog-track"><div class="prog-fill purple" id="pf-dr-rp1" style="width:0%"></div></div><div class="prog-meta" id="pm-dr-rp1"></div></div>
     <div class="slabel">Trechos &mdash; clique no status para editar</div>
-    <div class="trwrap"><div class="tbar"><input class="srch" placeholder="Buscar PV..." id="s-dr-rp1" oninput="renderDrT('rp1')"><div class="tcount" id="c-dr-rp1"></div></div><div class="scroll-t"><table><thead><tr><th>PV1</th><th>PV2</th><th class="num">Metros</th><th>DN</th><th>Status &#9998;</th></tr></thead><tbody id="td-dr-rp1"></tbody></table></div></div>
+    <div class="trwrap"><div class="tbar"><input class="srch" placeholder="Buscar PV..." id="s-dr-rp1" oninput="renderDrT('rp1')"><div class="tcount" id="c-dr-rp1"></div></div><div class="scroll-t"><table><thead><tr><th>PV1</th><th>PV2</th><th class="num">Metros</th><th>DN</th><th>Status &#9998;</th><th>Concluído em</th></tr></thead><tbody id="td-dr-rp1"></tbody></table></div></div>
   </div>
   <div class="sub-panel" id="sp-drenagem-dr-ram1">
     <div class="slabel">Indicadores &mdash; Ramal Rede 01</div>
     <div class="kpi-grid" id="kpi-dr-ram1"></div>
     <div class="prog"><div class="prog-top"><div><div class="prog-title">Execução &mdash; Ramal Rede 01</div><div class="prog-detail" id="pd-dr-ram1"></div></div><div class="prog-pct purple" id="pp-dr-ram1">0%</div></div><div class="prog-track"><div class="prog-fill purple" id="pf-dr-ram1" style="width:0%"></div></div><div class="prog-meta" id="pm-dr-ram1"></div></div>
     <div class="slabel">Ramais &mdash; clique no status para editar</div>
-    <div class="trwrap"><div class="tbar"><input class="srch" placeholder="Buscar PV..." id="s-dr-ram1" oninput="renderDrR('ram1')"><div class="tcount" id="c-dr-ram1"></div></div><div class="scroll-t"><table><thead><tr><th>PV</th><th>Bocas de Lobo</th><th class="num">Qtd (m)</th><th>DN</th><th>Status &#9998;</th></tr></thead><tbody id="td-dr-ram1"></tbody></table></div></div>
+    <div class="trwrap"><div class="tbar"><input class="srch" placeholder="Buscar PV..." id="s-dr-ram1" oninput="renderDrR('ram1')"><div class="tcount" id="c-dr-ram1"></div></div><div class="scroll-t"><table><thead><tr><th>PV</th><th>Bocas de Lobo</th><th class="num">Qtd (m)</th><th>DN</th><th>Status &#9998;</th><th>Concluído em</th></tr></thead><tbody id="td-dr-ram1"></tbody></table></div></div>
   </div>
   <div class="sub-panel" id="sp-drenagem-dr-rp2">
     <div class="slabel">Indicadores &mdash; Rede Principal 02</div>
     <div class="kpi-grid" id="kpi-dr-rp2"></div>
     <div class="prog"><div class="prog-top"><div><div class="prog-title">Execução &mdash; Rede Principal 02</div><div class="prog-detail" id="pd-dr-rp2"></div></div><div class="prog-pct purple" id="pp-dr-rp2">0%</div></div><div class="prog-track"><div class="prog-fill purple" id="pf-dr-rp2" style="width:0%"></div></div><div class="prog-meta" id="pm-dr-rp2"></div></div>
     <div class="slabel">Trechos &mdash; clique no status para editar</div>
-    <div class="trwrap"><div class="tbar"><input class="srch" placeholder="Buscar PV..." id="s-dr-rp2" oninput="renderDrT('rp2')"><div class="tcount" id="c-dr-rp2"></div></div><div class="scroll-t"><table><thead><tr><th>PV1</th><th>PV2</th><th class="num">Metros</th><th>DN</th><th>Status &#9998;</th></tr></thead><tbody id="td-dr-rp2"></tbody></table></div></div>
+    <div class="trwrap"><div class="tbar"><input class="srch" placeholder="Buscar PV..." id="s-dr-rp2" oninput="renderDrT('rp2')"><div class="tcount" id="c-dr-rp2"></div></div><div class="scroll-t"><table><thead><tr><th>PV1</th><th>PV2</th><th class="num">Metros</th><th>DN</th><th>Status &#9998;</th><th>Concluído em</th></tr></thead><tbody id="td-dr-rp2"></tbody></table></div></div>
   </div>
   <div class="sub-panel" id="sp-drenagem-dr-ram2">
     <div class="slabel">Indicadores &mdash; Ramal Rede 02</div>
     <div class="kpi-grid" id="kpi-dr-ram2"></div>
     <div class="prog"><div class="prog-top"><div><div class="prog-title">Execução &mdash; Ramal Rede 02</div><div class="prog-detail" id="pd-dr-ram2"></div></div><div class="prog-pct purple" id="pp-dr-ram2">0%</div></div><div class="prog-track"><div class="prog-fill purple" id="pf-dr-ram2" style="width:0%"></div></div><div class="prog-meta" id="pm-dr-ram2"></div></div>
     <div class="slabel">Ramais &mdash; clique no status para editar</div>
-    <div class="trwrap"><div class="tbar"><input class="srch" placeholder="Buscar PV..." id="s-dr-ram2" oninput="renderDrR('ram2')"><div class="tcount" id="c-dr-ram2"></div></div><div class="scroll-t"><table><thead><tr><th>PV</th><th>Bocas de Lobo</th><th class="num">Qtd (m)</th><th>DN</th><th>Status &#9998;</th></tr></thead><tbody id="td-dr-ram2"></tbody></table></div></div>
+    <div class="trwrap"><div class="tbar"><input class="srch" placeholder="Buscar PV..." id="s-dr-ram2" oninput="renderDrR('ram2')"><div class="tcount" id="c-dr-ram2"></div></div><div class="scroll-t"><table><thead><tr><th>PV</th><th>Bocas de Lobo</th><th class="num">Qtd (m)</th><th>DN</th><th>Status &#9998;</th><th>Concluído em</th></tr></thead><tbody id="td-dr-ram2"></tbody></table></div></div>
   </div>
   <div class="sub-panel" id="sp-drenagem-dr-pvs">
     <div class="slabel">Indicadores &mdash; Po&#231;os de Visita</div>
     <div class="kpi-grid" id="kpi-dr-pvs"></div>
     <div class="prog"><div class="prog-top"><div><div class="prog-title">Execu&#231;&#227;o &mdash; Po&#231;os de Visita</div><div class="prog-detail" id="pd-dr-pvs"></div></div><div class="prog-pct purple" id="pp-dr-pvs">0%</div></div><div class="prog-track"><div class="prog-fill purple" id="pf-dr-pvs" style="width:0%"></div></div><div class="prog-meta" id="pm-dr-pvs"></div></div>
     <div class="slabel">Po&#231;os de Visita &mdash; clique no status para editar</div>
-    <div class="trwrap"><div class="tbar"><input class="srch" placeholder="Buscar PV..." id="s-dr-pvs" oninput="renderDrPVs()"><div class="tcount" id="c-dr-pvs"></div></div><div class="scroll-t"><table><thead><tr><th>N&#186;</th><th>Po&#231;o de Visita</th><th>Rede</th><th>Status &#9998;</th></tr></thead><tbody id="td-dr-pvs"></tbody></table></div></div>
+    <div class="trwrap"><div class="tbar"><input class="srch" placeholder="Buscar PV..." id="s-dr-pvs" oninput="renderDrPVs()"><div class="tcount" id="c-dr-pvs"></div></div><div class="scroll-t"><table><thead><tr><th>N&#186;</th><th>Po&#231;o de Visita</th><th>Rede</th><th>Status &#9998;</th><th>Concluído em</th></tr></thead><tbody id="td-dr-pvs"></tbody></table></div></div>
   </div>
 </div>
 
@@ -468,7 +468,7 @@ function renderPVs(){
   if(tb)tb.innerHTML=rows.map(function(p){
     return '<tr><td><strong>'+p.bacia+'</strong></td>'
       +'<td style="font-family:JetBrains Mono,monospace;font-size:12px">'+p.nome+'</td>'
-      +'<td>'+stSel(p,'pvs')+'</td></tr>';
+      +'<td>'+stSel(p,'pvs')+'</td>'+dtCell(p)+'</tr>';
   }).join('');
 }
 
@@ -521,32 +521,34 @@ function carregarDados(){
 function getStatusMap(){
   var sm={};
   ['rp','ct1','ct2','rp2','trav','dispositivos'].forEach(function(k){
-    (D[k]||[]).forEach(function(t){sm[t.id]=t.status;});
+    (D[k]||[]).forEach(function(t){sm[t.id]=t.status;if(t.dt)sm[t.id+'_dt']=t.dt;});
   });
   (D.adutora||[]).forEach(function(t){
     sm[t.id]=t.status;
     if(t.realizado!==undefined)sm[t.id+'_r']=t.realizado;
+    if(t.dt)sm[t.id+'_dt']=t.dt;
   });
   ['rp1','ram1','rp2','ram2','pvs'].forEach(function(k){
-    ((D.drenagem||{})[k]||[]).forEach(function(t){sm[t.id]=t.status;});
+    ((D.drenagem||{})[k]||[]).forEach(function(t){sm[t.id]=t.status;if(t.dt)sm[t.id+'_dt']=t.dt;});
   });
-  (D.pvs||[]).forEach(function(t){sm[t.id]=t.status;});
+  (D.pvs||[]).forEach(function(t){sm[t.id]=t.status;if(t.dt)sm[t.id+'_dt']=t.dt;});
   if(D.pvReal!=null)sm['_pvReal']=D.pvReal;
   return sm;
 }
 
 function aplicarStatusMap(sm){
   ['rp','ct1','ct2','rp2','trav','dispositivos'].forEach(function(k){
-    (D[k]||[]).forEach(function(t){if(sm[t.id])t.status=sm[t.id];});
+    (D[k]||[]).forEach(function(t){if(sm[t.id])t.status=sm[t.id];if(sm[t.id+'_dt'])t.dt=sm[t.id+'_dt'];});
   });
   (D.adutora||[]).forEach(function(t){
     if(sm[t.id])t.status=sm[t.id];
     if(sm[t.id+'_r']!==undefined)t.realizado=sm[t.id+'_r'];
+    if(sm[t.id+'_dt'])t.dt=sm[t.id+'_dt'];
   });
   ['rp1','ram1','rp2','ram2','pvs'].forEach(function(k){
-    ((D.drenagem||{})[k]||[]).forEach(function(t){if(sm[t.id])t.status=sm[t.id];});
+    ((D.drenagem||{})[k]||[]).forEach(function(t){if(sm[t.id])t.status=sm[t.id];if(sm[t.id+'_dt'])t.dt=sm[t.id+'_dt'];});
   });
-  (D.pvs||[]).forEach(function(t){if(sm[t.id])t.status=sm[t.id];});
+  (D.pvs||[]).forEach(function(t){if(sm[t.id])t.status=sm[t.id];if(sm[t.id+'_dt'])t.dt=sm[t.id+'_dt'];});
   if(sm['_pvReal']!=null)D.pvReal=sm['_pvReal'];
 }
 
@@ -651,6 +653,12 @@ function stSel(t,key){
     +'</select>';
 }
 
+function dtCell(t){
+  if(t.status==='Executado'&&t.dt)return '<td class="dt-cell ok-dt">'+t.dt+'</td>';
+  if(t.status==='Em Execução')return '<td class="dt-cell ex-dt">Em andamento</td>';
+  return '<td class="dt-cell"></td>';
+}
+
 function mudarStatus(sel){
   var id=sel.getAttribute('data-id');
   var key=sel.getAttribute('data-key');
@@ -667,7 +675,17 @@ function mudarStatus(sel){
   } else {
     arr=D[key]||[];
   }
-  for(var i=0;i<arr.length;i++){if(arr[i].id===id){arr[i].status=novoStatus;break;}}
+  for(var i=0;i<arr.length;i++){
+    if(arr[i].id===id){
+      arr[i].status=novoStatus;
+      if(novoStatus==='Executado'){
+        if(!arr[i].dt)arr[i].dt=new Date().toLocaleDateString('pt-BR');
+      } else {
+        arr[i].dt=null;
+      }
+      break;
+    }
+  }
   salvar();renderTudo();
 }
 
@@ -752,14 +770,14 @@ function renderRP(){
   var rows=(D.rp||[]).filter(function(r){if(filtBacia!=='all'&&r.bacia!==filtBacia)return false;if(srch&&JSON.stringify(r).toLowerCase().indexOf(srch)<0)return false;return true;});
   var el=document.getElementById('c-rp');if(el)el.textContent=rows.length+' trechos';
   el=document.getElementById('td-rp');
-  if(el)el.innerHTML=rows.map(function(r){return '<tr><td><b>B0'+r.bacia+'</b></td><td>'+r.qd+'</td><td>'+r.pv+'</td><td>'+r.pv2+'</td><td class="num">'+r.m+'m</td><td><span class="dn-b">DN '+r.dn+'</span></td><td>'+stSel(r,'rp')+'</td></tr>';}).join('');
+  if(el)el.innerHTML=rows.map(function(r){return '<tr><td><b>B0'+r.bacia+'</b></td><td>'+r.qd+'</td><td>'+r.pv+'</td><td>'+r.pv2+'</td><td class="num">'+r.m+'m</td><td><span class="dn-b">DN '+r.dn+'</span></td><td>'+stSel(r,'rp')+'</td>'+dtCell(r)+'</tr>';}).join('');
 }
 function renderSimple(key){
   var srch=(document.getElementById('s-'+key)||{value:''}).value.toLowerCase();
   var rows=(D[key]||[]).filter(function(r){return!srch||JSON.stringify(r).toLowerCase().indexOf(srch)>=0;});
   var el=document.getElementById('c-'+key);if(el)el.textContent=rows.length+' trechos';
   el=document.getElementById('td-'+key);
-  if(el)el.innerHTML=rows.map(function(r){return '<tr><td>'+r.pv+'</td><td>'+r.pv2+'</td><td class="num">'+r.m+'m</td><td><span class="dn-b">DN '+r.dn+'</span></td><td>'+stSel(r,key)+'</td></tr>';}).join('');
+  if(el)el.innerHTML=rows.map(function(r){return '<tr><td>'+r.pv+'</td><td>'+r.pv2+'</td><td class="num">'+r.m+'m</td><td><span class="dn-b">DN '+r.dn+'</span></td><td>'+stSel(r,key)+'</td>'+dtCell(r)+'</tr>';}).join('');
 }
 function filtRp(b,btn){filtBacia=b;document.getElementById('bar-rp').querySelectorAll('.fbtn').forEach(function(x){x.classList.remove('fe');});btn.classList.add('fe');renderRP();}
 function renderAgua(){
@@ -782,7 +800,7 @@ function renderAgua(){
   var disp=D.dispositivos||[];var dispE=disp.filter(function(r){return r.status==='Executado';}).length;
   setKpi('kpi-tv',[{c:'kc-blue',l:'Total Travessias',v:tv.length,s:tvE+' executadas'},{c:'kc-g2',l:'Total Dispositivos',v:disp.length,s:dispE+' executados'},{c:'kc-green',l:'Exec. Travessias',v:tvE+'/'+tv.length,s:'concluídas'},{c:'kc-gold',l:'Exec. Dispositivos',v:dispE+'/'+disp.length,s:'concluídos'}]);
   el=document.getElementById('trav-count');if(el)el.textContent=tvE+'/'+tv.length+' executadas';
-  el=document.getElementById('td-tv');if(el)el.innerHTML=tv.map(function(r){return '<tr><td><strong>'+r.modulo+'</strong></td><td><span class="dn-b">DN 150</span></td><td>'+stSel(r,'trav')+'</td></tr>';}).join('');
+  el=document.getElementById('td-tv');if(el)el.innerHTML=tv.map(function(r){return '<tr><td><strong>'+r.modulo+'</strong></td><td><span class="dn-b">DN 150</span></td><td>'+stSel(r,'trav')+'</td>'+dtCell(r)+'</tr>';}).join('');
   var mods=[];disp.forEach(function(d){if(mods.indexOf(d.modulo)<0)mods.push(d.modulo);});
   el=document.getElementById('disp-container');
   if(el)el.innerHTML=mods.map(function(mod){var itens=disp.filter(function(d){return d.modulo===mod;});var exec=itens.filter(function(d){return d.status==='Executado';}).length;return '<div class="trwrap" style="margin-bottom:16px"><div class="tbar"><span style="font-size:12px;font-weight:700;text-transform:uppercase">'+mod+'</span><div class="tcount">'+exec+'/'+itens.length+' executados</div></div><table><thead><tr><th>Item</th><th class="num" style="width:80px">Qtd</th><th style="width:200px">Status &#9998;</th></tr></thead><tbody>'+itens.map(function(r){return '<tr><td>'+r.item+'</td><td class="num">'+r.qty+'</td><td>'+stSel(r,'dispositivos')+'</td></tr>';}).join('')+'</tbody></table></div>';}).join('');
@@ -818,7 +836,7 @@ function renderRP2(){
   var srch=(document.getElementById('s-rp2')||{value:''}).value.toLowerCase();
   var rows=(D.rp2||[]).filter(function(r){if(filtMod!=='all'&&r.modulo!==filtMod)return false;if(srch&&JSON.stringify(r).toLowerCase().indexOf(srch)<0)return false;return true;});
   var el=document.getElementById('c-rp2');if(el)el.textContent=rows.length+' trechos';
-  el=document.getElementById('td-rp2');if(el)el.innerHTML=rows.map(function(r){return '<tr><td>'+r.modulo+'</td><td>'+r.qd+'</td><td class="num">'+r.m+'m</td><td><span class="dn-b">DN '+r.dn+'</span></td><td>'+stSel(r,'rp2')+'</td></tr>';}).join('');
+  el=document.getElementById('td-rp2');if(el)el.innerHTML=rows.map(function(r){return '<tr><td>'+r.modulo+'</td><td>'+r.qd+'</td><td class="num">'+r.m+'m</td><td><span class="dn-b">DN '+r.dn+'</span></td><td>'+stSel(r,'rp2')+'</td>'+dtCell(r)+'</tr>';}).join('');
 }
 function filtRp2(m,btn){filtMod=m;document.getElementById('bar-rp2').querySelectorAll('.fbtn').forEach(function(x){x.classList.remove('fa');});btn.classList.add('fa');renderRP2();}
 function renderDrenagem(){
@@ -872,7 +890,7 @@ function renderDrPVs(){
   var el3=document.getElementById('c-dr-pvs');if(el3)el3.textContent=rows.length+' registros';
   var el4=document.getElementById('td-dr-pvs');
   if(el4)el4.innerHTML=rows.map(function(r,i){
-    return '<tr><td style="text-align:center">'+(pvs.indexOf(r)+1)+'</td><td>'+r.pv+'</td><td>'+r.rede+'</td><td>'+stSel(r,'dr_pvs')+'</td></tr>';
+    return '<tr><td style="text-align:center">'+(pvs.indexOf(r)+1)+'</td><td>'+r.pv+'</td><td>'+r.rede+'</td><td>'+stSel(r,'dr_pvs')+'</td>'+dtCell(r)+'</tr>';
   }).join('');
 }
 function setPvReal(val){
@@ -885,13 +903,13 @@ function renderDrT(key){
   var srch=(document.getElementById('s-dr-'+key)||{value:''}).value.toLowerCase();
   var rows=((D.drenagem||{})[key]||[]).filter(function(r){return!srch||JSON.stringify(r).toLowerCase().indexOf(srch)>=0;});
   var el=document.getElementById('c-dr-'+key);if(el)el.textContent=rows.length+' registros';
-  el=document.getElementById('td-dr-'+key);if(el)el.innerHTML=rows.map(function(r){return '<tr><td>'+r.pv1+'</td><td>'+r.pv2+'</td><td class="num">'+r.m+' m</td><td><span class="dn-b">DN '+r.dn+'</span></td><td>'+stSel(r,'dr_'+key)+'</td></tr>';}).join('');
+  el=document.getElementById('td-dr-'+key);if(el)el.innerHTML=rows.map(function(r){return '<tr><td>'+r.pv1+'</td><td>'+r.pv2+'</td><td class="num">'+r.m+' m</td><td><span class="dn-b">DN '+r.dn+'</span></td><td>'+stSel(r,'dr_'+key)+'</td>'+dtCell(r)+'</tr>';}).join('');
 }
 function renderDrR(key){
   var srch=(document.getElementById('s-dr-'+key)||{value:''}).value.toLowerCase();
   var rows=((D.drenagem||{})[key]||[]).filter(function(r){return!srch||JSON.stringify(r).toLowerCase().indexOf(srch)>=0;});
   var el=document.getElementById('c-dr-'+key);if(el)el.textContent=rows.length+' registros';
-  el=document.getElementById('td-dr-'+key);if(el)el.innerHTML=rows.map(function(r){return '<tr><td>'+r.pv+'</td><td>'+(r.bl||'-')+'</td><td class="num">'+(r.qty||0)+'</td><td>'+(r.dn?'<span class="dn-b">DN '+r.dn+'</span>':'-')+'</td><td>'+stSel(r,'dr_'+key)+'</td></tr>';}).join('');
+  el=document.getElementById('td-dr-'+key);if(el)el.innerHTML=rows.map(function(r){return '<tr><td>'+r.pv+'</td><td>'+(r.bl||'-')+'</td><td class="num">'+(r.qty||0)+'</td><td>'+(r.dn?'<span class="dn-b">DN '+r.dn+'</span>':'-')+'</td><td>'+stSel(r,'dr_'+key)+'</td>'+dtCell(r)+'</tr>';}).join('');
 }
 function renderResultados(){
   var rp=D.rp||[];var rpP=rp.reduce(function(a,r){return a+r.m;},0);var rpR=rp.filter(function(r){return r.status==='Executado';}).reduce(function(a,r){return a+r.m;},0);
