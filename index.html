@@ -61,6 +61,8 @@ tr:last-child td{border-bottom:none}
 .scroll-t{max-height:360px;overflow-y:auto}.scroll-t::-webkit-scrollbar{width:4px}.scroll-t::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 .st-sel{font-family:'JetBrains Mono',monospace;font-size:10px;border:1px solid var(--border);border-radius:3px;padding:3px 6px;cursor:pointer;outline:none;background:#fff;font-weight:500;width:160px}
 .st-sel.ok{background:rgba(74,156,90,.12);color:var(--green2);border-color:rgba(74,156,90,.3)}.st-sel.nd{background:rgba(122,116,104,.1);color:var(--muted);border-color:var(--border)}.st-sel.ex{background:rgba(26,74,138,.1);color:var(--blue);border-color:rgba(26,74,138,.3)}
+.st-badge{font-family:'JetBrains Mono',monospace;font-size:10px;border:1px solid transparent;border-radius:3px;padding:4px 8px;font-weight:600;cursor:pointer;white-space:nowrap;display:inline-block}
+.st-badge.ok{background:rgba(74,156,90,.12);color:var(--green2);border-color:rgba(74,156,90,.3)}.st-badge.nd{background:rgba(122,116,104,.1);color:var(--muted);border-color:var(--border)}.st-badge.ex{background:rgba(26,74,138,.1);color:var(--blue);border-color:rgba(26,74,138,.3)}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
 .bars{padding:12px 14px}
 .bar-row{display:flex;align-items:center;gap:7px;margin-bottom:9px}.bar-row:last-child{margin-bottom:0}
@@ -623,14 +625,14 @@ function abrirHistoricoRp2(id){
   var trecho=null;
   for(var i=0;i<rp2.length;i++){if(rp2[i].id===id){trecho=rp2[i];break;}}
   if(!trecho)return;
-  var realizado=trecho.realizado||0;
+  var realizado=trecho.realizado!==undefined?trecho.realizado:(trecho.status==='Executado'?trecho.m:0);
   var hist=trecho.historico||[];
   var modal=document.getElementById('modal-hist-rp2');
   if(!modal){
     modal=document.createElement('div');
     modal.id='modal-hist-rp2';
     modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:5000;display:flex;align-items:center;justify-content:center;';
-    modal.innerHTML='<div id="mhr-box" style="background:#fff;border-radius:12px;width:420px;max-width:94vw;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 8px 32px rgba(0,0,0,.25);overflow:hidden"></div>';
+    modal.innerHTML='<div id="mhr-box" style="background:#fff;border-radius:12px;width:480px;max-width:94vw;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 8px 32px rgba(0,0,0,.25);overflow:hidden"></div>';
     modal.addEventListener('click',function(e){if(e.target===modal)fecharHistoricoRp2();});
     document.body.appendChild(modal);
   }
@@ -641,13 +643,14 @@ function abrirHistoricoRp2(id){
 
 function renderModalHistRp2(trecho){
   var hist=trecho.historico||[];
-  var realizado=trecho.realizado||0;
+  var realizado=trecho.realizado!==undefined?trecho.realizado:(trecho.status==='Executado'?trecho.m:0);
   var pctV=trecho.m>0?Math.min(realizado/trecho.m*100,100):0;
   var box=document.getElementById('mhr-box');
+  var stCls=trecho.status==='Executado'?'ok':trecho.status==='Em Execução'?'ex':'nd';
   var linhasHist=hist.length?hist.slice().reverse().map(function(h,idx){
     var idxReal=hist.length-1-idx;
     return '<tr style="border-bottom:1px solid var(--border)">'
-      +'<td style="padding:6px 12px;font-family:Inter,sans-serif;font-size:11px;color:var(--muted)">'+h.data+'</td>'
+      +'<td style="padding:6px 12px;font-family:Inter,sans-serif;font-size:11px;color:var(--muted);white-space:nowrap">'+h.data+' <button onclick="editarDataHistRp2(\''+trecho.id+'\','+idxReal+')" style="background:none;border:none;color:var(--blue);cursor:pointer;font-size:11px;padding:0 2px" title="Editar data">&#9998;</button></td>'
       +'<td style="padding:6px 12px;font-family:Inter,sans-serif;font-size:12px;color:var(--blue);font-weight:600;text-align:right">'+(h.editado?'<span style="font-size:10px;background:rgba(184,134,10,.12);color:var(--gold);border-radius:3px;padding:1px 5px">editado</span>':'+'+fmt(h.inc)+'m')+'</td>'
       +'<td style="padding:6px 12px;font-family:Inter,sans-serif;font-size:12px;text-align:right">'+fmt(h.total)+'m</td>'
       +'<td style="padding:6px 12px;text-align:center"><button onclick="excluirEntradaRp2(\''+trecho.id+'\','+idxReal+')" style="background:none;border:none;color:#c0392b;cursor:pointer;font-size:13px;" title="Excluir">&#10005;</button></td>'
@@ -659,13 +662,30 @@ function renderModalHistRp2(trecho){
       +'<div style="color:#fff;font-weight:700;font-size:14px">'+trecho.modulo+' — QD '+trecho.qd+' (DN '+trecho.dn+')</div></div>'
       +'<button onclick="fecharHistoricoRp2()" style="background:none;border:none;color:rgba(255,255,255,.6);font-size:20px;cursor:pointer;line-height:1">&#10005;</button>'
     +'</div>'
+    +'<div style="padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px">'
+      +'<div style="font-family:Inter,sans-serif;font-size:9px;letter-spacing:1px;color:var(--muted)">STATUS DO TRECHO</div>'
+      +'<select class="st-sel '+stCls+'" onchange="mudarStatusRp2(this)" style="width:180px">'
+        +'<option value="Executado"'+(trecho.status==='Executado'?' selected':'')+'>&#10003; Executado</option>'
+        +'<option value="Em Execução"'+(trecho.status==='Em Execução'?' selected':'')+'>&#9881; Em Execução</option>'
+        +'<option value="Não Executado"'+(trecho.status==='Não Executado'?' selected':'')+'>&#9675; Não Executado</option>'
+      +'</select>'
+    +'</div>'
     +'<div style="padding:14px 20px;background:rgba(26,74,138,.06);border-bottom:1px solid var(--border);display:flex;gap:20px;align-items:center">'
       +'<div><div style="font-family:Inter,sans-serif;font-size:9px;letter-spacing:1px;color:var(--muted);margin-bottom:2px">PROJETO</div><div style="font-size:18px;font-weight:800;color:var(--text)">'+fmt(trecho.m)+'m</div></div>'
       +'<div><div style="font-family:Inter,sans-serif;font-size:9px;letter-spacing:1px;color:var(--muted);margin-bottom:2px">REALIZADO</div><div style="font-size:18px;font-weight:800;color:var(--blue)">'+fmt(realizado)+'m</div></div>'
       +'<div style="flex:1"><div style="font-family:Inter,sans-serif;font-size:9px;letter-spacing:1px;color:var(--muted);margin-bottom:4px">'+pctV.toFixed(1)+'%</div><div style="height:6px;background:var(--border);border-radius:100px;overflow:hidden"><div style="height:100%;width:'+pctV.toFixed(1)+'%;background:var(--blue);border-radius:100px;transition:width .4s"></div></div></div>'
     +'</div>'
+    +'<div style="padding:12px 20px;border-bottom:1px solid var(--border);background:#fafafa;display:flex;gap:8px;align-items:center">'
+      +'<div style="font-family:Inter,sans-serif;font-size:9px;letter-spacing:1px;color:var(--muted);white-space:nowrap">DATA DE CONCLUSÃO</div>'
+      +'<input id="mhr-dtconc" type="date" value="'+ptBRtoISO(trecho.dataConclusao)+'" style="border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-family:JetBrains Mono,monospace;font-size:12px;outline:none">'
+      +'<button onclick="salvarDataConclusaoRp2()" style="background:rgba(74,156,90,.12);border:1px solid rgba(74,156,90,.3);color:var(--green2);border-radius:6px;padding:6px 12px;font-family:Inter,sans-serif;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap">Salvar</button>'
+    +'</div>'
     +'<div style="padding:14px 20px;border-bottom:1px solid var(--border);background:#fafafa">'
       +'<div style="font-family:Inter,sans-serif;font-size:9px;letter-spacing:1px;color:var(--muted);margin-bottom:8px">REGISTRAR METRAGEM</div>'
+      +'<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">'
+        +'<div style="font-family:Inter,sans-serif;font-size:10px;color:var(--muted);white-space:nowrap">Data</div>'
+        +'<input id="mhr-data" type="date" value="'+hojeISO()+'" style="border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-family:JetBrains Mono,monospace;font-size:12px;outline:none">'
+      +'</div>'
       +'<div style="display:flex;gap:8px;align-items:center">'
         +'<input id="mhr-inc" type="number" min="0" max="'+trecho.m+'" placeholder="Metros a adicionar..." style="flex:1;border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-family:Inter,sans-serif;font-size:13px;outline:none;color:var(--blue);font-weight:600">'
         +'<button onclick="salvarEntradaRp2()" style="background:var(--blue);border:none;color:#fff;border-radius:6px;padding:8px 16px;font-family:Inter,sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap">+ Adicionar</button>'
@@ -695,12 +715,13 @@ function salvarEntradaRp2(){
   var inc=parseFloat(incEl.value);
   if(isNaN(inc)||inc<=0){incEl.focus();return;}
   var rp2=D.rp2||[];
+  var dataEl=document.getElementById('mhr-data');
+  var data=(dataEl&&dataEl.value)?isoToPtBR(dataEl.value):new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'});
   for(var i=0;i<rp2.length;i++){
     if(rp2[i].id===id){
       if(!rp2[i].historico)rp2[i].historico=[];
-      var anterior=rp2[i].realizado||0;
+      var anterior=rp2[i].realizado!==undefined?rp2[i].realizado:(rp2[i].status==='Executado'?rp2[i].m:0);
       var novoTotal=Math.min(anterior+inc,rp2[i].m);
-      var data=new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'});
       rp2[i].historico.push({data:data,inc:Math.round((novoTotal-anterior)*10)/10,total:novoTotal});
       rp2[i].realizado=novoTotal;
       incEl.value='';
@@ -719,11 +740,12 @@ function editarTotalRp2(){
   var val=parseFloat(setEl.value);
   if(isNaN(val)||val<0){setEl.focus();return;}
   var rp2=D.rp2||[];
+  var dataEl=document.getElementById('mhr-data');
+  var data=(dataEl&&dataEl.value)?isoToPtBR(dataEl.value):new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'});
   for(var i=0;i<rp2.length;i++){
     if(rp2[i].id===id){
       if(!rp2[i].historico)rp2[i].historico=[];
       var novoTotal=Math.min(val,rp2[i].m);
-      var data=new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'});
       rp2[i].historico.push({data:data,inc:null,total:novoTotal,editado:true});
       rp2[i].realizado=novoTotal;
       setEl.value='';
@@ -742,6 +764,65 @@ function excluirEntradaRp2(id,idx){
       // recalcula realizado a partir do historico
       var hist=rp2[i].historico||[];
       rp2[i].realizado=hist.length?hist[hist.length-1].total:0;
+      renderModalHistRp2(rp2[i]);
+      break;
+    }
+  }
+  salvar();renderAgua();renderResultados();renderRP2();
+}
+
+function editarDataHistRp2(id,idx){
+  if(window._somenteLeitura){alert('⚠️ Você não tem permissão para editar.');return;}
+  var rp2=D.rp2||[];
+  for(var i=0;i<rp2.length;i++){
+    if(rp2[i].id===id){
+      var hist=rp2[i].historico||[];
+      var entry=hist[idx];
+      if(!entry)return;
+      var novaData=prompt('Nova data (dd/mm/aaaa):',entry.data);
+      if(novaData===null)return;
+      if(!/^\d{2}\/\d{2}\/\d{4}$/.test(novaData)){alert('Data inválida. Use o formato dd/mm/aaaa.');return;}
+      entry.data=novaData;
+      renderModalHistRp2(rp2[i]);
+      break;
+    }
+  }
+  salvar();
+}
+
+function mudarStatusRp2(sel){
+  var modal=document.getElementById('modal-hist-rp2');
+  var id=modal._idAtual;
+  var rp2=D.rp2||[];
+  var trechoAtual=null;for(var j=0;j<rp2.length;j++){if(rp2[j].id===id){trechoAtual=rp2[j];break;}}
+  if(window._somenteLeitura){alert('⚠️ Você não tem permissão para editar.');if(trechoAtual)renderModalHistRp2(trechoAtual);return;}
+  if(!verificarSenha()){if(trechoAtual)renderModalHistRp2(trechoAtual);return;}
+  var novoStatus=sel.value;
+  var hoje=new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'});
+  for(var i=0;i<rp2.length;i++){
+    if(rp2[i].id===id){
+      rp2[i].status=novoStatus;
+      if(novoStatus==='Executado'&&!rp2[i].dataConclusao){
+        rp2[i].dataConclusao=hoje;
+      } else if(novoStatus!=='Executado'){
+        rp2[i].dataConclusao=null;
+      }
+      renderModalHistRp2(rp2[i]);
+      break;
+    }
+  }
+  salvar();renderAgua();renderResultados();renderRP2();
+}
+
+function salvarDataConclusaoRp2(){
+  if(window._somenteLeitura){alert('⚠️ Você não tem permissão para editar.');return;}
+  var modal=document.getElementById('modal-hist-rp2');
+  var id=modal._idAtual;
+  var dtEl=document.getElementById('mhr-dtconc');
+  var rp2=D.rp2||[];
+  for(var i=0;i<rp2.length;i++){
+    if(rp2[i].id===id){
+      rp2[i].dataConclusao=dtEl.value?isoToPtBR(dtEl.value):null;
       renderModalHistRp2(rp2[i]);
       break;
     }
@@ -885,6 +966,9 @@ function verificarSenha(){
 function fmt(n){if(typeof n!=='number')return n||'-';return n.toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:1});}
 function pct(r,p){if(!p)return '0,00%';return(r/p*100).toFixed(2).replace('.',',')+' %';}
 function pN(r,p){return p>0?Math.min(r/p*100,100):0;}
+function ptBRtoISO(s){if(!s)return '';var p=s.split('/');if(p.length!==3)return '';return p[2]+'-'+p[1]+'-'+p[0];}
+function isoToPtBR(s){if(!s)return '';var p=s.split('-');if(p.length!==3)return '';return p[2]+'/'+p[1]+'/'+p[0];}
+function hojeISO(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 
 function setKpi(id,cards){
   var el=document.getElementById(id);if(!el)return;
@@ -906,6 +990,12 @@ function stSel(t,key){
     +'<option value="Em Execução"'+(t.status==='Em Execução'?' selected':'')+'>&#9881; Em Execução</option>'
     +'<option value="Não Executado"'+(t.status==='Não Executado'?' selected':'')+'>&#9675; Não Executado</option>'
     +'</select>';
+}
+
+function stBadge(t,onclick){
+  var cls=t.status==='Executado'?'ok':t.status==='Em Execução'?'ex':'nd';
+  var icon=t.status==='Executado'?'&#10003;':t.status==='Em Execução'?'&#9881;':'&#9675;';
+  return '<span class="st-badge '+cls+'" onclick="'+onclick+'" title="Clique para gerenciar">'+icon+' '+t.status+'</span>';
 }
 
 function mudarStatus(sel){
@@ -1034,7 +1124,7 @@ function renderRP2(){
   var srch=(document.getElementById('s-rp2')||{value:''}).value.toLowerCase();
   var rows=(D.rp2||[]).filter(function(r){if(filtMod!=='all'&&r.modulo!==filtMod)return false;if(srch&&JSON.stringify(r).toLowerCase().indexOf(srch)<0)return false;return true;});
   var el=document.getElementById('c-rp2');if(el)el.textContent=rows.length+' trechos';
-  el=document.getElementById('td-rp2');if(el)el.innerHTML=rows.map(function(r){var realizado=r.realizado!==undefined?r.realizado:(r.status==='Executado'?r.m:0);var saldo=r.m-realizado;var hist=r.historico||[];var pct2=r.m>0?Math.min(realizado/r.m*100,100):0;var dtCell=r.dataConclusao?'<span style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--green2);white-space:nowrap">'+r.dataConclusao+'</span>':'<span style="color:var(--muted);font-size:10px">—</span>';return '<tr><td>'+r.modulo+'</td><td>'+r.qd+'</td><td class="num">'+r.m+'m</td><td class="num"><button onclick="abrirHistoricoRp2(\''+r.id+'\')" style="font-family:JetBrains Mono,monospace;font-size:11px;background:rgba(26,74,138,.08);border:1px solid rgba(26,74,138,.25);color:var(--blue);border-radius:4px;padding:3px 8px;cursor:pointer;font-weight:600;white-space:nowrap">'+fmt(realizado)+'m <span style=\'font-size:9px;opacity:.7\'>('+pct2.toFixed(0)+'%)</span> &#9998;</button></td><td class="num">'+fmt(saldo)+'</td><td><span class="dn-b">DN '+r.dn+'</span></td><td>'+stSel(r,'rp2')+'</td><td>'+dtCell+'</td></tr>';}).join('');
+  el=document.getElementById('td-rp2');if(el)el.innerHTML=rows.map(function(r){var realizado=r.realizado!==undefined?r.realizado:(r.status==='Executado'?r.m:0);var saldo=r.m-realizado;var hist=r.historico||[];var pct2=r.m>0?Math.min(realizado/r.m*100,100):0;var dtCell=r.dataConclusao?'<span style="font-family:JetBrains Mono,monospace;font-size:10px;color:var(--green2);white-space:nowrap">'+r.dataConclusao+'</span>':'<span style="color:var(--muted);font-size:10px">—</span>';return '<tr><td>'+r.modulo+'</td><td>'+r.qd+'</td><td class="num">'+r.m+'m</td><td class="num" style="font-family:JetBrains Mono,monospace;font-size:12px;color:var(--blue);font-weight:600;white-space:nowrap">'+fmt(realizado)+'m <span style=\'font-size:9px;opacity:.7;font-weight:500\'>('+pct2.toFixed(0)+'%)</span></td><td class="num">'+fmt(saldo)+'</td><td><span class="dn-b">DN '+r.dn+'</span></td><td>'+stBadge(r,'abrirHistoricoRp2(\''+r.id+'\')')+'</td><td>'+dtCell+'</td></tr>';}).join('');
 }
 function filtRp2(m,btn){filtMod=m;document.getElementById('bar-rp2').querySelectorAll('.fbtn').forEach(function(x){x.classList.remove('fa');});btn.classList.add('fa');renderRP2();}
 
@@ -1044,7 +1134,7 @@ function renderEsgotoResumo(){
   var ct2=D.ct2||[];var ct2P=ct2.reduce(function(a,r){return a+r.m;},0);var ct2R=ct2.filter(function(r){return r.status==='Executado';}).reduce(function(a,r){return a+r.m;},0);
   var pvsTot=(D.pvs||[]).length;var pvsExec=(D.pvs||[]).filter(function(p){return p.status==='Executado';}).length;
   var totP=rpP+ct1P+ct2P;var totR=rpR+ct1R+ct2R;
-  var geralP=totP+pvsTot;var geralR=totR+pvsExec;
+  var geralP=totP;var geralR=totR;
   setKpi('kpi-esg-resumo',[
     {c:'kc-green',l:'Total Metros Projeto',v:fmt(totP),s:'m rede coletora'},
     {c:'kc-g2',l:'Total Executado',v:fmt(totR),s:pct(totR,totP)+' concluído'},
