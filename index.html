@@ -1213,6 +1213,7 @@ function renderModalHistPV(pv,cor,corName){
           +'<option value="Em Execução"'+(pv.status==='Em Execução'?' selected':'')+'>⚙ Em Execução</option>'
           +'<option value="Não Executado"'+(pv.status==='Não Executado'?' selected':'')+'>○ Não Executado</option>'
         +'</select>'
+        +'<input id="mhpv-data" type="date" value="'+hojeISO()+'" style="border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-family:JetBrains Mono,monospace;font-size:12px;outline:none">'
       +'</div>'
       +'<div style="display:flex;gap:8px">'
         +'<input id="mhpv-obs" type="text" placeholder="Observação (opcional)..." style="flex:1;border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-family:Inter,sans-serif;font-size:13px;outline:none">'
@@ -1236,14 +1237,15 @@ function salvarEntradaPV(){
   var modal=document.getElementById('modal-hist-pv');
   var tipo=modal._tipo;var id=modal._id;
   var statusEl=document.getElementById('mhpv-status');
+  var dataEl=document.getElementById('mhpv-data');
   var obsEl=document.getElementById('mhpv-obs');
   var novoStatus=statusEl.value;
   var obs=obsEl.value.trim()||'—';
+  var data=(dataEl&&dataEl.value)?isoToPtBR(dataEl.value):new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'});
   var arr=arrPorTipoHist(tipo);
   for(var i=0;i<arr.length;i++){
     if(arr[i].id===id){
       if(!arr[i].historico)arr[i].historico=[];
-      var data=new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'});
       arr[i].historico.push({data:data,status:novoStatus,obs:obs});
       arr[i].status=novoStatus;
       obsEl.value='';
